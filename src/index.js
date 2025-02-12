@@ -78,30 +78,57 @@ async function get_data() {
                 
         }
 
+        // Replacing key references with player names.
+        for (const key in lifetime_set_data) {
+            let player_name = cleanPlayerName(lifetime_set_data[key]["field2"]);
+            lifetime_set_data[`${player_name}`] = lifetime_set_data[key];
+            delete lifetime_set_data[key];
+        }
+
+        for (const key in lifetime_game_data) {
+            let player_name = cleanPlayerName(lifetime_game_data[key]["field2"]);
+            lifetime_game_data[`${player_name}`] = lifetime_game_data[key];
+            delete lifetime_game_data[key];
+        }
+
+        for (const key in seasonal_set_data) {
+            let player_name = cleanPlayerName(seasonal_set_data[key]["field2"]);
+            seasonal_set_data[`${player_name}`] = seasonal_set_data[key];
+            delete seasonal_set_data[key];
+        }
+
+        for (const key in seasonal_game_data) {
+            let player_name = cleanPlayerName(seasonal_game_data[key]["field2"]);
+            seasonal_game_data[`${player_name}`] = seasonal_game_data[key];
+            delete seasonal_game_data[key];
+        }
+
+        delete lifetime_set_data[""];
+        delete lifetime_game_data[""];
+        delete seasonal_set_data[""];
+        delete seasonal_game_data[""];
+
         // Debugging
         console.group('DEBUGGING:');
-        // console.log('--------------------------------');
+        console.log('--------------------------------');
         console.log(`lifetime_set_data: `);
         console.log(lifetime_set_data);
-        // console.log(`lifetime_game_data: `);
-        // console.log(lifetime_game_data);
-        // console.log(`seasonal_set_data: `);
-        // console.log(seasonal_set_data);
-        // console.log(`seasonal_game_data: `);
-        // console.log(seasonal_game_data);
-        // console.log(`lifetime_rankings_data: `);
-        // console.log(lifetime_rankings_data);
+        console.log(`lifetime_game_data: `);
+        console.log(lifetime_game_data);
+        console.log(`seasonal_set_data: `);
+        console.log(seasonal_set_data);
+        console.log(`seasonal_game_data: `);
+        console.log(seasonal_game_data);
+        console.log(`lifetime_rankings_data: `);
+        console.log(lifetime_rankings_data);
         console.groupEnd('--------------------------------');
 
         // Assembling complete data structure.
         for (const key in lifetime_rankings_data) {
             
-            console.log(lifetime_rankings_data[key]);
-            let test = getObjectByValue(lifetime_set_data, "field2", "Silent Bob")
-            console.log(test);
+            let test = getObjectByValue(lifetime_set_data, "field2", lifetime_rankings_data[key].Player);
 
-            lifetime_rankings_data[key].Sets = {Lifetime: {"Test": "0-0"}, Seasonal: {"Test": "0-0"}};
-            lifetime_rankings_data[key].Games = {Lifetime: {"Test": "0-0"}, Seasonal: {"Test": "0-0"}};
+            lifetime_rankings_data[key].Sets = {Lifetime: test, Seasonal: {"Test": "0-0"}};
         
         }
 
@@ -124,11 +151,11 @@ async function get_data() {
                 // let player_one_character = atr_response_json[0].Characters;
                 // let player_two_character = atr_response_json[1].Characters;
                 
-                console.group(`New player selected for ${select_element.name}!`);
-                console.log(`${player_one_name} (${player_one_rank}) VS ${player_two_name} (${player_two_rank})`);
+                // console.group(`New player selected for ${select_element.name}!`);
+                // console.log(`${player_one_name} (${player_one_rank}) VS ${player_two_name} (${player_two_rank})`);
                 // console.log(`${player_one_character} VS ${player_two_character}`);
                 // console.log(`${set_result[0]} : ${set_result[1]}`);
-                console.groupEnd();
+                // console.groupEnd();
 
                 data_output.innerHTML = 
                 `
@@ -160,6 +187,13 @@ async function get_data() {
 
     }
 
+}
+
+function cleanPlayerName(player_name) {
+    if (player_name.includes(' | ')) {
+        player_name = player_name.split(' | ').pop();   
+    }
+    return player_name;
 }
 
 function getObjectByValue(array, key, value) {
