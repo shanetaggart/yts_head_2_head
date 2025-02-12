@@ -126,11 +126,56 @@ async function get_data() {
         // Assembling complete data structure.
         for (const key in lifetime_rankings_data) {
             
-            let test = getObjectByValue(lifetime_set_data, "field2", lifetime_rankings_data[key].Player);
+            let player_name = lifetime_rankings_data[key].Player;
 
-            lifetime_rankings_data[key].Sets = {Lifetime: test, Seasonal: {"Test": "0-0"}};
+            for (const key in lifetime_set_data) {
+
+                if (lifetime_set_data[key] == player_name) {
+
+                    lifetime_rankings_data.Sets.Lifetime = lifetime_set_data[key];
+
+                }
+
+            }
+
+            for (const key in lifetime_game_data) {
+
+                if (lifetime_game_data[key] == player_name) {
+
+                    lifetime_rankings_data.Games.Lifetime = lifetime_rankings_data[key];
+
+                }
+
+            }
+
+            for (const key in seasonal_set_data) {
+
+                if (seasonal_set_data[key] == player_name) {
+
+                    lifetime_rankings_data.Sets.Seasonal = seasonal_set_data[key];
+
+                }
+
+            }
+
+            for (const key in seasonal_game_data) {
+
+                if (seasonal_game_data[key] == player_name) {
+
+                    lifetime_rankings_data.Games.Seasonal = seasonal_game_data[key];
+
+                }
+                
+            }
         
         }
+
+        // DEBUGGING AGAIN
+        console.group('DEBUGGING AGAIN:');
+        console.log('--------------------------------');
+        console.log(`lifetime_rankings_data: `);
+        console.log(lifetime_rankings_data);
+        console.groupEnd('--------------------------------');
 
         // Watch select elements for changes.
         player_select_elements.forEach(select_element => {
