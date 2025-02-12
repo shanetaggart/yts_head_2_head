@@ -17,6 +17,9 @@ async function get_data() {
     // Attempt to pull data.
     try {
 
+        data_output.innerHTML = 'Attempting to pull data...';
+        console.log('Attempting to pull data...');
+
         const ats_response = await fetch(all_time_sets_url);
         const atg_response = await fetch(all_time_games_url);
         const stds_response = await fetch(seasonal_sets_url);
@@ -30,12 +33,18 @@ async function get_data() {
         if (!stdg_response.ok) { throw new Error(`She's broke bahd! Response status: ${stdg_response.status}`); }
         if (!atr_response.ok) { throw new Error(`She's broke bahd! Response status: ${atr_response.status}`); }
 
+        data_output.innerHTML = 'Responses OK, pulling data...';
+        console.log('Responses OK, pulling data...');
+
         // Response is good, wait for data to pull.
         const ats_response_json = await ats_response.json();
         const atg_response_json = await atg_response.json();
         const stds_response_json = await stds_response.json();
         const stdg_response_json = await stdg_response.json();
         const atr_response_json = await atr_response.json();
+
+        data_output.innerHTML = 'Storing data for use...';
+        console.log('Storing data for use...');
 
         // Store the sets of data.
         const lifetime_set_data = ats_response_json;
@@ -47,6 +56,9 @@ async function get_data() {
         // Insert placeholder option elements.
         player_one_select.innerHTML += `<option>Player One</option>`;
         player_two_select.innerHTML += `<option>Player Two</option>`;
+
+        data_output.innerHTML = 'Creating list of players...';
+        console.log('Creating list of players...');
 
         // Create option elements for each player from the fact sheet.
         for (const key in atr_response_json) {
@@ -67,19 +79,31 @@ async function get_data() {
         }
 
         // Debugging
-        console.group('All data sets');
-        console.log('--------------------------------');
+        console.group('DEBUGGING:');
+        // console.log('--------------------------------');
         console.log(`lifetime_set_data: `);
         console.log(lifetime_set_data);
-        console.log(`lifetime_game_data: `);
-        console.log(lifetime_game_data);
-        console.log(`seasonal_set_data: `);
-        console.log(seasonal_set_data);
-        console.log(`seasonal_game_data: `);
-        console.log(seasonal_game_data);
-        console.log(`lifetime_rankings_data: `);
-        console.log(lifetime_rankings_data);
+        // console.log(`lifetime_game_data: `);
+        // console.log(lifetime_game_data);
+        // console.log(`seasonal_set_data: `);
+        // console.log(seasonal_set_data);
+        // console.log(`seasonal_game_data: `);
+        // console.log(seasonal_game_data);
+        // console.log(`lifetime_rankings_data: `);
+        // console.log(lifetime_rankings_data);
         console.groupEnd('--------------------------------');
+
+        // Assembling complete data structure.
+        for (const key in lifetime_rankings_data) {
+            
+            console.log(lifetime_rankings_data[key]);
+            let test = getObjectByValue(lifetime_set_data, "field2", "Silent Bob")
+            console.log(test);
+
+            lifetime_rankings_data[key].Sets = {Lifetime: {"Test": "0-0"}, Seasonal: {"Test": "0-0"}};
+            lifetime_rankings_data[key].Games = {Lifetime: {"Test": "0-0"}, Seasonal: {"Test": "0-0"}};
+        
+        }
 
         // Watch select elements for changes.
         player_select_elements.forEach(select_element => {
@@ -137,5 +161,11 @@ async function get_data() {
     }
 
 }
+
+function getObjectByValue(array, key, value) {
+    return array.filter(function (object) {
+        return object[key] === value;
+    });
+};
 
 get_data();
