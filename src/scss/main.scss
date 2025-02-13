@@ -25,27 +25,13 @@ body {
 
     .player-stats{
 
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         width: 100%;
-
-        &__player_name {
-            font-size: 3em;
-            text-align: center;
-        }
-
-        &__versus {
-            font-size: 4em;
-            font-style: italic;
-            text-align: center;
-        }
-
-        &__sets {
-            font-size: 1.5em;
-            text-align: center;
-        }
+        font-size: 3em;
+        text-align: center;
 
     }
 }

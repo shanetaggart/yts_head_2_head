@@ -17,8 +17,7 @@ async function get_data() {
     // Attempt to pull data.
     try {
 
-        data_output.innerHTML = 'Attempting to pull data...';
-        console.log('Attempting to pull data...');
+        // writeLog('Attempting to pull data...');
 
         const ats_response = await fetch(all_time_sets_url);
         const atg_response = await fetch(all_time_games_url);
@@ -33,8 +32,7 @@ async function get_data() {
         if (!stdg_response.ok) { throw new Error(`She's broke bahd! Response status: ${stdg_response.status}`); }
         if (!atr_response.ok) { throw new Error(`She's broke bahd! Response status: ${atr_response.status}`); }
 
-        data_output.innerHTML = 'Responses OK, pulling data...';
-        console.log('Responses OK, pulling data...');
+        // writeLog('Responses OK, pulling data...');
 
         // Response is good, wait for data to pull.
         const ats_response_json = await ats_response.json();
@@ -43,8 +41,7 @@ async function get_data() {
         const stdg_response_json = await stdg_response.json();
         const atr_response_json = await atr_response.json();
 
-        data_output.innerHTML = 'Storing data for use...';
-        console.log('Storing data for use...');
+        // writeLog('Storing data for use...');
 
         // Store the sets of data.
         const lifetime_set_data = ats_response_json;
@@ -57,8 +54,7 @@ async function get_data() {
         player_one_select.innerHTML += `<option>Player One</option>`;
         player_two_select.innerHTML += `<option>Player Two</option>`;
 
-        data_output.innerHTML = 'Creating list of players...';
-        console.log('Creating list of players...');
+        // writeLog('Creating list of players...');
 
         // Create option elements for each player from the fact sheet.
         for (const key in atr_response_json) {
@@ -77,6 +73,8 @@ async function get_data() {
             player_two_select.innerHTML += `<option value="${rank}">${player}</option>`;
                 
         }
+
+        // writeLog('Normalizing data...');
 
         // Replacing key references with player names.
         for (const key in lifetime_set_data) {
@@ -108,61 +106,50 @@ async function get_data() {
         delete seasonal_set_data[""];
         delete seasonal_game_data[""];
 
-        // Debugging
-        console.group('DEBUGGING:');
-        console.log('--------------------------------');
-        console.log(`lifetime_set_data: `);
-        console.log(lifetime_set_data);
-        console.log(`lifetime_game_data: `);
-        console.log(lifetime_game_data);
-        console.log(`seasonal_set_data: `);
-        console.log(seasonal_set_data);
-        console.log(`seasonal_game_data: `);
-        console.log(seasonal_game_data);
-        console.log(`lifetime_rankings_data: `);
-        console.log(lifetime_rankings_data);
-        console.groupEnd('--------------------------------');
-
         // Assembling complete data structure.
-        for (const key in lifetime_rankings_data) {
+        for (const ltr_key in lifetime_rankings_data) {
             
-            let player_name = lifetime_rankings_data[key].Player;
+            // Initialize the new objects for later assignment.
+            lifetime_rankings_data[ltr_key].Sets = {Lifetime: {}, Seasonal: {}};
+            lifetime_rankings_data[ltr_key].Games = {Lifetime: {}, Seasonal: {}};
 
-            for (const key in lifetime_set_data) {
+            let player_name = lifetime_rankings_data[ltr_key].Player;
 
-                if (lifetime_set_data[key] == player_name) {
+            for (const lts_key in lifetime_set_data) {
+            
+                if (lifetime_set_data[lts_key]["field2"] == player_name) {
+                    
+                    lifetime_rankings_data[ltr_key].Sets.Lifetime = lifetime_set_data[lts_key];
 
-                    lifetime_rankings_data.Sets.Lifetime = lifetime_set_data[key];
+                }
+                
+            }
+
+            for (const ltg_key in lifetime_game_data) {
+
+                if (lifetime_game_data[ltg_key]["field2"] == player_name) {
+
+                    lifetime_rankings_data[ltr_key].Games.Lifetime = lifetime_game_data[ltg_key];
 
                 }
 
             }
 
-            for (const key in lifetime_game_data) {
+            for (const ss_key in seasonal_set_data) {
 
-                if (lifetime_game_data[key] == player_name) {
+                if (seasonal_set_data[ss_key]["field2"] == player_name) {
 
-                    lifetime_rankings_data.Games.Lifetime = lifetime_rankings_data[key];
-
-                }
-
-            }
-
-            for (const key in seasonal_set_data) {
-
-                if (seasonal_set_data[key] == player_name) {
-
-                    lifetime_rankings_data.Sets.Seasonal = seasonal_set_data[key];
+                    lifetime_rankings_data[ltr_key].Sets.Seasonal = seasonal_set_data[ss_key];
 
                 }
 
             }
 
-            for (const key in seasonal_game_data) {
+            for (const sg_key in seasonal_game_data) {
 
-                if (seasonal_game_data[key] == player_name) {
+                if (seasonal_game_data[sg_key]["field2"] == player_name) {
 
-                    lifetime_rankings_data.Games.Seasonal = seasonal_game_data[key];
+                    lifetime_rankings_data[ltr_key].Games.Seasonal = seasonal_game_data[sg_key];
 
                 }
                 
@@ -170,56 +157,104 @@ async function get_data() {
         
         }
 
-        // DEBUGGING AGAIN
-        console.group('DEBUGGING AGAIN:');
-        console.log('--------------------------------');
-        console.log(`lifetime_rankings_data: `);
-        console.log(lifetime_rankings_data);
-        console.groupEnd('--------------------------------');
+        // Debugging
+        // console.group('DEBUGGING:');
+        // console.log('--------------------------------');
+        // console.log(`lifetime_set_data: `);
+        // console.log(lifetime_set_data);
+        // console.log(`lifetime_game_data: `);
+        // console.log(lifetime_game_data);
+        // console.log(`seasonal_set_data: `);
+        // console.log(seasonal_set_data);
+        // console.log(`seasonal_game_data: `);
+        // console.log(seasonal_game_data);
+        // console.log(`lifetime_rankings_data: `);
+        // console.log(lifetime_rankings_data);
+        // console.groupEnd('--------------------------------');
+
+        // writeLog('Ready!');
 
         // Watch select elements for changes.
         player_select_elements.forEach(select_element => {
 
             select_element.addEventListener("change", function() {
 
-                // Store relevant player data.
+                // Store player data from the select elements.
                 let player_one_name = player_one_select.options[player_one_select.selectedIndex].innerText;
+                let player_one_pr = player_one_select.options[player_one_select.selectedIndex].value;
                 let player_two_name = player_two_select.options[player_two_select.selectedIndex].innerText;
-                let player_one_rank = player_one_select.options[player_one_select.selectedIndex].value;
-                let player_two_rank = player_two_select.options[player_two_select.selectedIndex].value;
+                let player_two_pr = player_two_select.options[player_two_select.selectedIndex].value;
+
+                console.log(lifetime_rankings_data);
                 
-                // Attempting to pull correct character data... need to establish fact sheet and combine data logically by player name otherwise the IDs don't match.
-                // let set_data = lifetime_set_data[player_one_id][player_two_id];
-                // let set_result = set_data.replace(' -- ', '|').split('|');
-                // let player_one_win_ratio = parseFloat(set_result[0]) / (parseFloat(set_result[0]) + parseFloat(set_result[1]));
-                // let player_two_win_ratio = parseFloat(set_result[1]) / (parseFloat(set_result[0]) + parseFloat(set_result[1]));
-                // let player_one_character = atr_response_json[0].Characters;
-                // let player_two_character = atr_response_json[1].Characters;
+                for (const key in lifetime_rankings_data) {
+                    
+                    if (lifetime_rankings_data[key].Player == player_one_name) {
+                        
+                        // Store relevant player data.
+                        let player_one_characters = lifetime_rankings_data[key].Characters;
+                        let player_one_lts = lifetime_rankings_data[key].Lifetime.Sets;
+                        let player_one_ltg = lifetime_rankings_data[key].Lifetime.Games;
+                        let player_one_ss = lifetime_rankings_data[key].Seasonal.Sets;
+                        let player_one_sg = lifetime_rankings_data[key].Seasonal.Games;
+
+                    }
+                    
+                }
+
+                console.log('this is what I found:');
+                console.log(player_one_name, player_one_pr, player_one_characters, player_one_lts, player_one_ltg, player_one_ss, player_one_sg);
                 
-                // console.group(`New player selected for ${select_element.name}!`);
-                // console.log(`${player_one_name} (${player_one_rank}) VS ${player_two_name} (${player_two_rank})`);
-                // console.log(`${player_one_character} VS ${player_two_character}`);
-                // console.log(`${set_result[0]} : ${set_result[1]}`);
-                // console.groupEnd();
+                let player_two_characters;
+                let player_two_lts;
+                let player_two_ltg;
+                let player_two_ss;
+                let player_two_sg;
 
                 data_output.innerHTML = 
                 `
                 <article class="player-stats">
-                    <p class="player-stats__player_character">${player_one_rank}</p>
-                    <p class="player-stats__player_character">${player_two_rank}</p>
-                </article>
-                <article class="player-stats">
-                    <p class="player-stats__player_name">${player_one_name}</p>
-                    <p class="player-stats__versus">VS</p>
-                    <p class="player-stats__player_name">${player_two_name}</p>
+                    <p>
+                        P1: ${player_one_name} (${player_one_characters})
+                        <br>
+                        PR #${player_one_pr}
+                        <br>
+                        <br>
+                        Lifetime Stats
+                        <br>
+                        Lifetime Sets: ${player_one_lts}
+                        <br>
+                        Lifetime Games: ${player_one_ltg}
+                        <br>
+                        Seasonal Stats
+                        <br>
+                        <br>
+                        Seasonal Sets: ${player_one_ss}
+                        <br>
+                        Seasonal Games: ${player_one_sg}
+                    </p>
+                    <p>VS</p>
+                    <p>
+                        P1: ${player_two_name} (${player_two_characters})
+                        <br>
+                        PR #${player_two_pr}
+                        <br>
+                        <br>
+                        Lifetime Stats
+                        <br>
+                        Lifetime Sets: ${player_two_lts}
+                        <br>
+                        Lifetime Games: ${player_two_ltg}
+                        <br>
+                        Seasonal Stats
+                        <br>
+                        <br>
+                        Seasonal Sets: ${player_two_ss}
+                        <br>
+                        Seasonal Games: ${player_two_sg}
+                    </p>
                 </article>
                 `;
-                // <article class="player-stats">
-                //     <p class="player-stats__sets">${(player_one_win_ratio * 100).toFixed(2)}%</p>    
-                //     <p class="player-stats__sets">${set_result[0]} -- ${set_result[1]}</p>
-                //     <p class="player-stats__sets">${(player_two_win_ratio * 100).toFixed(2)}%</p>
-                // </article>
-                // `;
 
             });
 
@@ -240,6 +275,11 @@ function cleanPlayerName(player_name) {
     }
     return player_name;
 }
+
+function writeLog(message) {
+    data_output.innerHTML = message;
+    console.log(message);
+};
 
 function getObjectByValue(array, key, value) {
     return array.filter(function (object) {
