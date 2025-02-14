@@ -11,16 +11,17 @@ const player_select_elements = document.querySelectorAll('select');
 const player_one_select = document.getElementById('player_one');
 const player_two_select = document.getElementById('player_two');
 const data_output = document.getElementById('data');
+const tag_separator = ' | ';
 const player_one_default = 'Player One';
 const player_two_default = 'Player Two';
 
 async function get_data() {
 
-    // Attempt to pull data.
     try {
-
+        
         writeLog('Attempting to pull data...');
-
+        
+        // Attempt to pull data.
         const ats_response = await fetch(all_time_sets_url);
         const atg_response = await fetch(all_time_games_url);
         const stds_response = await fetch(seasonal_sets_url);
@@ -43,144 +44,161 @@ async function get_data() {
         const stdg_response_json = await stdg_response.json();
         const atr_response_json = await atr_response.json();
 
-        writeLog('Storing data for use...');
+        writeLog('Creating Head 2 Head JSON: Adding players...');
+        
+        // Initialize an object to organize all of the data.
+        let head_2_head = {};
 
-        // Store the sets of data.
-        const lifetime_set_data = ats_response_json;
-        const lifetime_game_data = atg_response_json;
-        const seasonal_set_data = stds_response_json;
-        const seasonal_game_data = stdg_response_json;
-        const lifetime_rankings_data = atr_response_json;
+        // Lifetime Rankings.
+        for (const player in atr_response_json) {
+
+            let current_player = atr_response_json[player].Player;
+            let current_player_tag = '';
+
+            if (current_player.includes(tag_separator)) {
+                
+                let current_player_data = current_player.split(tag_separator);
+
+                current_player = current_player_data[1];
+                current_player_tag = current_player_data[0];
+            }
+
+            head_2_head[current_player] = {
+
+                'Characters': atr_response_json[player].Characters,
+                'Country': atr_response_json[player].Country,
+                'GameData': {
+                    'Lifetime' : {},
+                    'Seasonal': {}
+                },
+                'Points': atr_response_json[player].Points,
+                'PlayerName': current_player,
+                'Rank': atr_response_json[player].Rank,
+                'Tag': current_player_tag,
+                'SetData': {
+                    'Lifetime' : {},
+                    'Seasonal': {}
+                }
+            
+            }
+
+        }
+
+        writeLog('Creating Head 2 Head JSON: Adding Lifetime Sets data...');
+
+        // Lifetime Sets.
+        for (const player in ats_response_json) {
+            
+            if (player == 0) {
+                delete ats_response_json[player];
+            } else {
+
+                let current_player = ats_response_json[player]["field2"];
+
+                if (ats_response_json[player]["field2"].includes(' | ')) {
+                    current_player = ats_response_json[player]["field2"].split(' | ').pop();
+                }
+
+                deleteExtraFields(ats_response_json, player);
+
+                head_2_head[current_player]['SetData']['Lifetime'] = ats_response_json[player];
+
+            }
+
+        }
+
+        writeLog('Creating Head 2 Head JSON: Adding Seasonal Set data...');
+
+        // Seasonal Sets.
+        for (const player in stds_response_json) {
+            
+            if (player == 0) {
+                delete stds_response_json[player];
+            } else {
+
+                let current_player = stds_response_json[player]["field2"];
+
+                if (stds_response_json[player]["field2"].includes(' | ')) {
+                    current_player = stds_response_json[player]["field2"].split(' | ').pop();
+                }
+
+                deleteExtraFields(stds_response_json, player);
+
+                head_2_head[current_player]['SetData']['Seasonal'] = stds_response_json[player];
+
+            }
+
+        }
+
+        writeLog('Creating Head 2 Head JSON: Adding Lifetime Game data...');
+
+        // Lifetime Games.
+        for (const player in atg_response_json) {
+            
+            if (player == 0) {
+                delete atg_response_json[player];
+            } else {
+
+                let current_player = atg_response_json[player]["field2"];
+
+                if (atg_response_json[player]["field2"].includes(' | ')) {
+                    current_player = atg_response_json[player]["field2"].split(' | ').pop();
+                }
+
+                deleteExtraFields(atg_response_json, player);
+
+                head_2_head[current_player]['GameData']['Lifetime'] = atg_response_json[player];
+
+            }
+
+        }
+
+        writeLog('Creating Head 2 Head JSON: Adding Seasonal Game data...');
+
+        // Seasonal Games.
+        for (const player in stdg_response_json) {
+            
+            if (player == 0) {
+                delete stdg_response_json[player];
+            } else {
+
+                let current_player = stdg_response_json[player]["field2"];
+
+                if (stdg_response_json[player]["field2"].includes(' | ')) {
+                    current_player = stdg_response_json[player]["field2"].split(' | ').pop();
+                }
+
+                deleteExtraFields(stdg_response_json, player);
+
+                head_2_head[current_player]['GameData']['Seasonal'] = stdg_response_json[player];
+
+            }
+
+        }
+
+        writeLog('Head 2 Head JSON compiled, creating option elements...');
+
+        // Debugging.
+        console.group('Head 2 Head JSON');
+        console.log(head_2_head);
+        console.groupEnd();
 
         // Insert placeholder option elements.
         player_one_select.innerHTML += `<option>${player_one_default}</option>`;
         player_two_select.innerHTML += `<option>${player_two_default}</option>`;
 
-        writeLog('Creating list of players...');
-
         // Create option elements for each player from the fact sheet.
-        for (const key in atr_response_json) {
+        for (const player in head_2_head) {
 
-            let player = atr_response_json[key].Player;
-            let rank = atr_response_json[key].Rank
+            let current_player = head_2_head[player].PlayerName;
+            let current_player_rank = head_2_head[player].Rank;
 
-            if (atr_response_json[key].Player.includes(' | ')) {
-
-                player = atr_response_json[key].Player.split(' | ');
-                player = player[1];
-
-            }
-
-            player_one_select.innerHTML += `<option value="${rank}">${player}</option>`;
-            player_two_select.innerHTML += `<option value="${rank}">${player}</option>`;
+            player_one_select.innerHTML += `<option value="${current_player_rank}">${current_player}</option>`;
+            player_two_select.innerHTML += `<option value="${current_player_rank}">${current_player}</option>`;
                 
         }
 
-        writeLog('Normalizing data...');
-
-        // Replacing key references with player names.
-        for (const key in lifetime_set_data) {
-            let player_name = lifetime_set_data[key]["field2"];
-            lifetime_set_data[`${player_name}`] = lifetime_set_data[key];
-            delete lifetime_set_data[key];
-        }
-
-        for (const key in lifetime_game_data) {
-            let player_name = lifetime_game_data[key]["field2"];
-            lifetime_game_data[`${player_name}`] = lifetime_game_data[key];
-            delete lifetime_game_data[key];
-        }
-
-        for (const key in seasonal_set_data) {
-            let player_name = seasonal_set_data[key]["field2"];
-            seasonal_set_data[`${player_name}`] = seasonal_set_data[key];
-            delete seasonal_set_data[key];
-        }
-
-        for (const key in seasonal_game_data) {
-            let player_name = seasonal_game_data[key]["field2"];
-            seasonal_game_data[`${player_name}`] = seasonal_game_data[key];
-            delete seasonal_game_data[key];
-        }
-
-        // Assembling complete data structure.
-        for (const ltr_key in lifetime_rankings_data) {
-            
-            // Initialize the new objects for later assignment.
-            lifetime_rankings_data[ltr_key].Sets = 
-            {Lifetime: {Indicies: {}, Results: {}}, Seasonal: {Indicies: {}, Results: {}}};
-            
-            lifetime_rankings_data[ltr_key].Games = 
-            {Lifetime: {Indicies: {}, Results: {}}, Seasonal: {Indicies: {}, Results: {}}};
-
-            let player_name = lifetime_rankings_data[ltr_key].Player;
-
-            for (const lts_key in lifetime_set_data) {
-            
-                if (lifetime_set_data[lts_key]["field2"] == player_name) {
-                    
-                    lifetime_rankings_data[ltr_key].Sets.Lifetime.Results = lifetime_set_data[lts_key];
-
-                    lifetime_rankings_data[ltr_key].Sets.Lifetime.Indicies = lifetime_set_data[""];
-
-                }
-                
-            }
-
-            for (const ltg_key in lifetime_game_data) {
-
-                if (lifetime_game_data[ltg_key]["field2"] == player_name) {
-
-                    lifetime_rankings_data[ltr_key].Games.Lifetime.Results = lifetime_game_data[ltg_key];
-
-                    lifetime_rankings_data[ltr_key].Sets.Lifetime.Indicies = lifetime_game_data[""];
-
-                }
-
-            }
-
-            for (const ss_key in seasonal_set_data) {
-
-                if (seasonal_set_data[ss_key]["field2"] == player_name) {
-
-                    lifetime_rankings_data[ltr_key].Sets.Seasonal.Results = seasonal_set_data[ss_key];
-
-                    lifetime_rankings_data[ltr_key].Sets.Lifetime.Indicies = seasonal_set_data[""];
-
-                }
-
-            }
-
-            for (const sg_key in seasonal_game_data) {
-
-                if (seasonal_game_data[sg_key]["field2"] == player_name) {
-
-                    lifetime_rankings_data[ltr_key].Games.Seasonal.Results = seasonal_game_data[sg_key];
-
-                    lifetime_rankings_data[ltr_key].Sets.Lifetime.Indicies = seasonal_game_data[""];
-
-                }
-                
-            }
-        
-        }
-
-        // Debugging
-        // console.group('DEBUGGING:');
-        // console.log('--------------------------------');
-        // console.log(`lifetime_set_data: `);
-        // console.log(lifetime_set_data);
-        // console.log(`lifetime_game_data: `);
-        // console.log(lifetime_game_data);
-        // console.log(`seasonal_set_data: `);
-        // console.log(seasonal_set_data);
-        // console.log(`seasonal_game_data: `);
-        // console.log(seasonal_game_data);
-        // console.log(`lifetime_rankings_data: `);
-        // console.log(lifetime_rankings_data);
-        // console.groupEnd('--------------------------------');
-
-        writeLog('Ready!');
+        writeLog('Finishing up...');
 
         // Watch select elements for changes.
         player_select_elements.forEach(select_element => {
@@ -189,59 +207,46 @@ async function get_data() {
 
                 if (bothPlayersSelected(player_one_select, player_two_select)) {
 
-                    // Store player data from the select elements.
+                    // Retrieve the player names from the select elements.
                     let player_one_name = player_one_select.options[player_one_select.selectedIndex].innerText;
-                    let player_one_pr = player_one_select.options[player_one_select.selectedIndex].value;
                     let player_two_name = player_two_select.options[player_two_select.selectedIndex].innerText;
-                    let player_two_pr = player_two_select.options[player_two_select.selectedIndex].value;
-                    
-                    // Store relevant player data.
+
+                    // Initialize the remainder of the player data.
+                    let player_one_pr;
                     let player_one_characters;
-                    let player_two_characters;
                     let player_one_lts;
+                    let player_one_stds;
                     let player_one_ltg;
-                    let player_one_ss;
-                    let player_one_sg;
+                    let player_one_stdg;
+                    let player_two_pr;
+                    let player_two_characters;
+                    
+                    for (const player in head_2_head) {
 
-                    for (const key in lifetime_rankings_data) {
-                        
-                        if (lifetime_rankings_data[key].Player == player_one_name) {
+                        if (player == player_one_name) {
 
-                            console.log('the player matches...');
-
-                            console.log(lifetime_rankings_data[key].Sets.Lifetime);
-
-                            for (const sub_key in lifetime_rankings_data[key].Sets.Lifetime) {
-                                console.log(lifetime_rankings_data[key].Sets.Lifetime[sub_key]);
-                            }
-
-                            // Store relevant player data.
-                            player_one_characters = lifetime_rankings_data[key].Characters;
-                            player_one_lts = lifetime_rankings_data[key].Sets.Lifetime;
-                            player_one_ltg = lifetime_rankings_data[key].Games.Lifetime;
-                            player_one_ss = lifetime_rankings_data[key].Sets.Seasonal;
-                            player_one_sg = lifetime_rankings_data[key].Games.Seasonal;
+                            player_one_pr = head_2_head[player].Rank;
+                            player_one_characters = head_2_head[player].Characters;
+                            player_one_lts = head_2_head[player].SetData.Lifetime;
+                            player_one_stds = head_2_head[player].SetData.Seasonal;
+                            player_one_ltg = head_2_head[player].GameData.Lifetime;
+                            player_one_stdg = head_2_head[player].GameData.Seasonal;
 
                         }
-                        
-                    }
 
-                    // console.group('this is what I found:');
-                    // console.log(`player_one_name:`);
-                    // console.log(player_one_name);
-                    // console.log(`player_one_pr:`);
-                    // console.log(player_one_pr);
-                    // console.log(`player_one_characters:`);
-                    // console.log(player_one_characters);
-                    // console.log(`player_one_lts:`);
-                    // console.log(player_one_lts);
-                    // console.log(`player_one_ltg:`);
-                    // console.log(player_one_ltg);
-                    // console.log(`player_one_ss:`);
-                    // console.log(player_one_ss);
-                    // console.log(`player_one_sg:`);
-                    // console.log(player_one_sg);
-                    // console.groupEnd();
+                        if (player == player_two_name) {
+
+                            player_two_pr = head_2_head[player].Rank;
+                            player_two_characters = head_2_head[player].Characters;
+
+                        }
+
+                    } 
+                    
+                    // Final debugging. Need to replace the keys in the set and game data with the names of the second player.
+                    console.group('P1 LTG');
+                    console.log(player_one_ltg);
+                    console.groupEnd();
 
                     data_output.innerHTML = 
                     `
@@ -261,9 +266,9 @@ async function get_data() {
                             <br>
                             Seasonal Stats
                             <br>
-                            Seasonal Sets: ${player_one_ss}
+                            Seasonal Sets: ${player_one_stds}
                             <br>
-                            Seasonal Games: ${player_one_sg}
+                            Seasonal Games: ${player_one_stdg}
                         </p>
                         <p>VS</p>
                         <p>
@@ -280,6 +285,8 @@ async function get_data() {
 
         });
 
+        writeLog('Ready! Awaiting player selection.');
+
     // Pulling data failed.
     } catch (error) {
 
@@ -288,6 +295,7 @@ async function get_data() {
     }
 
 }
+
 
 function cleanPlayerName(player_name) {
 
@@ -300,7 +308,8 @@ function cleanPlayerName(player_name) {
     return player_name;
 
 }
-1
+
+
 function writeLog(message) {
 
     data_output.innerHTML = message;
@@ -308,6 +317,16 @@ function writeLog(message) {
     console.log(message);
 
 };
+
+
+function deleteExtraFields(json, key) {
+
+    delete json[key]['field1'];
+    delete json[key]['field2'];
+    delete json[key]['field22'];
+
+}
+
 
 function bothPlayersSelected(player_one_element, player_two_element) {
 
@@ -323,5 +342,6 @@ function bothPlayersSelected(player_one_element, player_two_element) {
     }
 
 };
+
 
 get_data();
