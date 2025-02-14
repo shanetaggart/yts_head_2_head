@@ -84,6 +84,104 @@ async function get_data() {
 
         }
 
+        writeLog('Cleaning the data...');
+        
+        // Store the headers from the Set and Game data.
+        const ats_headers = ats_response_json[0];
+        const atg_headers = atg_response_json[0];
+        const stds_headers = stds_response_json[0];
+        const stdg_headers = stdg_response_json[0];
+
+        // Delete the headers from the original objects.
+        delete ats_response_json[0];
+        delete atg_response_json[0];
+        delete stds_response_json[0];
+        delete stdg_response_json[0];
+
+        // Replace the keys in the Set and Game data to be the Player Name.
+        for (const player in ats_response_json) {
+
+            let player_name = ats_response_json[player]["field2"];
+            player_name = cleanPlayerName(player_name);
+            ats_response_json[player_name] = ats_response_json[player];
+            delete ats_response_json[player];
+
+        }
+
+        for (const player in atg_response_json) {
+
+            let player_name = atg_response_json[player]["field2"];
+            player_name = cleanPlayerName(player_name);
+            atg_response_json[player_name] = atg_response_json[player];
+            delete atg_response_json[player];
+
+        }
+
+        for (const player in stds_response_json) {
+
+            let player_name = stds_response_json[player]["field2"];
+            player_name = cleanPlayerName(player_name);
+            stds_response_json[player_name] = stds_response_json[player];
+            delete stds_response_json[player];
+
+        }
+
+        for (const player in stdg_response_json) {
+
+            let player_name = stdg_response_json[player]["field2"];
+            player_name = cleanPlayerName(player_name);
+            stdg_response_json[player_name] = stdg_response_json[player];
+            delete stdg_response_json[player];
+
+        }
+
+        // Replace the keys for Set and Game results with the Player Name.
+        for (const player in ats_response_json) {
+
+            let player_name = player;
+            
+            for (const result in ats_response_json[player]) {
+
+                // Need to figure out why the addition of the score is coming out blank...
+                console.group();
+                console.log(player);                            //name
+                console.log(result);                            //key for score
+                console.log(ats_response_json[player]);         //object
+                console.log(ats_response_json[player][result]); //score
+                console.groupEnd();
+                
+                ats_response_json[player][player] = {};
+                ats_response_json[player][player] = ats_response_json[player][result];
+                // delete ats_response_json[player][result];
+
+            }
+
+        }
+
+        console.group();
+        console.log(ats_response_json);
+        console.groupEnd();
+
+        for (const player in atg_response_json) {
+
+            
+
+        }
+
+        for (const player in stds_response_json) {
+
+            
+
+        }
+
+        for (const player in stdg_response_json) {
+
+            
+
+        }
+
+
+
         writeLog('Creating Head 2 Head JSON: Adding Lifetime Sets data...');
 
         // Lifetime Sets.
