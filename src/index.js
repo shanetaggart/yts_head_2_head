@@ -98,108 +98,163 @@ async function get_data() {
         delete stds_response_json[0];
         delete stdg_response_json[0];
 
+        writeLog('Cleaning ATS...');
+
         // Replace the keys in the Set and Game data to be the Player Name.
         for (const player in ats_response_json) {
 
             let player_name = ats_response_json[player]["field2"];
+
+            if (player_name == undefined) {
+                continue;
+            }
+
             player_name = cleanPlayerName(player_name);
             ats_response_json[player_name] = ats_response_json[player];
             delete ats_response_json[player];
 
         }
 
+        writeLog('Cleaning ATG...');
+
         for (const player in atg_response_json) {
 
             let player_name = atg_response_json[player]["field2"];
+            
+            if (player_name == undefined) {
+                continue;
+            }
+            
             player_name = cleanPlayerName(player_name);
             atg_response_json[player_name] = atg_response_json[player];
             delete atg_response_json[player];
 
         }
 
+        writeLog('Cleaning STDS...');
+
         for (const player in stds_response_json) {
 
             let player_name = stds_response_json[player]["field2"];
+            
+            if (player_name == undefined) {
+                continue;
+            }
+            
             player_name = cleanPlayerName(player_name);
             stds_response_json[player_name] = stds_response_json[player];
             delete stds_response_json[player];
 
         }
 
+        writeLog('Cleaning STDG...');
+
         for (const player in stdg_response_json) {
 
             let player_name = stdg_response_json[player]["field2"];
+            
+            if (player_name == undefined) {
+                continue;
+            }
+            
             player_name = cleanPlayerName(player_name);
             stdg_response_json[player_name] = stdg_response_json[player];
             delete stdg_response_json[player];
 
         }
 
+        writeLog('Replacing keys for ATS...');
+
         // Replace the keys for Set and Game results with the Player Name.
         for (const player in ats_response_json) {
 
-            let player_name = player;
-            
             for (const result in ats_response_json[player]) {
 
-                // Need to figure out why the addition of the score is coming out blank...
-                console.group();
-                console.log(player);                            //name
-                console.log(result);                            //key for score
-                console.log(ats_response_json[player]);         //object
-                console.log(ats_response_json[player][result]); //score
-                console.groupEnd();
-                
-                ats_response_json[player][player] = {};
-                ats_response_json[player][player] = ats_response_json[player][result];
-                // delete ats_response_json[player][result];
+                let current_result = ats_response_json[player][result];
+                let current_result_opponent = ats_headers[result];
+
+                current_result_opponent = cleanPlayerName(current_result_opponent);
+
+                ats_response_json[player][current_result_opponent] = current_result;
+                delete ats_response_json[player][result];
 
             }
 
         }
 
-        console.group();
-        console.log(ats_response_json);
-        console.groupEnd();
+        writeLog('Replacing keys for ATG...');
 
         for (const player in atg_response_json) {
 
-            
+            for (const result in atg_response_json[player]) {
+
+                let current_result = atg_response_json[player][result];
+                let current_result_opponent = atg_headers[result];
+
+                current_result_opponent = cleanPlayerName(current_result_opponent);
+                
+                atg_response_json[player][current_result_opponent] = current_result;
+                delete atg_response_json[player][result];
+
+            }
 
         }
+
+        writeLog('Replacing keys for STDS...');
 
         for (const player in stds_response_json) {
-
             
+            for (const result in stds_response_json[player]) {
+
+                let current_result = stds_response_json[player][result];
+                let current_result_opponent = stds_headers[result];
+
+                current_result_opponent = cleanPlayerName(current_result_opponent);
+                
+                stds_response_json[player][current_result_opponent] = current_result;
+                delete stds_response_json[player][result];
+
+            }
 
         }
+
+        writeLog('Replacing keys for STDG...');
 
         for (const player in stdg_response_json) {
 
-            
+            for (const result in stdg_response_json[player]) {
+
+                let current_result = stdg_response_json[player][result];
+                let current_result_opponent = stdg_headers[result];
+
+                current_result_opponent = cleanPlayerName(current_result_opponent);
+             
+                stdg_response_json[player][current_result_opponent] = current_result;
+                delete stdg_response_json[player][result];
+
+            }
 
         }
 
-
+        console.group('cleaned data');
+        console.log(ats_response_json);
+        console.log(atg_response_json);
+        console.log(stds_response_json);
+        console.log(stdg_response_json);
+        console.groupEnd();
 
         writeLog('Creating Head 2 Head JSON: Adding Lifetime Sets data...');
 
         // Lifetime Sets.
         for (const player in ats_response_json) {
-            
+
             if (player == 0) {
                 delete ats_response_json[player];
             } else {
 
-                let current_player = ats_response_json[player]["field2"];
-
-                if (ats_response_json[player]["field2"].includes(' | ')) {
-                    current_player = ats_response_json[player]["field2"].split(' | ').pop();
-                }
-
                 deleteExtraFields(ats_response_json, player);
 
-                head_2_head[current_player]['SetData']['Lifetime'] = ats_response_json[player];
+                head_2_head[player]['SetData']['Lifetime'] = ats_response_json[player];
 
             }
 
@@ -214,15 +269,9 @@ async function get_data() {
                 delete stds_response_json[player];
             } else {
 
-                let current_player = stds_response_json[player]["field2"];
-
-                if (stds_response_json[player]["field2"].includes(' | ')) {
-                    current_player = stds_response_json[player]["field2"].split(' | ').pop();
-                }
-
                 deleteExtraFields(stds_response_json, player);
 
-                head_2_head[current_player]['SetData']['Seasonal'] = stds_response_json[player];
+                head_2_head[player]['SetData']['Seasonal'] = stds_response_json[player];
 
             }
 
@@ -237,15 +286,9 @@ async function get_data() {
                 delete atg_response_json[player];
             } else {
 
-                let current_player = atg_response_json[player]["field2"];
-
-                if (atg_response_json[player]["field2"].includes(' | ')) {
-                    current_player = atg_response_json[player]["field2"].split(' | ').pop();
-                }
-
                 deleteExtraFields(atg_response_json, player);
 
-                head_2_head[current_player]['GameData']['Lifetime'] = atg_response_json[player];
+                head_2_head[player]['GameData']['Lifetime'] = atg_response_json[player];
 
             }
 
@@ -260,15 +303,9 @@ async function get_data() {
                 delete stdg_response_json[player];
             } else {
 
-                let current_player = stdg_response_json[player]["field2"];
-
-                if (stdg_response_json[player]["field2"].includes(' | ')) {
-                    current_player = stdg_response_json[player]["field2"].split(' | ').pop();
-                }
-
                 deleteExtraFields(stdg_response_json, player);
 
-                head_2_head[current_player]['GameData']['Seasonal'] = stdg_response_json[player];
+                head_2_head[player]['GameData']['Seasonal'] = stdg_response_json[player];
 
             }
 
@@ -310,42 +347,41 @@ async function get_data() {
                     let player_two_name = player_two_select.options[player_two_select.selectedIndex].innerText;
 
                     // Initialize the remainder of the player data.
-                    let player_one_pr;
-                    let player_one_characters;
-                    let player_one_lts;
-                    let player_one_stds;
-                    let player_one_ltg;
-                    let player_one_stdg;
-                    let player_two_pr;
-                    let player_two_characters;
+                    console.log(head_2_head[player_one_name]);
+                    let player_one_pr = head_2_head[player_one_name].Rank;
+                    let player_one_characters = head_2_head[player_one_name].Characters;
+
+                    let player_one_lts = head_2_head[player_one_name].SetData.Lifetime[player_two_name];
+                    let player_one_stds = head_2_head[player_one_name].SetData.Seasonal[player_two_name];
+                    let player_one_ltg = head_2_head[player_one_name].GameData.Lifetime[player_two_name];
+                    let player_one_stdg = head_2_head[player_one_name].GameData.Seasonal[player_two_name];
                     
-                    for (const player in head_2_head) {
-
-                        if (player == player_one_name) {
-
-                            player_one_pr = head_2_head[player].Rank;
-                            player_one_characters = head_2_head[player].Characters;
-                            player_one_lts = head_2_head[player].SetData.Lifetime;
-                            player_one_stds = head_2_head[player].SetData.Seasonal;
-                            player_one_ltg = head_2_head[player].GameData.Lifetime;
-                            player_one_stdg = head_2_head[player].GameData.Seasonal;
-
-                        }
-
-                        if (player == player_two_name) {
-
-                            player_two_pr = head_2_head[player].Rank;
-                            player_two_characters = head_2_head[player].Characters;
-
-                        }
-
-                    } 
+                    let player_two_pr = head_2_head[player_two_name].Rank;
+                    let player_two_characters = head_2_head[player_two_name].Characters;
                     
-                    // Final debugging. Need to replace the keys in the set and game data with the names of the second player.
-                    console.group('P1 LTG');
-                    console.log(player_one_ltg);
-                    console.groupEnd();
+                    // for (const player in head_2_head) {
 
+                    //     if (player == player_one_name) {
+
+                    //         player_one_pr = head_2_head[player].Rank;
+                    //         player_one_characters = head_2_head[player].Characters;
+                    //         player_one_lts = head_2_head[player].SetData.Lifetime;
+                    //         player_one_stds = head_2_head[player].SetData.Seasonal;
+                    //         player_one_ltg = head_2_head[player].GameData.Lifetime;
+                    //         player_one_stdg = head_2_head[player].GameData.Seasonal;
+
+                    //     }
+
+                    //     if (player == player_two_name) {
+
+                    //         player_two_pr = head_2_head[player].Rank;
+                    //         player_two_characters = head_2_head[player].Characters;
+
+                    //     }
+
+                    // } 
+
+                    // Building output of player stats.
                     data_output.innerHTML = 
                     `
                     <article class="player-stats">
@@ -403,6 +439,8 @@ function cleanPlayerName(player_name) {
 
     }
 
+    player_name == undefined ? player_name = false : null ;
+
     return player_name;
 
 }
@@ -421,6 +459,7 @@ function deleteExtraFields(json, key) {
 
     delete json[key]['field1'];
     delete json[key]['field2'];
+    delete json[key]['field21'];
     delete json[key]['field22'];
 
 }
