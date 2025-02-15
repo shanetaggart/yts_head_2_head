@@ -373,8 +373,8 @@ async function get_data() {
                     
                     // Player One Characters.
                     let player_one_characters = head_2_head[player_one_name].Characters.split(' - ');
-                    let player_one_main = player_one_characters[0];
-                    let player_one_secondary = player_one_characters[1];
+                    let player_one_main = player_one_characters[0] + '-00-full.png';
+                    let player_one_secondary = player_one_characters[1] + '-00-full.png';
 
                     // Player One Set/Game Data.
                     let player_one_lts = head_2_head[player_one_name].SetData.Lifetime[player_two_name];
@@ -401,14 +401,21 @@ async function get_data() {
                     
                     // Player Two Characters
                     let player_two_characters = head_2_head[player_two_name].Characters.split(' - ');
-                    let player_two_main = player_two_characters[0];
-                    let player_two_secondary = player_two_characters[1];
+                    let player_two_main = player_two_characters[0] + '-00-full.png';
+                    let player_two_secondary = player_two_characters[1] + '-00-full.png';
+
+                    // Sanitize the image names.
+                    player_one_main = player_one_main.replace(' ', '-').toLocaleLowerCase();
+                    player_one_secondary = player_one_secondary.replace(' ', '-').toLocaleLowerCase();
+                    player_two_main = player_two_main.replace(' ', '-').toLowerCase();
+                    player_two_secondary = player_two_secondary.replace(' ', '-').toLowerCase();
 
                     // Building output of player stats.
                     data_output.innerHTML = 
                     `
                     <article class="player-stats">
                         <p>
+                            <img class="player-stats__player_main" src="./public/images/fighters/${player_one_main}">
                             <span class="player-stats__player_name"><span class="player-stats__player-tag">${player_one_tag}</span>${player_one_name}</span>
                             <br>
                             ${player_one_main} / ${player_one_secondary}
@@ -447,6 +454,7 @@ async function get_data() {
                             ${Math.round(player_one_seasonal_game_ratio)}% | ${Math.round(100 - player_one_seasonal_game_ratio)}%
                         </p>
                         <p>
+                            <img class="player-stats__player_main" src="./public/images/fighters/${player_two_main}">
                             <span class="player-stats__player_name"><span class="player-stats__player-tag">${player_two_tag}</span>${player_two_name}</span>
                             <br>
                             ${player_two_main} / ${player_two_secondary}

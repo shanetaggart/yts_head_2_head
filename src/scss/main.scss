@@ -51,12 +51,17 @@ body {
             font-size: 2em;
             display: flex;
             align-items: center;
+            justify-content: center;
         }
 
         &__player-tag {
             font-size: 1rem;
             color: $piss-jugs;
             padding: 0 1em 0 0;
+        }
+
+        &__player_main {
+            max-width: 80%;
         }
     }
 }
