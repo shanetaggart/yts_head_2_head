@@ -1,18 +1,29 @@
-$bg-primary: #333333;
+@font-face {
+    font-family: 'Lemonmilk';
+    src: url('../fonts/LEMONMILK-Regular.otf');
+}
+
+// YTS Colors
+
+$nautical-navy: #0e243c;
+$baby-blue: #2a8be9;
+$mariner-maroon: #a70800;
+$really-red: #f22619;
+$piss-jugs: #ddf22f;
 
 body {
     width: 100vw;
-    background: $bg-primary;
+    background: $nautical-navy;
     color: #ffffff;
     display: flex;
     justify-content: center;
-    font-family: Lato;
+    font-family: 'Lato';
 
     main {
 
         section {
 
-            background: darken($color: $bg-primary, $amount: 3);
+            background: darken($nautical-navy, 3);
             border-radius: 1em;
             width: 80vw;
             display: flex;
@@ -28,12 +39,24 @@ body {
     .player-stats{
 
         display: flex;
-        flex-direction: column;
-        justify-content: center;
+        justify-content: space-evenly;
         align-items: center;
         width: 100%;
         font-size: 1em;
         text-align: center;
+        gap: 1em;
 
+        &__player_name {
+            font-family: 'Lemonmilk', sans-serif;
+            font-size: 2em;
+            display: flex;
+            align-items: center;
+        }
+
+        &__player-tag {
+            font-size: 1rem;
+            color: $piss-jugs;
+            padding: 0 1em 0 0;
+        }
     }
 }
