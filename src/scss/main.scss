@@ -1,6 +1,8 @@
+$bg-primary: #333333;
+
 body {
     width: 100vw;
-    background: #333333;
+    background: $bg-primary;
     color: #ffffff;
     display: flex;
     justify-content: center;
@@ -10,7 +12,7 @@ body {
 
         section {
 
-            background: #222222;
+            background: darken($color: $bg-primary, $amount: 3);
             border-radius: 1em;
             width: 80vw;
             display: flex;
