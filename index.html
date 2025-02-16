@@ -8,68 +8,87 @@
     </head>
     <body>
         <main>
+            
             <section class="player-selection">
                 <label for="player_one">
                     <select id="player_one" name="player_one"></select>
                 </label>
-                <p>VS</p>
                 <label for="player_two">
                     <select id="player_two" name="player_two"></select>
                 </label>
                 <button id="player-selection__submit">Submit</button>
             </section>
-            <section id="data">
             
-                <p id="progress-log"></p>
-            
+            <section id="data">    
                 <article class="head-2-head">
             
                     <div class="head-2-head__player head-2-head__player--one">
+                        
                         <div class="head-2-head__player--characters">
-                            <img class="head-2-head__player--characters-main" src="./public/images/fighters/snake-00-full.png">
-                            <img class="head-2-head__player--characters-secondary" src="">
+                            <img src="./public/images/fighters/snake-00-full.png">
                         </div>
-                        <span class="head-2-head__player--name">
-                            <span class="head-2-head__player--tag">YTS</span>Jonch
-                        </span>
-                        <p class="head-2-head__player--rank">Lifetime PR - #4 (5127)</p>
-                        <p class="head-2-head__player--rank">Seasonal PR - #4 (5149)</p>
+
+                        <div class="head-2-head__player--details">
+                            <span class="head-2-head__player--name">
+                                <span class="head-2-head__player--tag">YTS</span>Jonch
+                            </span>
+                            <div class="head-2-head__player--rank">
+                                <p class="head-2-head__player--pr">4</p>
+                                <p class="head-2-head__player--points">
+                                    Seasonal: 5149 pts<br>
+                                    Lifetime: 5127 pts
+                                </p>
+                            </div>
+                        </div>
+
                     </div>
             
                     <div class="head-2-head__stats">
-                        <img src="public/images/Y-Town-Smash-Logo-v4-Email.png">
-                        <p>Lifetime Sets:</p>
-                        <p>3 -- 3</p>
-                        <p>50% | 50%</p>
-                        <br>
-                        <p>Lifetime Games:</p>
-                        <p>7 -- 7</p>
-                        <p>50% | 50%</p>
-                        <br>
-                        <p>Seasonal Sets:</p>
-                        <p>1 -- 0</p>
-                        <p>100% | 0%</p>
-                        <br>
-                        <p>Seasonal Games:</p>
-                        <p>2 -- 0</p>
-                        <p>100% | 0%</p>
-                        </div>
                         
-                        <div class="head-2-head__player head-2-head__player--two">
-                            <div class="head-2-head__player--characters">
-                                <img class="head-2-head__player--characters-main" src="./public/images/fighters/young-link-00-full.png">
-                                <img class="head-2-head__player--characters-secondary" src="./public/images/fighters/zelda-00-full.png">
-                            </div>
+                        <img class="head-2-head__stats--logo" src="public/images/Y-Town-Smash-Logo-v4.png">
+                        
+                        <div class="head-2-head__stats--details">
+                            <p>Lifetime Sets:</p>
+                            <div><p>50% (3)</p><p>50% (3)</p></div>
+                        </div>
+                        <div class="head-2-head__stats--details">
+                            <p>Lifetime Games:</p>
+                            <div><p>50% (7)</p><p>50% (7)</p></div>
+                        </div>
+                        <div class="head-2-head__stats--details">
+                            <p>Seasonal Sets:</p>
+                            <div><p>100% (1)</p><p>0% (0)</p></div>
+                        </div>
+                        <div class="head-2-head__stats--details">
+                            <p>Seasonal Games:</p>
+                            <div><p>100% (2)</p><p>0% (0)</p></div>
+                        </div>
+                    </div>
+                        
+                    <div class="head-2-head__player head-2-head__player--two">
+
+                        <div class="head-2-head__player--characters">
+                            <img src="./public/images/fighters/young-link-00-full.png">
+                        </div>
+                    
+                        <div class="head-2-head__player--details">
                             <span class="head-2-head__player--name">
                                 <span class="head-2-head__player--tag">YTS</span>Stag
                             </span>
-                            <p class="head-2-head__player--rank">Lifetime PR - #8 (4442)</p>
-                            <p class="head-2-head__player--rank">Seasonal PR - #8 (4310)</p>
+                            <div class="head-2-head__player--rank">
+                                <p class="head-2-head__player--pr">8</p>
+                                <p class="head-2-head__player--points">
+                                    Seasonal: 4310 pts<br>
+                                    Lifetime: 4442 pts
+                                </p>
+                            </div>
                         </div>
 
-                </article>
+                    </div>
 
+                </article>
             </section>
+
         </main>
     </body>
     

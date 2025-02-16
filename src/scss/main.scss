@@ -1,19 +1,22 @@
 // Use, Imports, and Fonts.
 @use "sass:color";
+
 @font-face {
     font-family: 'Lemonmilk';
     src: url('../fonts/LEMONMILK-Regular.otf');
 }
 
 // Variables.
-
 $nautical-navy: #0e243c;
+$nautical-navy-dark: color.adjust($nautical-navy, $lightness: -3%);
+$nautical-navy-light: color.adjust($nautical-navy, $lightness: 3%);
 $baby-blue: #2a8be9;
 $mariner-maroon: #a70800;
 $really-red: #f22619;
 $piss-jugs: #ddf22f;
 
 $small-border-radius: .25em;
+$medium-border-radius: 1em;
 
 * {
     box-sizing: border-box;
@@ -21,83 +24,122 @@ $small-border-radius: .25em;
     margin: 0;
 }
 
-body {
-    width: 100vw;
+main {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
     background: radial-gradient(
         circle at 50% 50%,
-        color.adjust($nautical-navy, $lightness: 2%),
+        $nautical-navy-light,
         $nautical-navy
     );
     color: #ffffff;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: space-between;
     font-family: 'Lato';
     
     section {
-
-        border-radius: 1em;
-        width: 80vw;
+        width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: space-evenly;
-        margin: 2em;
-        padding: 2em;
-        gap: 1em;
+        padding: 1em;
 
         &.player-selection {
-
-            display: flex;
             flex-direction: row;
             justify-content: center;
-            align-items: center;
+            gap: 1em;
 
             label {
+                position: relative;
 
-                // Before pseudoelement for 'P1' and 'P2'...
-
-                select {
-                    width: 12em;
+                &:first-child {
+                    margin: 0 2em 0 0;
                 }
 
+                &:nth-child(1)::before {
+                    content: 'P1';
+                }
+
+                &:nth-child(2)::before {
+                    content: 'P2';
+                }
+
+                &::before {
+                    display: block;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    height: 100%;
+                    width: 2em;
+                    margin: 0 0 0 -2em;
+                    border-radius: $small-border-radius 0 0 $small-border-radius;
+                    background-color: $nautical-navy-dark;
+                    text-align: center;
+                    line-height: 30px;
+                }
+
+                select {
+                    border-radius: 0 $small-border-radius $small-border-radius 0;
+                }
             }
 
             select,
             button {
-
                 border: none;
                 border-radius: $small-border-radius;
+                width: 12em;
                 height: 2.25em;
                 padding: .4em;
-
-            }
-
-            button {
-                width: 8em;
-            }
-            
+            } 
         }
-
     }
 
     .head-2-head{
-
         display: flex;
         justify-content: space-evenly;
-        align-items: center;
+        align-items: end;
         width: 100%;
         font-size: 1em;
         text-align: center;
-        gap: 1em;
 
+        
         &__player {
-            display: flex;
-            flex-direction: column;
-            width: 35%;
+            width: 40%;
+            position: relative;
+
+            &--characters {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+
+                img {
+                    width: 100%;
+                    height: auto;
+                }
+            }
+
+            &--details {
+                position: absolute;
+                bottom: 2em;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: $nautical-navy-dark;
+                padding: 1.5em;
+                background: rgba($nautical-navy, 0.12);
+                border-radius: $medium-border-radius;
+                box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+                backdrop-filter: blur(5px);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                text-transform: uppercase;
+                min-width: 18em;
+            }
 
             &--name {
                 font-family: 'Lemonmilk', sans-serif;
-                font-size: 2em;
+                font-size: 2.5em;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -108,23 +150,52 @@ body {
                 color: $piss-jugs;
                 padding: 0 1em 0 0;
             }
-    
-            &--characters {
 
-                height: 30em;
+            &--rank {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 1em;
+            }
+
+            &--pr {
+                font-size: 2.5em;
+                font-family: 'Lemonmilk', sans-serif;
+
+                &::before {
+                    content: '#';
+                    display: inline;
+                }
+            }
+
+            &--points {
+                text-align: left;
+            }
+        }
+
+        &__stats {
+            width: 20%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-evenly;
+
+            &--logo {
+                width: 80%;
+            }
+
+            &--details {
                 display: flex;
                 flex-direction: column;
-                justify-content: end;
-    
-                &-main,
-                &-secondary {
-                    max-width: 100%;
+                justify-content: center;
+                gap: 0.5em;
+                padding: 1.5em 0;
+
+                div {
+                    display: flex;
+                    justify-content: space-between;
+                    gap: 1em;
                 }
-    
-                &-secondary {
-                    display: none;
-                }
-    
             }
         }
     }
