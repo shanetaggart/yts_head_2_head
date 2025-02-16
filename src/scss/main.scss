@@ -1,9 +1,11 @@
+// Use, Imports, and Fonts.
+@use "sass:color";
 @font-face {
     font-family: 'Lemonmilk';
     src: url('../fonts/LEMONMILK-Regular.otf');
 }
 
-// YTS Colors
+// Variables.
 
 $nautical-navy: #0e243c;
 $baby-blue: #2a8be9;
@@ -11,32 +13,74 @@ $mariner-maroon: #a70800;
 $really-red: #f22619;
 $piss-jugs: #ddf22f;
 
+$small-border-radius: .25em;
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
 body {
     width: 100vw;
-    background: $nautical-navy;
+    background: radial-gradient(
+        circle at 50% 50%,
+        color.adjust($nautical-navy, $lightness: 2%),
+        $nautical-navy
+    );
     color: #ffffff;
     display: flex;
     justify-content: center;
     font-family: 'Lato';
+    
+    section {
 
-    main {
+        border-radius: 1em;
+        width: 80vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        margin: 2em;
+        padding: 2em;
+        gap: 1em;
 
-        section {
+        &.player-selection {
 
-            background: darken($nautical-navy, 3);
-            border-radius: 1em;
-            width: 80vw;
             display: flex;
+            flex-direction: row;
+            justify-content: center;
             align-items: center;
-            justify-content: space-evenly;
-            flex-direction: column;
-            margin: 2em;
-            padding: 2em;
 
+            label {
+
+                // Before pseudoelement for 'P1' and 'P2'...
+
+                select {
+                    width: 12em;
+                }
+
+            }
+
+            select,
+            button {
+
+                border: none;
+                border-radius: $small-border-radius;
+                height: 2.25em;
+                padding: .4em;
+
+            }
+
+            button {
+                width: 8em;
+            }
+            
         }
+
     }
 
-    .player-stats{
+    .head-2-head{
 
         display: flex;
         justify-content: space-evenly;
@@ -46,22 +90,42 @@ body {
         text-align: center;
         gap: 1em;
 
-        &__player_name {
-            font-family: 'Lemonmilk', sans-serif;
-            font-size: 2em;
+        &__player {
             display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+            flex-direction: column;
+            width: 35%;
 
-        &__player-tag {
-            font-size: 1rem;
-            color: $piss-jugs;
-            padding: 0 1em 0 0;
-        }
+            &--name {
+                font-family: 'Lemonmilk', sans-serif;
+                font-size: 2em;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+    
+            &--tag {
+                font-size: 1rem;
+                color: $piss-jugs;
+                padding: 0 1em 0 0;
+            }
+    
+            &--characters {
 
-        &__player_main {
-            max-width: 80%;
+                height: 30em;
+                display: flex;
+                flex-direction: column;
+                justify-content: end;
+    
+                &-main,
+                &-secondary {
+                    max-width: 100%;
+                }
+    
+                &-secondary {
+                    display: none;
+                }
+    
+            }
         }
     }
 }

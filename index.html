@@ -8,65 +8,67 @@
     </head>
     <body>
         <main>
-            <section>
-                <label for="player_one">Player One: 
+            <section class="player-selection">
+                <label for="player_one">
                     <select id="player_one" name="player_one"></select>
                 </label>
-                <label for="player_two">Player One: 
+                <p>VS</p>
+                <label for="player_two">
                     <select id="player_two" name="player_two"></select>
                 </label>
+                <button id="player-selection__submit">Submit</button>
             </section>
-            <section id="data">Loading...</section>
-            <section id="test">
-                <article class="player-stats">
-                    <p>
-                        <span class="player-stats__player_name"><span class="player-stats__player-tag">YTS</span>Jonch</span>
+            <section id="data">
+            
+                <p id="progress-log"></p>
+            
+                <article class="head-2-head">
+            
+                    <div class="head-2-head__player head-2-head__player--one">
+                        <div class="head-2-head__player--characters">
+                            <img class="head-2-head__player--characters-main" src="./public/images/fighters/snake-00-full.png">
+                            <img class="head-2-head__player--characters-secondary" src="">
+                        </div>
+                        <span class="head-2-head__player--name">
+                            <span class="head-2-head__player--tag">YTS</span>Jonch
+                        </span>
+                        <p class="head-2-head__player--rank">Lifetime PR - #4 (5127)</p>
+                        <p class="head-2-head__player--rank">Seasonal PR - #4 (5149)</p>
+                    </div>
+            
+                    <div class="head-2-head__stats">
+                        <img src="public/images/Y-Town-Smash-Logo-v4-Email.png">
+                        <p>Lifetime Sets:</p>
+                        <p>3 -- 3</p>
+                        <p>50% | 50%</p>
                         <br>
-                        Snake / undefined
+                        <p>Lifetime Games:</p>
+                        <p>7 -- 7</p>
+                        <p>50% | 50%</p>
                         <br>
-                        Lifetime PR - #4 (5127)
+                        <p>Seasonal Sets:</p>
+                        <p>1 -- 0</p>
+                        <p>100% | 0%</p>
                         <br>
-                        Seasonal PR - #4 (5149)
-                        </p>
-                        <p>
-                            Lifetime Sets:
-                            <br>
-                            3 -- 3
-                            <br>
-                            50% | 50%
-                            <br>
-                            <br>
-                            Lifetime Games:
-                            <br>
-                            7 -- 7
-                            <br>
-                            50% | 50%
-                            <br>
-                        <br>
-                        <br>
-                        Seasonal Sets:
-                        <br>
-                        1 -- 0
-                        <br>
-                        100% | 0%
-                        <br>
-                        <br>
-                        Seasonal Games:
-                        <br>
-                        2 -- 0
-                        <br>
-                        100% | 0%
-                    </p>
-                    <p>
-                        <span class="player-stats__player_name"><span class="player-stats__player-tag">YTS</span>Stag</span>
-                        <br>
-                        Young Link / Zelda
-                        <br>
-                        Lifetime PR - #8 (4442)
-                        <br>
-                        Seasonal PR - #8 (4310)
-                    </p>
+                        <p>Seasonal Games:</p>
+                        <p>2 -- 0</p>
+                        <p>100% | 0%</p>
+                        </div>
+                        
+                        <div class="head-2-head__player head-2-head__player--two">
+                            <div class="head-2-head__player--characters">
+                                <img class="head-2-head__player--characters-main" src="./public/images/fighters/young-link-00-full.png">
+                                <img class="head-2-head__player--characters-secondary" src="./public/images/fighters/zelda-00-full.png">
+                            </div>
+                            <span class="head-2-head__player--name">
+                                <span class="head-2-head__player--tag">YTS</span>Stag
+                            </span>
+                            <p class="head-2-head__player--rank">Lifetime PR - #8 (4442)</p>
+                            <p class="head-2-head__player--rank">Seasonal PR - #8 (4310)</p>
+                        </div>
+
                 </article>
+
             </section>
         </main>
     </body>
