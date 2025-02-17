@@ -409,64 +409,99 @@ async function get_data() {
                 player_two_main = player_two_main.replace(' ', '-').toLowerCase();
                 player_two_secondary = player_two_secondary.replace(' ', '-').toLowerCase();
 
-                // Building output of player stats.
-                data_output.innerHTML = 
-                `
-                <article class="player-stats">
-                    <p>
-                        <img class="player-stats__player_main" src="./public/images/fighters/${player_one_main}">
-                        <span class="player-stats__player_name"><span class="player-stats__player-tag">${player_one_tag}</span>${player_one_name}</span>
-                        <br>
-                        Lifetime PR - #${player_one_lifetime_rank} (${player_one_lifetime_points})
-                        <br>
-                        Seasonal PR - #${player_one_seasonal_rank} (${player_one_seasonal_points})
-                    </p>
-                    <p>
-                        Lifetime Sets:
-                        <br>
-                        ${player_one_lts}
-                        <br>
-                        ${Math.round(player_one_lifetime_set_ratio)}% | ${Math.round(100 - player_one_lifetime_set_ratio)}%
-                        <br>
-                        <br>
-                        Lifetime Games:
-                        <br>
-                        ${player_one_ltg}
-                        <br>
-                        ${Math.round(player_one_lifetime_game_ratio)}% | ${Math.round(100 - player_one_lifetime_game_ratio)}%
-                        <br>
-                        <br>
-                        <br>
-                        Seasonal Sets:
-                        <br>
-                        ${player_one_stds}
-                        <br>
-                        ${Math.round(player_one_seasonal_set_ratio)}% | ${Math.round(100 - player_one_seasonal_set_ratio)}%
-                        <br>
-                        <br>
-                        Seasonal Games:
-                        <br>
-                        ${player_one_stdg}
-                        <br>
-                        ${Math.round(player_one_seasonal_game_ratio)}% | ${Math.round(100 - player_one_seasonal_game_ratio)}%
-                    </p>
-                    <p>
-                        <img class="player-stats__player_main" src="./public/images/fighters/${player_two_main}">
-                        <span class="player-stats__player_name"><span class="player-stats__player-tag">${player_two_tag}</span>${player_two_name}</span>
-                        <br>
-                        Lifetime PR - #${player_two_lifetime_rank} (${player_two_lifetime_points})
-                        <br>
-                        Seasonal PR - #${player_two_seasonal_rank} (${player_two_seasonal_points})
-                    </p>
-                </article>
-                `;
+                // Storing relevant elements to assign data to.
+                const player_one_character_element = document.getElementById('player_one_character');
+                const player_two_character_element = document.getElementById('player_two_character');
+
+                const player_one_name_element = document.getElementById('player_one_name');
+                const player_two_name_element = document.getElementById('player_two_name');
+
+                const player_one_tag_element = document.getElementById('player_one_tag');
+                const player_two_tag_element = document.getElementById('player_two_tag');
+
+                const player_one_pr_element = document.getElementById('player_one_pr');
+                const player_two_pr_element = document.getElementById('player_two_pr');
+
+                const player_one_points_element = document.getElementById('player_one_points');
+                const player_two_points_element = document.getElementById('player_two_points');
+
+                const player_one_lifetime_sets_element = document.getElementById('player_one_lifetime_sets');
+                const player_two_lifetime_sets_element = document.getElementById('player_two_lifetime_sets');
+
+                const player_one_lifetime_games_element = document.getElementById('player_one_lifetime_games');
+                const player_two_lifetime_games_element = document.getElementById('player_two_lifetime_games');
+
+                const player_one_seasonal_sets_element = document.getElementById('player_one_seasonal_sets');
+                const player_two_seasonal_sets_element = document.getElementById('player_two_seasonal_sets');
+
+                const player_one_seasonal_games_element = document.getElementById('player_one_seasonal_games');
+                const player_two_seasonal_games_element = document.getElementById('player_two_seasonal_games');
+
+                console.log(`testing: ${player_one_lts}`);
+
+                // Adding player stats to elements for view.
+                player_one_character_element.src = player_one_main;
+                player_two_character_element.src = player_two_main;
+
+                player_one_tag_element.innerHTML = `<span id="player_one_tag" class="head-2-head__player--tag">${player_one_tag}</span>`;
+                player_two_tag_element.innerHTML = `<span id="player_two_tag" class="head-2-head__player--tag">${player_two_tag}</span>`;
+
+                player_one_name_element.innerHTML == `<span id="player_one_name" class="head-2-head__player--name">${player_one_name}</span>`;
+                player_two_name_element.innerHTML == `<span id="player_two_name" class="head-2-head__player--name">${player_two_name}</span>`;
+
+                player_one_pr_element.innerHTML = `<p id="player_one_pr" class="head-2-head__player--pr">${player_one_seasonal_rank}</p>`;
+                player_two_pr_element.innerHTML = `<p id="player_two_pr" class="head-2-head__player--pr">${player_two_seasonal_rank}</p>`;
+                
+                player_one_points_element.innerHTML = `<p id="player_one_points" class="head-2-head__player--points">Seasonal: ${player_one_seasonal_points} pts<br>Lifetime: ${player_one_lifetime_points} pts</p>`;
+                player_two_points_element.innerHTML = `<p id="player_two_points" class="head-2-head__player--points">Seasonal: ${player_two_seasonal_points} pts<br>Lifetime: ${player_two_lifetime_points} pts</p>`;
+
+                player_one_lifetime_sets_element.innerHTML = `<p id="player_one_lifetime_sets" class="detail-player-one-stat">${player_one_lifetime_set_ratio}%</p>`;
+                player_two_lifetime_sets_element.innerHTML = `<p id="player_two_lifetime_sets" class="detail-player-two-stat">${player_two_lifetime_set_ratio}</p>`;
+
+                // player_one_lifetime_games_element.innerHTML = `<p id="player_one_lifetime_games" class="detail-player-one-stat">${}</p>`;
+                // player_two_lifetime_games_element.innerHTML = `<p id="player_two_lifetime_games" class="detail-player-two-stat">${}</p>`;
+
+                // player_one_seasonal_sets_element.innerHTML = `<p id="player_one_seasonal_sets" class="detail-player-one-stat">${}</p>`;
+                // player_two_seasonal_sets_element.innerHTML = `<p id="player_two_seasonal_sets" class="detail-player-two-stat">${}</p>`;
+
+                // player_one_seasonal_games_element.innerHTML = `<p id="player_one_seasonal_games" class="detail-player-one-stat">${}</p>`;
+                // player_two_seasonal_games_element.innerHTML = `<p id="player_two_seasonal_games" class="detail-player-two-stat">${}</p>`;
+
+
+
+                //     Lifetime Sets:
+                //     ${player_one_lts}
+                //     <br>
+                //     ${Math.round(player_one_lifetime_set_ratio)}% | ${Math.round(100 - player_one_lifetime_set_ratio)}%
+                //     <br>
+                //     <br>
+                //     Lifetime Games:
+                //     <br>
+                //     ${player_one_ltg}
+                //     <br>
+                //     ${Math.round(player_one_lifetime_game_ratio)}% | ${Math.round(100 - player_one_lifetime_game_ratio)}%
+                //     <br>
+                //     <br>
+                //     <br>
+                //     Seasonal Sets:
+                //     <br>
+                //     ${player_one_stds}
+                //     <br>
+                //     ${Math.round(player_one_seasonal_set_ratio)}% | ${Math.round(100 - player_one_seasonal_set_ratio)}%
+                //     <br>
+                //     <br>
+                //     Seasonal Games:
+                //     <br>
+                //     ${player_one_stdg}
+                //     <br>
+                //     ${Math.round(player_one_seasonal_game_ratio)}% | ${Math.round(100 - player_one_seasonal_game_ratio)}%
+                // </p>
 
             };
 
         });
 
         writeLog('Ready! Awaiting player selection.');
-        progress_log.style.display = 'none';
 
         console.group('Head 2 Head');
         console.log(head_2_head);
@@ -499,9 +534,9 @@ function cleanPlayerName(player_name) {
 
 function writeLog(message) {
 
-    progress_log.innerHTML = message;
+    // progress_log.innerHTML = message;
 
-    // console.log(message);
+    console.log(message);
 
 };
 

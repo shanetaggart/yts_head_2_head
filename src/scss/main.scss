@@ -14,9 +14,12 @@ $baby-blue: #2a8be9;
 $mariner-maroon: #a70800;
 $really-red: #f22619;
 $piss-jugs: #ddf22f;
+$gamer-green: #04E05F;
 
 $small-border-radius: .25em;
 $medium-border-radius: 1em;
+$small-alpha-for-blur: 0.12;
+$medium-alpha-for-blur: 0.20;
 
 * {
     box-sizing: border-box;
@@ -128,13 +131,19 @@ main {
                 transform: translateX(-50%);
                 background-color: $nautical-navy-dark;
                 padding: 1.5em;
-                background: rgba($nautical-navy, 0.12);
+                background: rgba($nautical-navy, $small-alpha-for-blur);
                 border-radius: $medium-border-radius;
                 box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
                 backdrop-filter: blur(5px);
                 border: 1px solid rgba(255, 255, 255, 0.3);
                 text-transform: uppercase;
                 min-width: 18em;
+
+                .player_name_wrapper {
+                    display: flex;
+                    align-items: center;
+                    justify-self: center;
+                }
             }
 
             &--name {
@@ -175,10 +184,13 @@ main {
 
         &__stats {
             width: 20%;
+            height: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: space-evenly;
+            align-self: center;
+            font-size: 1.25em;
 
             &--logo {
                 width: 80%;
@@ -189,12 +201,40 @@ main {
                 flex-direction: column;
                 justify-content: center;
                 gap: 0.5em;
-                padding: 1.5em 0;
+                width: 100%;
 
                 div {
                     display: flex;
                     justify-content: space-between;
                     gap: 1em;
+                }
+
+                .detail-title {
+                    align-self: center;
+                }
+
+                .detail-player-one-stat,
+                .detail-player-two-stat {
+                    width: 5em;
+                    height: 4em;
+                    border-radius: $medium-border-radius;
+                    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+                    backdrop-filter: blur(5px);
+                    border: 1px solid rgba(255, 255, 255, 0.3);
+                    line-height: 4em;
+                    font-size: 1.25em;
+                }
+
+                .stat-tie {
+                    background: rgba($piss-jugs, $medium-alpha-for-blur);
+                }
+
+                .stat-win {
+                    background: rgba($gamer-green, $medium-alpha-for-blur);
+                }
+
+                .stat-lose {
+                    background: rgba($really-red, $medium-alpha-for-blur);
                 }
             }
         }
