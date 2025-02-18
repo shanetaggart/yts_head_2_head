@@ -20,6 +20,7 @@ $small-border-radius: .25em;
 $medium-border-radius: 1em;
 $small-alpha-for-blur: 0.12;
 $medium-alpha-for-blur: 0.20;
+$large-alpha-for-blur: 0.40;
 
 * {
     box-sizing: border-box;
@@ -119,19 +120,20 @@ main {
                 justify-content: center;
 
                 img {
-                    width: 100%;
+                    max-width: 100%;
                     height: auto;
                 }
             }
 
             &--details {
+                display: none;
                 position: absolute;
                 bottom: 2em;
                 left: 50%;
                 transform: translateX(-50%);
                 background-color: $nautical-navy-dark;
                 padding: 1.5em;
-                background: rgba($nautical-navy, $small-alpha-for-blur);
+                background: rgba($nautical-navy, $large-alpha-for-blur);
                 border-radius: $medium-border-radius;
                 box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
                 backdrop-filter: blur(5px);
@@ -170,15 +172,12 @@ main {
             &--pr {
                 font-size: 2.5em;
                 font-family: 'Lemonmilk', sans-serif;
-
-                &::before {
-                    content: '#';
-                    display: inline;
-                }
             }
 
             &--points {
                 text-align: left;
+                display: flex;
+                flex-direction: column;
             }
         }
 
@@ -194,6 +193,7 @@ main {
 
             &--logo {
                 width: 80%;
+                display: none;
             }
 
             &--details {
@@ -211,30 +211,15 @@ main {
 
                 .detail-title {
                     align-self: center;
+                    font-size: 1rem;
                 }
 
                 .detail-player-one-stat,
                 .detail-player-two-stat {
                     width: 5em;
                     height: 4em;
-                    border-radius: $medium-border-radius;
-                    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-                    backdrop-filter: blur(5px);
-                    border: 1px solid rgba(255, 255, 255, 0.3);
                     line-height: 4em;
                     font-size: 1.25em;
-                }
-
-                .stat-tie {
-                    background: rgba($piss-jugs, $medium-alpha-for-blur);
-                }
-
-                .stat-win {
-                    background: rgba($gamer-green, $medium-alpha-for-blur);
-                }
-
-                .stat-lose {
-                    background: rgba($really-red, $medium-alpha-for-blur);
                 }
             }
         }

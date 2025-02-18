@@ -13,9 +13,15 @@ const player_one_select = document.getElementById('player_one');
 const player_two_select = document.getElementById('player_two');
 const data_output = document.getElementById('data');
 const progress_log = document.getElementById('progress-log');
+
+// Constants (other)
 const tag_separator = ' | ';
 const player_one_default = 'Player One';
 const player_two_default = 'Player Two';
+const character_delimiter = ' - ';
+const character_prefix = './public/images/fighters/';
+const character_suffix = '-00-full.png';
+const score_delimiter = ' -- ';
 
 async function get_data() {
 
@@ -61,7 +67,7 @@ async function get_data() {
             let current_player_tag = '';
 
             if (current_player.includes(tag_separator)) {
-                
+
                 let current_player_data = current_player.split(tag_separator);
 
                 current_player = current_player_data[1];
@@ -364,138 +370,172 @@ async function get_data() {
                 let player_one_tag = head_2_head[player_one_name].Tag;
                 let player_two_tag = head_2_head[player_two_name].Tag;
 
-                // Player One Power Rankings.
-                let player_one_lifetime_rank = head_2_head[player_one_name].PowerRanking.Lifetime.Rank;
-                let player_one_lifetime_points = head_2_head[player_one_name].PowerRanking.Lifetime.Points;
-                let player_one_seasonal_rank = head_2_head[player_one_name].PowerRanking.Seasonal.Rank;
-                let player_one_seasonal_points = head_2_head[player_one_name].PowerRanking.Seasonal.Points;
-                
                 // Player One Characters.
-                let player_one_characters = head_2_head[player_one_name].Characters.split(' - ');
-                let player_one_main = player_one_characters[0] + '-00-full.png';
-                let player_one_secondary = player_one_characters[1] + '-00-full.png';
+                let player_one_characters = head_2_head[player_one_name].Characters.split(character_delimiter);
+                let player_one_main = character_prefix + player_one_characters[0] + character_suffix;
+                let player_one_secondary = character_prefix + player_one_characters[1] + character_suffix;
+
+                // Player Two Characters
+                let player_two_characters = head_2_head[player_two_name].Characters.split(character_delimiter);
+                let player_two_main = character_prefix + player_two_characters[0] + character_suffix;
+                let player_two_secondary = character_prefix + player_two_characters[1] + character_suffix;
+
+                // Player One Power Rankings.
+                let player_one_seasonal_rank = head_2_head[player_one_name].PowerRanking.Seasonal.Rank;
+
+                let player_one_lifetime_points = head_2_head[player_one_name].PowerRanking.Lifetime.Points;
+                let player_one_seasonal_points = head_2_head[player_one_name].PowerRanking.Seasonal.Points;
+
+                // Player Two Power Rankings.
+                let player_two_seasonal_rank = head_2_head[player_two_name].PowerRanking.Seasonal.Rank;
+
+                let player_two_lifetime_points = head_2_head[player_two_name].PowerRanking.Lifetime.Points;
+                let player_two_seasonal_points = head_2_head[player_two_name].PowerRanking.Seasonal.Points;
 
                 // Player One Set/Game Data.
-                let player_one_lts = head_2_head[player_one_name].SetData.Lifetime[player_two_name];
-                let player_one_stds = head_2_head[player_one_name].SetData.Seasonal[player_two_name];
-                let player_one_ltg = head_2_head[player_one_name].GameData.Lifetime[player_two_name];
-                let player_one_stdg = head_2_head[player_one_name].GameData.Seasonal[player_two_name];
-
-                // Set/Game Ratios.
-                let p1_lts_array = player_one_lts.split(' -- ');
-                let p1_ltg_array = player_one_ltg.split(' -- ');
-                let p1_stds_array = player_one_stds.split(' -- ');
-                let p1_stdg_array = player_one_stdg.split(' -- ');
-
-                let player_one_lifetime_set_ratio = parseInt(p1_lts_array[0]) /(parseInt(p1_lts_array[0]) + parseInt(p1_lts_array[1])) * 100;
-                let player_one_lifetime_game_ratio = parseInt(p1_ltg_array[0]) /(parseInt(p1_ltg_array[0]) + parseInt(p1_ltg_array[1])) * 100;
-                let player_one_seasonal_set_ratio = parseInt(p1_stds_array[0]) /(parseInt(p1_stds_array[0]) + parseInt(p1_stds_array[1])) * 100;
-                let player_one_seasonal_game_ratio = parseInt(p1_stdg_array[0]) /(parseInt(p1_stdg_array[0]) + parseInt(p1_stdg_array[1])) * 100;
+                let player_one_seasonal_sets = head_2_head[player_one_name].SetData.Seasonal[player_two_name];
+                let player_one_seasonal_games = head_2_head[player_one_name].GameData.Seasonal[player_two_name];
                 
-                // Player Two Power Rankings.
-                let player_two_lifetime_rank = head_2_head[player_two_name].PowerRanking.Lifetime.Rank;
-                let player_two_lifetime_points = head_2_head[player_two_name].PowerRanking.Lifetime.Points;
-                let player_two_seasonal_rank = head_2_head[player_two_name].PowerRanking.Seasonal.Rank;
-                let player_two_seasonal_points = head_2_head[player_two_name].PowerRanking.Seasonal.Points;
-                
-                // Player Two Characters
-                let player_two_characters = head_2_head[player_two_name].Characters.split(' - ');
-                let player_two_main = player_two_characters[0] + '-00-full.png';
-                let player_two_secondary = player_two_characters[1] + '-00-full.png';
+                let player_one_lifetime_sets = head_2_head[player_one_name].SetData.Lifetime[player_two_name];
+                let player_one_lifetime_games = head_2_head[player_one_name].GameData.Lifetime[player_two_name];
 
-                // Sanitize the image names.
-                player_one_main = player_one_main.replace(' ', '-').toLocaleLowerCase();
-                player_one_secondary = player_one_secondary.replace(' ', '-').toLocaleLowerCase();
-                player_two_main = player_two_main.replace(' ', '-').toLowerCase();
-                player_two_secondary = player_two_secondary.replace(' ', '-').toLowerCase();
+                if (
+                    player_one_seasonal_sets != undefined &&
+                    player_one_seasonal_sets != '0 -- 0'
+                ) {
 
-                // Storing relevant elements to assign data to.
-                const player_one_character_element = document.getElementById('player_one_character');
-                const player_two_character_element = document.getElementById('player_two_character');
+                    // Cleaning of Set/Game ratios/scores.
+                    let player_one_seasonal_sets_array = player_one_seasonal_sets.split(score_delimiter);
+                    let player_one_seasonal_games_array = player_one_seasonal_games.split(score_delimiter);
 
-                const player_one_name_element = document.getElementById('player_one_name');
-                const player_two_name_element = document.getElementById('player_two_name');
+                    let player_one_lifetime_sets_array = player_one_lifetime_sets.split(score_delimiter);
+                    let player_one_lifetime_games_array = player_one_lifetime_games.split(score_delimiter);
 
-                const player_one_tag_element = document.getElementById('player_one_tag');
-                const player_two_tag_element = document.getElementById('player_two_tag');
+                    let player_one_lifetime_set_count = player_one_lifetime_sets_array[0];
+                    let player_one_lifetime_game_count = player_one_lifetime_games_array[0];
+                    let player_one_seasonal_set_count = player_one_seasonal_sets_array[0];
+                    let player_one_seasonal_game_count = player_one_seasonal_games_array[0];
 
-                const player_one_pr_element = document.getElementById('player_one_pr');
-                const player_two_pr_element = document.getElementById('player_two_pr');
+                    let player_two_lifetime_set_count= player_one_lifetime_sets_array[1];
+                    let player_two_lifetime_game_count= player_one_lifetime_games_array[1];
+                    let player_two_seasonal_set_count= player_one_seasonal_sets_array[1];
+                    let player_two_seasonal_game_count= player_one_seasonal_games_array[1];
 
-                const player_one_points_element = document.getElementById('player_one_points');
-                const player_two_points_element = document.getElementById('player_two_points');
+                    let player_one_seasonal_set_score = parseInt(player_one_seasonal_sets_array[0]);
+                    let player_two_seasonal_set_score = parseInt(player_one_seasonal_sets_array[1]);
 
-                const player_one_lifetime_sets_element = document.getElementById('player_one_lifetime_sets');
-                const player_two_lifetime_sets_element = document.getElementById('player_two_lifetime_sets');
+                    let player_one_seasonal_game_score = parseInt(player_one_seasonal_games_array[0]);
+                    let player_two_seasonal_game_score = parseInt(player_one_seasonal_games_array[1]);
 
-                const player_one_lifetime_games_element = document.getElementById('player_one_lifetime_games');
-                const player_two_lifetime_games_element = document.getElementById('player_two_lifetime_games');
+                    let player_one_seasonal_set_ratio = Math.round(player_one_seasonal_set_score /(player_one_seasonal_set_score + player_two_seasonal_set_score) * 100);
+                    let player_one_seasonal_game_ratio = Math.round(player_one_seasonal_game_score /(player_one_seasonal_game_score + player_two_seasonal_game_score) * 100);
+                    
+                    let player_one_lifetime_set_score = parseInt(player_one_lifetime_sets_array[0]);
+                    let player_two_lifetime_set_score = parseInt(player_one_lifetime_sets_array[1]);
 
-                const player_one_seasonal_sets_element = document.getElementById('player_one_seasonal_sets');
-                const player_two_seasonal_sets_element = document.getElementById('player_two_seasonal_sets');
+                    let player_one_lifetime_game_score = parseInt(player_one_lifetime_games_array[0]);
+                    let player_two_lifetime_game_score = parseInt(player_one_lifetime_games_array[1]);
 
-                const player_one_seasonal_games_element = document.getElementById('player_one_seasonal_games');
-                const player_two_seasonal_games_element = document.getElementById('player_two_seasonal_games');
+                    let player_one_lifetime_set_ratio = Math.round(player_one_lifetime_set_score /(player_one_lifetime_set_score + player_two_lifetime_set_score) * 100);
+                    let player_one_lifetime_game_ratio = Math.round(player_one_lifetime_game_score /(player_one_lifetime_game_score + player_two_lifetime_game_score) * 100);
 
-                console.log(`testing: ${player_one_lts}`);
+                    // Inversion of Set/Game ratios for Player Two.
+                    let player_two_seasonal_set_ratio = 100 - player_one_seasonal_set_ratio;
+                    let player_two_seasonal_game_ratio = 100 - player_one_seasonal_game_ratio;
+                    let player_two_lifetime_set_ratio = 100 - player_one_lifetime_set_ratio;
+                    let player_two_lifetime_game_ratio = 100 - player_one_lifetime_game_ratio;
 
-                // Adding player stats to elements for view.
-                player_one_character_element.src = player_one_main;
-                player_two_character_element.src = player_two_main;
+                    // Sanitize the image names.
+                    player_one_main = player_one_main.replace(' ', '-').toLowerCase();
+                    player_one_secondary = player_one_secondary.replace(' ', '-').toLowerCase();
+                    player_two_main = player_two_main.replace(' ', '-').toLowerCase();
+                    player_two_secondary = player_two_secondary.replace(' ', '-').toLowerCase();
 
-                player_one_tag_element.innerHTML = `<span id="player_one_tag" class="head-2-head__player--tag">${player_one_tag}</span>`;
-                player_two_tag_element.innerHTML = `<span id="player_two_tag" class="head-2-head__player--tag">${player_two_tag}</span>`;
+                    // Storing relevant elements to assign data to.
+                    const player_one_character_element = document.getElementById('player_one_character');
+                    const player_two_character_element = document.getElementById('player_two_character');
 
-                player_one_name_element.innerHTML == `<span id="player_one_name" class="head-2-head__player--name">${player_one_name}</span>`;
-                player_two_name_element.innerHTML == `<span id="player_two_name" class="head-2-head__player--name">${player_two_name}</span>`;
+                    const player_one_name_element = document.getElementById('player_one_name');
+                    const player_two_name_element = document.getElementById('player_two_name');
 
-                player_one_pr_element.innerHTML = `<p id="player_one_pr" class="head-2-head__player--pr">${player_one_seasonal_rank}</p>`;
-                player_two_pr_element.innerHTML = `<p id="player_two_pr" class="head-2-head__player--pr">${player_two_seasonal_rank}</p>`;
-                
-                player_one_points_element.innerHTML = `<p id="player_one_points" class="head-2-head__player--points">Seasonal: ${player_one_seasonal_points} pts<br>Lifetime: ${player_one_lifetime_points} pts</p>`;
-                player_two_points_element.innerHTML = `<p id="player_two_points" class="head-2-head__player--points">Seasonal: ${player_two_seasonal_points} pts<br>Lifetime: ${player_two_lifetime_points} pts</p>`;
+                    const player_one_tag_element = document.getElementById('player_one_tag');
+                    const player_two_tag_element = document.getElementById('player_two_tag');
 
-                player_one_lifetime_sets_element.innerHTML = `<p id="player_one_lifetime_sets" class="detail-player-one-stat">${player_one_lifetime_set_ratio}%</p>`;
-                player_two_lifetime_sets_element.innerHTML = `<p id="player_two_lifetime_sets" class="detail-player-two-stat">${player_two_lifetime_set_ratio}</p>`;
+                    const player_one_pr_element = document.getElementById('player_one_pr');
+                    const player_two_pr_element = document.getElementById('player_two_pr');
 
-                // player_one_lifetime_games_element.innerHTML = `<p id="player_one_lifetime_games" class="detail-player-one-stat">${}</p>`;
-                // player_two_lifetime_games_element.innerHTML = `<p id="player_two_lifetime_games" class="detail-player-two-stat">${}</p>`;
+                    const player_one_points_seasonal_element = document.getElementById('player_one_points_seasonal');
+                    const player_two_points_seasonal_element = document.getElementById('player_two_points_seasonal');
 
-                // player_one_seasonal_sets_element.innerHTML = `<p id="player_one_seasonal_sets" class="detail-player-one-stat">${}</p>`;
-                // player_two_seasonal_sets_element.innerHTML = `<p id="player_two_seasonal_sets" class="detail-player-two-stat">${}</p>`;
+                    const player_one_points_lifetime_element = document.getElementById('player_one_points_lifetime');
+                    const player_two_points_lifetime_element = document.getElementById('player_two_points_lifetime');
 
-                // player_one_seasonal_games_element.innerHTML = `<p id="player_one_seasonal_games" class="detail-player-one-stat">${}</p>`;
-                // player_two_seasonal_games_element.innerHTML = `<p id="player_two_seasonal_games" class="detail-player-two-stat">${}</p>`;
+                    const lifetime_sets_title = document.getElementById('lifetime_sets_title');
+                    const player_one_lifetime_sets_element = document.getElementById('player_one_lifetime_sets');
+                    const player_two_lifetime_sets_element = document.getElementById('player_two_lifetime_sets');
 
+                    const lifetime_games_title = document.getElementById('lifetime_games_title');
+                    const player_one_lifetime_games_element = document.getElementById('player_one_lifetime_games');
+                    const player_two_lifetime_games_element = document.getElementById('player_two_lifetime_games');
+                    
+                    const seasonal_sets_title = document.getElementById('seasonal_sets_title');
+                    const player_one_seasonal_sets_element = document.getElementById('player_one_seasonal_sets');
+                    const player_two_seasonal_sets_element = document.getElementById('player_two_seasonal_sets');
 
+                    const seasonal_games_title = document.getElementById('seasonal_games_title');
+                    const player_one_seasonal_games_element = document.getElementById('player_one_seasonal_games');
+                    const player_two_seasonal_games_element = document.getElementById('player_two_seasonal_games');
 
-                //     Lifetime Sets:
-                //     ${player_one_lts}
-                //     <br>
-                //     ${Math.round(player_one_lifetime_set_ratio)}% | ${Math.round(100 - player_one_lifetime_set_ratio)}%
-                //     <br>
-                //     <br>
-                //     Lifetime Games:
-                //     <br>
-                //     ${player_one_ltg}
-                //     <br>
-                //     ${Math.round(player_one_lifetime_game_ratio)}% | ${Math.round(100 - player_one_lifetime_game_ratio)}%
-                //     <br>
-                //     <br>
-                //     <br>
-                //     Seasonal Sets:
-                //     <br>
-                //     ${player_one_stds}
-                //     <br>
-                //     ${Math.round(player_one_seasonal_set_ratio)}% | ${Math.round(100 - player_one_seasonal_set_ratio)}%
-                //     <br>
-                //     <br>
-                //     Seasonal Games:
-                //     <br>
-                //     ${player_one_stdg}
-                //     <br>
-                //     ${Math.round(player_one_seasonal_game_ratio)}% | ${Math.round(100 - player_one_seasonal_game_ratio)}%
-                // </p>
+                    const main_logo = document.getElementById('main_logo');
+                    const player_one_details = document.getElementById('player_one_details');
+                    const player_two_details = document.getElementById('player_two_details');
+
+                    // Adding player stats to elements for view.
+                    main_logo.style.display = 'block';
+
+                    player_one_character_element.src = player_one_main;
+                    player_two_character_element.src = player_two_main;
+
+                    player_one_details.style.display = 'block';
+                    player_two_details.style.display = 'block';
+
+                    player_one_tag_element.innerText = player_one_tag;
+                    player_two_tag_element.innerText = player_two_tag;
+
+                    player_one_name_element.innerText = player_one_name;
+                    player_two_name_element.innerText = player_two_name;
+
+                    player_one_pr_element.innerText = `#${player_one_seasonal_rank}`;
+                    player_two_pr_element.innerText = `#${player_two_seasonal_rank}`;
+                    
+                    player_one_points_seasonal_element.innerText = `Seasonal: ${player_one_seasonal_points} pts`;
+                    player_one_points_lifetime_element.innerText = `Lifetime: ${player_one_lifetime_points} pts`;
+
+                    player_two_points_seasonal_element.innerText = `Seasonal: ${player_two_seasonal_points} pts`;
+                    player_two_points_lifetime_element.innerText = `Lifetime: ${player_two_lifetime_points} pts`;
+
+                    player_one_seasonal_sets_element.innerText = `${player_one_seasonal_set_ratio}% (${player_one_seasonal_set_count})`;
+                    seasonal_sets_title.innerText = 'Seasonal Sets';
+                    player_two_seasonal_sets_element.innerText = `${player_two_seasonal_set_ratio}% (${player_two_seasonal_set_count})`;
+
+                    player_one_seasonal_games_element.innerText = `${player_one_seasonal_game_ratio}% (${player_one_seasonal_game_count})`;
+                    seasonal_games_title.innerText = 'Seasonal Games';
+                    player_two_seasonal_games_element.innerText = `${player_two_seasonal_game_ratio}% (${player_two_seasonal_game_count})`;
+
+                    player_one_lifetime_sets_element.innerText = `${player_one_lifetime_set_ratio}% (${player_one_lifetime_set_count})`;
+                    lifetime_sets_title.innerText = 'Lifetime Sets';
+                    player_two_lifetime_sets_element.innerText = `${player_two_lifetime_set_ratio}% (${player_two_lifetime_set_count})`;
+                    
+                    player_one_lifetime_games_element.innerText = `${player_one_lifetime_game_ratio}% (${player_one_lifetime_game_count})`;
+                    lifetime_games_title.innerText = 'Lifetime Games';
+                    player_two_lifetime_games_element.innerText = `${player_two_lifetime_game_ratio}% (${player_two_lifetime_game_count})`;
+
+                } else {
+
+                    seasonal_sets_title.innerText = 'These players have not played a set this season!';
+                    console.log('These players have not played a set this season!');
+
+                }
 
             };
 
