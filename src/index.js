@@ -362,6 +362,9 @@ async function get_data() {
 
             if (bothPlayersSelected(player_one_select, player_two_select)) {
 
+                // Scroll down to hide the player selection elements.
+                window.scrollTo(0, document.body.scrollHeight);
+
                 // Retrieve the Player Names from the select elements.
                 let player_one_name = player_one_select.options[player_one_select.selectedIndex].innerText;
                 let player_two_name = player_two_select.options[player_two_select.selectedIndex].innerText;
