@@ -28,9 +28,12 @@ $large-alpha-for-blur: 0.40;
     margin: 0;
 }
 
+::-webkit-scrollbar {
+    display: none;
+}
+
 main {
     width: 100%;
-    height: 100vh;
     overflow: hidden;
     background: radial-gradient(
         circle at 50% 50%,
@@ -42,6 +45,7 @@ main {
     flex-direction: column;
     justify-content: space-between;
     font-family: 'Lato';
+    overflow-y: hidden;
     
     section {
         width: 100%;
@@ -98,6 +102,10 @@ main {
                 height: 2.25em;
                 padding: .4em;
             } 
+        }
+
+        &.data {
+            height: 100vh;
         }
     }
 
@@ -206,7 +214,6 @@ main {
                 div {
                     display: flex;
                     justify-content: space-between;
-                    gap: 1em;
                 }
 
                 .detail-title {
@@ -219,7 +226,6 @@ main {
                     width: 5em;
                     height: 4em;
                     line-height: 4em;
-                    font-size: 1.25em;
                 }
             }
         }
