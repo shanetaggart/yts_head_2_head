@@ -22,6 +22,7 @@ const character_delimiter = ' - ';
 const character_prefix = './public/images/fighters/';
 const character_suffix = '-00-full.png';
 const score_delimiter = ' -- ';
+const debug_mode = true;
 
 async function get_data() {
 
@@ -358,7 +359,7 @@ async function get_data() {
         writeLog('Finishing up...');
 
         // Wait for the user to click Submit.
-        player_selection_submit.addEventListener("click", function() {
+        player_selection_submit.addEventListener('click', function() {
 
             if (bothPlayersSelected(player_one_select, player_two_select)) {
 
@@ -476,19 +477,20 @@ async function get_data() {
                     const player_one_points_lifetime_element = document.getElementById('player_one_points_lifetime');
                     const player_two_points_lifetime_element = document.getElementById('player_two_points_lifetime');
 
-                    const lifetime_sets_title = document.getElementById('lifetime_sets_title');
+                    const set_title_elements = document.querySelectorAll('.sets');
+                    const game_title_elements = document.querySelectorAll('.games');
+
+                    const lifetime_title = document.getElementById('lifetime_title');
                     const player_one_lifetime_sets_element = document.getElementById('player_one_lifetime_sets');
                     const player_two_lifetime_sets_element = document.getElementById('player_two_lifetime_sets');
 
-                    const lifetime_games_title = document.getElementById('lifetime_games_title');
                     const player_one_lifetime_games_element = document.getElementById('player_one_lifetime_games');
                     const player_two_lifetime_games_element = document.getElementById('player_two_lifetime_games');
                     
-                    const seasonal_sets_title = document.getElementById('seasonal_sets_title');
+                    const seasonal_title = document.getElementById('seasonal_title');
                     const player_one_seasonal_sets_element = document.getElementById('player_one_seasonal_sets');
                     const player_two_seasonal_sets_element = document.getElementById('player_two_seasonal_sets');
 
-                    const seasonal_games_title = document.getElementById('seasonal_games_title');
                     const player_one_seasonal_games_element = document.getElementById('player_one_seasonal_games');
                     const player_two_seasonal_games_element = document.getElementById('player_two_seasonal_games');
 
@@ -520,20 +522,26 @@ async function get_data() {
                     player_two_points_seasonal_element.innerText = `Seasonal: ${player_two_seasonal_points} pts`;
                     player_two_points_lifetime_element.innerText = `Lifetime: ${player_two_lifetime_points} pts`;
 
+                    set_title_elements.forEach((element) => {
+                        element.innerText = 'Sets';
+                    });
+
+                    game_title_elements.forEach((element) => {
+                        element.innerText = 'Games';
+                    });
+
+                    seasonal_title.innerText = 'Seasonal';
                     player_one_seasonal_sets_element.innerText = `${player_one_seasonal_set_ratio}% (${player_one_seasonal_set_count})`;
-                    seasonal_sets_title.innerText = 'Seasonal Sets';
                     player_two_seasonal_sets_element.innerText = `${player_two_seasonal_set_ratio}% (${player_two_seasonal_set_count})`;
 
                     player_one_seasonal_games_element.innerText = `${player_one_seasonal_game_ratio}% (${player_one_seasonal_game_count})`;
-                    seasonal_games_title.innerText = 'Seasonal Games';
                     player_two_seasonal_games_element.innerText = `${player_two_seasonal_game_ratio}% (${player_two_seasonal_game_count})`;
 
+                    lifetime_title.innerText = 'Lifetime';
                     player_one_lifetime_sets_element.innerText = `${player_one_lifetime_set_ratio}% (${player_one_lifetime_set_count})`;
-                    lifetime_sets_title.innerText = 'Lifetime Sets';
                     player_two_lifetime_sets_element.innerText = `${player_two_lifetime_set_ratio}% (${player_two_lifetime_set_count})`;
                     
                     player_one_lifetime_games_element.innerText = `${player_one_lifetime_game_ratio}% (${player_one_lifetime_game_count})`;
-                    lifetime_games_title.innerText = 'Lifetime Games';
                     player_two_lifetime_games_element.innerText = `${player_two_lifetime_game_ratio}% (${player_two_lifetime_game_count})`;
 
                 } else {
@@ -552,6 +560,15 @@ async function get_data() {
         console.group('Head 2 Head');
         console.log(head_2_head);
         console.groupEnd();
+
+        // Debug mode to automatically select two players and trigger the click event.
+        if (debug_mode) {
+            player_one_select.options.selectedIndex = 1;
+            player_two_select.options.selectedIndex = 2;
+
+            let click_event = new Event('click');
+            player_selection_submit.dispatchEvent(click_event);
+        }
 
     // Pulling data failed.
     } catch (error) {
