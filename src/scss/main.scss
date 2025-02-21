@@ -297,7 +297,9 @@ $large-alpha-for-blur: 0.40;
                 position: absolute;
                 top: 5%;
                 font-size: 5em;
-                font-family: 'Lemonmilk';
+                font-family: "Lemonmilk bold";
+                color: transparent;
+                -webkit-text-stroke: 1px white;
                 opacity: 0.3;
             }
 
@@ -311,20 +313,20 @@ $large-alpha-for-blur: 0.40;
 
             .name {
                 position: absolute;
-                bottom: 10%;
+                bottom: -5%;
                 font-size: 4em;
             }
 
             .p1_name {
                 left: 0%;
-                text-align: left;
                 rotate: -90deg;
+                transform-origin: top left;
             }
 
             .p2_name {
                 right: 0%;
                 rotate: 90deg;
-                text-align: right;
+                transform-origin: top right;
             }
 
             .character {
