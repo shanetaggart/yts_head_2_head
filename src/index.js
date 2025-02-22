@@ -23,7 +23,6 @@ const character_prefix = './public/images/fighters/';
 const character_suffix = '-00-full.png';
 const score_delimiter = ' -- ';
 const debug_mode = true;
-const image_debug = true;
 
 async function get_data() {
 
@@ -343,8 +342,8 @@ async function get_data() {
         writeLog('Head 2 Head JSON compiled, creating list of Players...');
 
         // Insert placeholder option elements.
-        // player_one_select.innerHTML += `<option>${player_one_default}</option>`;
-        // player_two_select.innerHTML += `<option>${player_two_default}</option>`;
+        player_one_select.innerHTML += `<option>${player_one_default}</option>`;
+        player_two_select.innerHTML += `<option>${player_two_default}</option>`;
 
         // Create option elements for each player from the fact sheet.
         for (const player in head_2_head) {
@@ -352,209 +351,194 @@ async function get_data() {
             let current_player = head_2_head[player].PlayerName;
             let current_player_rank = head_2_head[player].Rank;
 
-            // player_one_select.innerHTML += `<option value="${current_player_rank}">${current_player}</option>`;
-            // player_two_select.innerHTML += `<option value="${current_player_rank}">${current_player}</option>`;
+            player_one_select.innerHTML += `<option value="${current_player_rank}">${current_player}</option>`;
+            player_two_select.innerHTML += `<option value="${current_player_rank}">${current_player}</option>`;
                 
         }
 
         writeLog('Finishing up...');
 
         // Wait for the user to click Submit.
-        // player_selection_submit.addEventListener('click', function() {
+        player_selection_submit.addEventListener('click', function() {
 
-        //     if (bothPlayersSelected(player_one_select, player_two_select)) {
+            if (bothPlayersSelected(player_one_select, player_two_select)) {
 
-        //         // Scroll down to hide the player selection elements.
-        //         window.scrollTo({
-        //             top: document.body.scrollHeight, left: 0, behavior: "smooth"
-        //         });
+                // Scroll down to hide the player selection elements.
+                window.scrollTo({
+                    top: document.body.scrollHeight, left: 0, behavior: "smooth"
+                });
 
 
-        //         // Retrieve the Player Names from the select elements.
-        //         let player_one_name = player_one_select.options[player_one_select.selectedIndex].innerText;
-        //         let player_two_name = player_two_select.options[player_two_select.selectedIndex].innerText;
+                // Retrieve the Player Names from the select elements.
+                let player_one_name = player_one_select.options[player_one_select.selectedIndex].innerText;
+                let player_two_name = player_two_select.options[player_two_select.selectedIndex].innerText;
 
-        //         // Player One and Two Tags.
-        //         let player_one_tag = head_2_head[player_one_name].Tag;
-        //         let player_two_tag = head_2_head[player_two_name].Tag;
+                // Player One and Two Tags.
+                let player_one_tag = head_2_head[player_one_name].Tag;
+                let player_two_tag = head_2_head[player_two_name].Tag;
 
-        //         // Player One Characters.
-        //         let player_one_characters = head_2_head[player_one_name].Characters.split(character_delimiter);
-        //         let player_one_main = character_prefix + player_one_characters[0] + character_suffix;
-        //         let player_one_secondary = character_prefix + player_one_characters[1] + character_suffix;
+                // Player One Characters.
+                let player_one_characters = head_2_head[player_one_name].Characters.split(character_delimiter);
+                let player_one_main = character_prefix + player_one_characters[0] + character_suffix;
+                let player_one_secondary = character_prefix + player_one_characters[1] + character_suffix;
 
-        //         // Player Two Characters
-        //         let player_two_characters = head_2_head[player_two_name].Characters.split(character_delimiter);
-        //         let player_two_main = character_prefix + player_two_characters[0] + character_suffix;
-        //         let player_two_secondary = character_prefix + player_two_characters[1] + character_suffix;
+                // Player Two Characters
+                let player_two_characters = head_2_head[player_two_name].Characters.split(character_delimiter);
+                let player_two_main = character_prefix + player_two_characters[0] + character_suffix;
+                let player_two_secondary = character_prefix + player_two_characters[1] + character_suffix;
 
-        //         // Player One Power Rankings.
-        //         let player_one_seasonal_rank = head_2_head[player_one_name].PowerRanking.Seasonal.Rank;
+                // Player One Power Rankings.
+                let player_one_seasonal_rank = head_2_head[player_one_name].PowerRanking.Seasonal.Rank;
+                let player_one_seasonal_points = head_2_head[player_one_name].PowerRanking.Seasonal.Points;
 
-        //         let player_one_lifetime_points = head_2_head[player_one_name].PowerRanking.Lifetime.Points;
-        //         let player_one_seasonal_points = head_2_head[player_one_name].PowerRanking.Seasonal.Points;
+                // Player Two Power Rankings.
+                let player_two_seasonal_rank = head_2_head[player_two_name].PowerRanking.Seasonal.Rank;
+                let player_two_seasonal_points = head_2_head[player_two_name].PowerRanking.Seasonal.Points;
 
-        //         // Player Two Power Rankings.
-        //         let player_two_seasonal_rank = head_2_head[player_two_name].PowerRanking.Seasonal.Rank;
-
-        //         let player_two_lifetime_points = head_2_head[player_two_name].PowerRanking.Lifetime.Points;
-        //         let player_two_seasonal_points = head_2_head[player_two_name].PowerRanking.Seasonal.Points;
-
-        //         // Player One Set/Game Data.
-        //         let player_one_seasonal_sets = head_2_head[player_one_name].SetData.Seasonal[player_two_name];
-        //         let player_one_seasonal_games = head_2_head[player_one_name].GameData.Seasonal[player_two_name];
+                // Player One Set/Game Data.
+                let player_one_seasonal_sets = head_2_head[player_one_name].SetData.Seasonal[player_two_name];
+                let player_one_seasonal_games = head_2_head[player_one_name].GameData.Seasonal[player_two_name];
                 
-        //         let player_one_lifetime_sets = head_2_head[player_one_name].SetData.Lifetime[player_two_name];
-        //         let player_one_lifetime_games = head_2_head[player_one_name].GameData.Lifetime[player_two_name];
+                let player_one_lifetime_sets = head_2_head[player_one_name].SetData.Lifetime[player_two_name];
+                let player_one_lifetime_games = head_2_head[player_one_name].GameData.Lifetime[player_two_name];
 
-        //         if (
-        //             player_one_seasonal_sets != undefined &&
-        //             player_one_seasonal_sets != '0 -- 0'
-        //         ) {
+                if (
+                    player_one_seasonal_sets != undefined &&
+                    player_one_seasonal_sets != '0 -- 0'
+                ) {
 
-        //             // Cleaning of Set/Game ratios/scores.
-        //             let player_one_seasonal_sets_array = player_one_seasonal_sets.split(score_delimiter);
-        //             let player_one_seasonal_games_array = player_one_seasonal_games.split(score_delimiter);
+                    // Cleaning of Set/Game ratios/scores.
+                    let player_one_seasonal_sets_array = player_one_seasonal_sets.split(score_delimiter);
+                    let player_one_seasonal_games_array = player_one_seasonal_games.split(score_delimiter);
 
-        //             let player_one_lifetime_sets_array = player_one_lifetime_sets.split(score_delimiter);
-        //             let player_one_lifetime_games_array = player_one_lifetime_games.split(score_delimiter);
+                    let player_one_lifetime_sets_array = player_one_lifetime_sets.split(score_delimiter);
+                    let player_one_lifetime_games_array = player_one_lifetime_games.split(score_delimiter);
 
-        //             let player_one_lifetime_set_count = player_one_lifetime_sets_array[0];
-        //             let player_one_lifetime_game_count = player_one_lifetime_games_array[0];
-        //             let player_one_seasonal_set_count = player_one_seasonal_sets_array[0];
-        //             let player_one_seasonal_game_count = player_one_seasonal_games_array[0];
+                    let player_one_lifetime_set_count = player_one_lifetime_sets_array[0];
+                    let player_one_lifetime_game_count = player_one_lifetime_games_array[0];
+                    let player_one_seasonal_set_count = player_one_seasonal_sets_array[0];
+                    let player_one_seasonal_game_count = player_one_seasonal_games_array[0];
 
-        //             let player_two_lifetime_set_count= player_one_lifetime_sets_array[1];
-        //             let player_two_lifetime_game_count= player_one_lifetime_games_array[1];
-        //             let player_two_seasonal_set_count= player_one_seasonal_sets_array[1];
-        //             let player_two_seasonal_game_count= player_one_seasonal_games_array[1];
+                    let player_two_lifetime_set_count= player_one_lifetime_sets_array[1];
+                    let player_two_lifetime_game_count= player_one_lifetime_games_array[1];
+                    let player_two_seasonal_set_count= player_one_seasonal_sets_array[1];
+                    let player_two_seasonal_game_count= player_one_seasonal_games_array[1];
 
-        //             let player_one_seasonal_set_score = parseInt(player_one_seasonal_sets_array[0]);
-        //             let player_two_seasonal_set_score = parseInt(player_one_seasonal_sets_array[1]);
+                    let player_one_seasonal_set_score = parseInt(player_one_seasonal_sets_array[0]);
+                    let player_two_seasonal_set_score = parseInt(player_one_seasonal_sets_array[1]);
 
-        //             let player_one_seasonal_game_score = parseInt(player_one_seasonal_games_array[0]);
-        //             let player_two_seasonal_game_score = parseInt(player_one_seasonal_games_array[1]);
+                    let player_one_seasonal_game_score = parseInt(player_one_seasonal_games_array[0]);
+                    let player_two_seasonal_game_score = parseInt(player_one_seasonal_games_array[1]);
 
-        //             let player_one_seasonal_set_ratio = Math.round(player_one_seasonal_set_score /(player_one_seasonal_set_score + player_two_seasonal_set_score) * 100);
-        //             let player_one_seasonal_game_ratio = Math.round(player_one_seasonal_game_score /(player_one_seasonal_game_score + player_two_seasonal_game_score) * 100);
+                    let player_one_seasonal_set_ratio = Math.round(player_one_seasonal_set_score /(player_one_seasonal_set_score + player_two_seasonal_set_score) * 100);
+                    let player_one_seasonal_game_ratio = Math.round(player_one_seasonal_game_score /(player_one_seasonal_game_score + player_two_seasonal_game_score) * 100);
                     
-        //             let player_one_lifetime_set_score = parseInt(player_one_lifetime_sets_array[0]);
-        //             let player_two_lifetime_set_score = parseInt(player_one_lifetime_sets_array[1]);
+                    let player_one_lifetime_set_score = parseInt(player_one_lifetime_sets_array[0]);
+                    let player_two_lifetime_set_score = parseInt(player_one_lifetime_sets_array[1]);
 
-        //             let player_one_lifetime_game_score = parseInt(player_one_lifetime_games_array[0]);
-        //             let player_two_lifetime_game_score = parseInt(player_one_lifetime_games_array[1]);
+                    let player_one_lifetime_game_score = parseInt(player_one_lifetime_games_array[0]);
+                    let player_two_lifetime_game_score = parseInt(player_one_lifetime_games_array[1]);
 
-        //             let player_one_lifetime_set_ratio = Math.round(player_one_lifetime_set_score /(player_one_lifetime_set_score + player_two_lifetime_set_score) * 100);
-        //             let player_one_lifetime_game_ratio = Math.round(player_one_lifetime_game_score /(player_one_lifetime_game_score + player_two_lifetime_game_score) * 100);
+                    let player_one_lifetime_set_ratio = Math.round(player_one_lifetime_set_score /(player_one_lifetime_set_score + player_two_lifetime_set_score) * 100);
+                    let player_one_lifetime_game_ratio = Math.round(player_one_lifetime_game_score /(player_one_lifetime_game_score + player_two_lifetime_game_score) * 100);
 
-        //             // Inversion of Set/Game ratios for Player Two.
-        //             let player_two_seasonal_set_ratio = 100 - player_one_seasonal_set_ratio;
-        //             let player_two_seasonal_game_ratio = 100 - player_one_seasonal_game_ratio;
-        //             let player_two_lifetime_set_ratio = 100 - player_one_lifetime_set_ratio;
-        //             let player_two_lifetime_game_ratio = 100 - player_one_lifetime_game_ratio;
+                    // Inversion of Set/Game ratios for Player Two.
+                    let player_two_seasonal_set_ratio = 100 - player_one_seasonal_set_ratio;
+                    let player_two_seasonal_game_ratio = 100 - player_one_seasonal_game_ratio;
+                    let player_two_lifetime_set_ratio = 100 - player_one_lifetime_set_ratio;
+                    let player_two_lifetime_game_ratio = 100 - player_one_lifetime_game_ratio;
 
-        //             // Sanitize the image names.
-        //             player_one_main = player_one_main.replace(' ', '-').toLowerCase();
-        //             player_one_secondary = player_one_secondary.replace(' ', '-').toLowerCase();
-        //             player_two_main = player_two_main.replace(' ', '-').toLowerCase();
-        //             player_two_secondary = player_two_secondary.replace(' ', '-').toLowerCase();
+                    // Sanitize the image names.
+                    player_one_main = player_one_main.replace(' ', '-').toLowerCase();
+                    player_one_secondary = player_one_secondary.replace(' ', '-').toLowerCase();
+                    player_two_main = player_two_main.replace(' ', '-').toLowerCase();
+                    player_two_secondary = player_two_secondary.replace(' ', '-').toLowerCase();
 
-        //             // Storing relevant elements to assign data to.
-        //             const player_one_character_element = document.getElementById('player_one_character');
-        //             const player_two_character_element = document.getElementById('player_two_character');
+                    // Storing relevant elements to assign data to.
+                    const player_one_character_element = document.getElementById('player_one_character');
+                    const player_two_character_element = document.getElementById('player_two_character');
 
-        //             const player_one_name_element = document.getElementById('player_one_name');
-        //             const player_two_name_element = document.getElementById('player_two_name');
+                    const player_one_name_element = document.getElementById('player_one_name');
+                    const player_two_name_element = document.getElementById('player_two_name');
 
-        //             const player_one_tag_element = document.getElementById('player_one_tag');
-        //             const player_two_tag_element = document.getElementById('player_two_tag');
+                    const player_one_tag_element = document.getElementById('player_one_tag');
+                    const player_two_tag_element = document.getElementById('player_two_tag');
 
-        //             const player_one_pr_element = document.getElementById('player_one_pr');
-        //             const player_two_pr_element = document.getElementById('player_two_pr');
+                    const player_one_pr_element = document.getElementById('player_one_pr');
+                    const player_two_pr_element = document.getElementById('player_two_pr');
 
-        //             const player_one_points_seasonal_element = document.getElementById('player_one_points_seasonal');
-        //             const player_two_points_seasonal_element = document.getElementById('player_two_points_seasonal');
+                    const player_one_seasonal_points_element = document.getElementById('player_one_seasonal_points');
+                    const player_two_seasonal_points_element = document.getElementById('player_two_seasonal_points');
 
-        //             const player_one_points_lifetime_element = document.getElementById('player_one_points_lifetime');
-        //             const player_two_points_lifetime_element = document.getElementById('player_two_points_lifetime');
+                    const set_title_elements = document.querySelectorAll('.sets');
+                    const game_title_elements = document.querySelectorAll('.games');
 
-        //             const set_title_elements = document.querySelectorAll('.sets');
-        //             const game_title_elements = document.querySelectorAll('.games');
+                    const lifetime_title = document.getElementById('lifetime_title');
+                    const player_one_lifetime_sets_element = document.getElementById('player_one_lifetime_sets');
+                    const player_two_lifetime_sets_element = document.getElementById('player_two_lifetime_sets');
 
-        //             const lifetime_title = document.getElementById('lifetime_title');
-        //             const player_one_lifetime_sets_element = document.getElementById('player_one_lifetime_sets');
-        //             const player_two_lifetime_sets_element = document.getElementById('player_two_lifetime_sets');
-
-        //             const player_one_lifetime_games_element = document.getElementById('player_one_lifetime_games');
-        //             const player_two_lifetime_games_element = document.getElementById('player_two_lifetime_games');
+                    const player_one_lifetime_games_element = document.getElementById('player_one_lifetime_games');
+                    const player_two_lifetime_games_element = document.getElementById('player_two_lifetime_games');
                     
-        //             const seasonal_title = document.getElementById('seasonal_title');
-        //             const player_one_seasonal_sets_element = document.getElementById('player_one_seasonal_sets');
-        //             const player_two_seasonal_sets_element = document.getElementById('player_two_seasonal_sets');
+                    const seasonal_title = document.getElementById('seasonal_title');
+                    const player_one_seasonal_sets_element = document.getElementById('player_one_seasonal_sets');
+                    const player_two_seasonal_sets_element = document.getElementById('player_two_seasonal_sets');
 
-        //             const player_one_seasonal_games_element = document.getElementById('player_one_seasonal_games');
-        //             const player_two_seasonal_games_element = document.getElementById('player_two_seasonal_games');
+                    const player_one_seasonal_games_element = document.getElementById('player_one_seasonal_games');
+                    const player_two_seasonal_games_element = document.getElementById('player_two_seasonal_games');
 
-        //             const main_logo = document.getElementById('main_logo');
-        //             const player_one_details = document.getElementById('player_one_details');
-        //             const player_two_details = document.getElementById('player_two_details');
+                    const main_logo = document.getElementById('main_logo');
 
-        //             // Adding player stats to elements for view.
-        //             main_logo.style.display = 'block';
+                    // Adding player stats to elements for view.
+                    main_logo.style.display = 'block';
 
-        //             player_one_character_element.src = player_one_main;
-        //             player_two_character_element.src = player_two_main;
+                    player_one_character_element.src = player_one_main;
+                    player_two_character_element.src = player_two_main;
 
-        //             player_one_details.style.display = 'block';
-        //             player_two_details.style.display = 'block';
+                    player_one_tag_element.innerHTML = generateTagBanner(player_one_tag);
+                    player_two_tag_element.innerHTML = generateTagBanner(player_two_tag);
 
-        //             player_one_tag_element.innerText = player_one_tag;
-        //             player_two_tag_element.innerText = player_two_tag;
+                    player_one_name_element.innerText = player_one_name;
+                    player_two_name_element.innerText = player_two_name;
 
-        //             player_one_name_element.innerText = player_one_name;
-        //             player_two_name_element.innerText = player_two_name;
-
-        //             player_one_pr_element.innerText = `#${player_one_seasonal_rank}`;
-        //             player_two_pr_element.innerText = `#${player_two_seasonal_rank}`;
+                    player_one_pr_element.innerText = `#${player_one_seasonal_rank}`;
+                    player_two_pr_element.innerText = `#${player_two_seasonal_rank}`;
                     
-        //             player_one_points_seasonal_element.innerText = `Seasonal: ${player_one_seasonal_points} pts`;
-        //             player_one_points_lifetime_element.innerText = `Lifetime: ${player_one_lifetime_points} pts`;
+                    player_one_seasonal_points_element.innerText = `${player_one_seasonal_points}`;
+                    player_two_seasonal_points_element.innerText = `${player_two_seasonal_points}`;
 
-        //             player_two_points_seasonal_element.innerText = `Seasonal: ${player_two_seasonal_points} pts`;
-        //             player_two_points_lifetime_element.innerText = `Lifetime: ${player_two_lifetime_points} pts`;
+                    set_title_elements.forEach((element) => {
+                        element.innerText = 'Sets';
+                    });
 
-        //             set_title_elements.forEach((element) => {
-        //                 element.innerText = 'Sets';
-        //             });
+                    game_title_elements.forEach((element) => {
+                        element.innerText = 'Games';
+                    });
 
-        //             game_title_elements.forEach((element) => {
-        //                 element.innerText = 'Games';
-        //             });
+                    seasonal_title.innerText = 'Seasonal';
+                    player_one_seasonal_sets_element.innerText = `${player_one_seasonal_set_ratio}%`;
+                    player_two_seasonal_sets_element.innerText = `${player_two_seasonal_set_ratio}%`;
 
-        //             seasonal_title.innerText = 'Seasonal';
-        //             player_one_seasonal_sets_element.innerText = `${player_one_seasonal_set_ratio}% (${player_one_seasonal_set_count})`;
-        //             player_two_seasonal_sets_element.innerText = `${player_two_seasonal_set_ratio}% (${player_two_seasonal_set_count})`;
+                    player_one_seasonal_games_element.innerText = `${player_one_seasonal_game_count}`;
+                    player_two_seasonal_games_element.innerText = `${player_two_seasonal_game_count}`;
 
-        //             player_one_seasonal_games_element.innerText = `${player_one_seasonal_game_ratio}% (${player_one_seasonal_game_count})`;
-        //             player_two_seasonal_games_element.innerText = `${player_two_seasonal_game_ratio}% (${player_two_seasonal_game_count})`;
-
-        //             lifetime_title.innerText = 'Lifetime';
-        //             player_one_lifetime_sets_element.innerText = `${player_one_lifetime_set_ratio}% (${player_one_lifetime_set_count})`;
-        //             player_two_lifetime_sets_element.innerText = `${player_two_lifetime_set_ratio}% (${player_two_lifetime_set_count})`;
+                    lifetime_title.innerText = 'Lifetime';
+                    player_one_lifetime_sets_element.innerText = `${player_one_lifetime_set_count}`;
+                    player_two_lifetime_sets_element.innerText = `${player_two_lifetime_set_count}`;
                     
-        //             player_one_lifetime_games_element.innerText = `${player_one_lifetime_game_ratio}% (${player_one_lifetime_game_count})`;
-        //             player_two_lifetime_games_element.innerText = `${player_two_lifetime_game_ratio}% (${player_two_lifetime_game_count})`;
+                    player_one_lifetime_games_element.innerText = `${player_one_lifetime_game_count}`;
+                    player_two_lifetime_games_element.innerText = `${player_two_lifetime_game_count}`;
 
-        //         } else {
+                } else {
 
-        //             seasonal_sets_title.innerText = 'These players have not played a set this season!';
-        //             console.log('These players have not played a set this season!');
+                    seasonal_sets_title.innerText = 'These players have not played a set this season!';
+                    console.log('These players have not played a set this season!');
 
-        //         }
+                }
 
-        //     };
+            };
 
-        // });
+        });
 
         writeLog('Ready! Awaiting player selection.');
 
@@ -564,118 +548,123 @@ async function get_data() {
 
         // Debug mode to automatically select two players and trigger the click event.
         if (debug_mode) {
-            // player_one_select.options.selectedIndex = 1;
-            // player_two_select.options.selectedIndex = 2;
+            player_one_select.options.selectedIndex = 1;
+            player_two_select.options.selectedIndex = 2;
 
-            // let click_event = new Event('click');
-            // player_selection_submit.dispatchEvent(click_event);
+            let click_event = new Event('click');
+            player_selection_submit.dispatchEvent(click_event);
 
-            if (image_debug) {
+            const character_images = [
+                'banjo-and-kazooie-00-full.png',
+                'pyra-00-full.png',
+                'mythra-00-full.png',
+                'bayonetta-00-full.png',
+                'bowser-00-full.png',
+                'bowser-jr-00-full.png',
+                'byleth-00-full.png',
+                'captain-falcon-00-full.png',
+                'chrom-00-full.png',
+                'cloud-00-full.png',
+                'corrin-00-full.png',
+                'daisy-00-full.png',
+                'dark-pit-00-full.png',
+                'dark-samus-00-full.png',
+                'diddy-kong-00-full.png',
+                'donkey-kong-00-full.png',
+                'dr-mario-00-full.png',
+                'duck-hunt-00-full.png',
+                'falco-00-full.png',
+                'fox-00-full.png',
+                'ganondorf-00-full.png',
+                'greninja-00-full.png',
+                'hero-00-full.png',
+                'ice-climbers-00-full.png',
+                'ike-00-full.png',
+                'incineroar-00-full.png',
+                'inkling-00-full.png',
+                'isabelle-00-full.png',
+                'jigglypuff-00-full.png',
+                'joker-00-full.png',
+                'kazuya-00-full.png',
+                'ken-00-full.png',
+                'king-dedede-00-full.png',
+                'king-k-rool-00-full.png',
+                'kirby-00-full.png',
+                'link-00-full.png',
+                'little-mac-00-full.png',
+                'lucario-00-full.png',
+                'lucas-00-full.png',
+                'lucina-00-full.png',
+                'luigi-00-full.png',
+                'mario-00-full.png',
+                'marth-00-full.png',
+                'mega-man-00-full.png',
+                'meta-knight-00-full.png',
+                'mewtwo-00-full.png',
+                'mii-brawler-00-full.png',
+                'mii-gunner-00-full.png',
+                'mii-swordfighter-00-full.png',
+                'min-min-00-full.png',
+                'mr-game-and-watch-00-full.png',
+                'ness-00-full.png',
+                'olimar-00-full.png',
+                'pac-man-00-full.png',
+                'palutena-00-full.png',
+                'peach-00-full.png',
+                'pichu-00-full.png',
+                'pikachu-00-full.png',
+                'piranha-plant-00-full.png',
+                'pit-00-full.png',
+                'pokemon-trainer-00-full.png',
+                'pyra-and-mythra-00-full.png',
+                'richter-00-full.png',
+                'ridley-00-full.png',
+                'rob-00-full.png',
+                'robin-00-full.png',
+                'rosalina-and-luma-00-full.png',
+                'roy-00-full.png',
+                'ryu-00-full.png',
+                'samus-00-full.png',
+                'sephiroth-00-full.png',
+                'sheik-00-full.png',
+                'shulk-00-full.png',
+                'simon-00-full.png',
+                'snake-00-full.png',
+                'sonic-00-full.png',
+                'sora-00-full.png',
+                'steve-00-full.png',
+                'terry-00-full.png',
+                'toon-link-00-full.png',
+                'villager-00-full.png',
+                'wario-00-full.png',
+                'wii-fit-trainer-00-full.png',
+                'wolf-00-full.png',
+                'yoshi-00-full.png',
+                'young-link-00-full.png',
+                'zelda-00-full.png',
+                'zero-suit-samus-00-full.png'
+            ];
 
-                const character_images = [
-                    'banjo-and-kazooie-00-full.png',
-                    'pyra-00-full.png',
-                    'mythra-00-full.png',
-                    'bayonetta-00-full.png',
-                    'bowser-00-full.png',
-                    'bowser-jr-00-full.png',
-                    'byleth-00-full.png',
-                    'captain-falcon-00-full.png',
-                    'chrom-00-full.png',
-                    'cloud-00-full.png',
-                    'corrin-00-full.png',
-                    'daisy-00-full.png',
-                    'dark-pit-00-full.png',
-                    'dark-samus-00-full.png',
-                    'diddy-kong-00-full.png',
-                    'donkey-kong-00-full.png',
-                    'dr-mario-00-full.png',
-                    'duck-hunt-00-full.png',
-                    'falco-00-full.png',
-                    'fox-00-full.png',
-                    'ganondorf-00-full.png',
-                    'greninja-00-full.png',
-                    'hero-00-full.png',
-                    'ice-climbers-00-full.png',
-                    'ike-00-full.png',
-                    'incineroar-00-full.png',
-                    'inkling-00-full.png',
-                    'isabelle-00-full.png',
-                    'jigglypuff-00-full.png',
-                    'joker-00-full.png',
-                    'kazuya-00-full.png',
-                    'ken-00-full.png',
-                    'king-dedede-00-full.png',
-                    'king-k-rool-00-full.png',
-                    'kirby-00-full.png',
-                    'link-00-full.png',
-                    'little-mac-00-full.png',
-                    'lucario-00-full.png',
-                    'lucas-00-full.png',
-                    'lucina-00-full.png',
-                    'luigi-00-full.png',
-                    'mario-00-full.png',
-                    'marth-00-full.png',
-                    'mega-man-00-full.png',
-                    'meta-knight-00-full.png',
-                    'mewtwo-00-full.png',
-                    'mii-brawler-00-full.png',
-                    'mii-gunner-00-full.png',
-                    'mii-swordfighter-00-full.png',
-                    'min-min-00-full.png',
-                    'mr-game-and-watch-00-full.png',
-                    'ness-00-full.png',
-                    'olimar-00-full.png',
-                    'pac-man-00-full.png',
-                    'palutena-00-full.png',
-                    'peach-00-full.png',
-                    'pichu-00-full.png',
-                    'pikachu-00-full.png',
-                    'piranha-plant-00-full.png',
-                    'pit-00-full.png',
-                    'pokemon-trainer-00-full.png',
-                    'pyra-and-mythra-00-full.png',
-                    'richter-00-full.png',
-                    'ridley-00-full.png',
-                    'rob-00-full.png',
-                    'robin-00-full.png',
-                    'rosalina-and-luma-00-full.png',
-                    'roy-00-full.png',
-                    'ryu-00-full.png',
-                    'samus-00-full.png',
-                    'sephiroth-00-full.png',
-                    'sheik-00-full.png',
-                    'shulk-00-full.png',
-                    'simon-00-full.png',
-                    'snake-00-full.png',
-                    'sonic-00-full.png',
-                    'sora-00-full.png',
-                    'steve-00-full.png',
-                    'terry-00-full.png',
-                    'toon-link-00-full.png',
-                    'villager-00-full.png',
-                    'wario-00-full.png',
-                    'wii-fit-trainer-00-full.png',
-                    'wolf-00-full.png',
-                    'yoshi-00-full.png',
-                    'young-link-00-full.png',
-                    'zelda-00-full.png',
-                    'zero-suit-samus-00-full.png'
-                ];
+            let p1_character = document.querySelector('.p1_character');
+            let p2_character = document.querySelector('.p2_character');
+            let character_counter = 0;
 
-                let p1_character = document.querySelector('.p1_character');
-                let p2_character = document.querySelector('.p2_character');
-                let character_counter = 0;
-                document.addEventListener('keydown', (e) => {
-                    if (e.code == 'Space') {
-                        p1_character.src = character_prefix + character_images[character_counter];
-                        p2_character.src = character_prefix + character_images[character_counter];
+            document.addEventListener('keydown', (e) => {
+
+                if (e.code == 'Space') {
+
+                    p1_character.src = character_prefix + character_images[character_counter];
+                    p2_character.src = character_prefix + character_images[character_counter];
+                    
+                    if (character_counter == character_images.length -1) {
+                        character_counter = 0;
+                    } else {
                         character_counter++;
                     }
-                });
 
-                        
-            }
+                }
+
+            });
         }
 
     // Pulling data failed.
@@ -730,6 +719,30 @@ function bothPlayersSelected(player_one, player_two) {
         return false;
     }
 
+}
+
+
+function generateTagBanner(tag) {
+    let tag_counter = 1;
+    let tag_generation = 4 * 12;
+    let tag_output = '';
+
+    console.group();
+    console.log(`counter: ${tag_counter}, generation: ${tag_generation}`);
+    
+    for (tag_counter; tag_counter < tag_generation; tag_counter++) {
+        if (tag_counter % 2 == 0) {
+            tag_output += `<span class="tag_highlight">${tag}</span>`;
+        } else {
+            tag_output += `${tag}`;
+        }
+
+        console.log(`tag_output: ${tag_output}`);
+    }
+
+    console.groupEnd();
+
+    return tag_output;
 }
 
 

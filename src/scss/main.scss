@@ -19,6 +19,7 @@
 // Variables.
 $nautical-navy: #0e243c;
 $nautical-navy-dark: color.adjust($nautical-navy, $lightness: -3%);
+$nautical-navy-extra-dark: color.adjust($nautical-navy, $lightness: -6%);
 $nautical-navy-light: color.adjust($nautical-navy, $lightness: 3%);
 $baby-blue: #2a8be9;
 $mariner-maroon: #a70800;
@@ -42,273 +43,87 @@ $large-alpha-for-blur: 0.40;
     display: none;
 }
 
-// main {
-//     width: 100%;
-//     overflow: hidden;
-//     background: radial-gradient(
-//         circle at 50% 50%,
-//         $nautical-navy-light,
-//         $nautical-navy
-//     );
-//     color: #ffffff;
-//     display: flex;
-//     flex-direction: column;
-//     justify-content: space-between;
-//     font-family: 'Lemonmilk', sans-serif;
-//     overflow-y: hidden;
-    
-//     section {
-//         width: 100%;
-//         display: flex;
-//         flex-direction: column;
-//         align-items: center;
-//         justify-content: end;
-//         padding: 1em;
-
-//         &.player-selection {
-//             flex-direction: row;
-//             justify-content: center;
-//             gap: 1em;
-
-//             label {
-//                 position: relative;
-
-//                 &:first-child {
-//                     margin: 0 2em 0 0;
-//                 }
-
-//                 &:nth-child(1)::before {
-//                     content: 'P1';
-//                 }
-
-//                 &:nth-child(2)::before {
-//                     content: 'P2';
-//                 }
-
-//                 &::before {
-//                     display: block;
-//                     position: absolute;
-//                     top: 0;
-//                     left: 0;
-//                     height: 100%;
-//                     width: 2em;
-//                     margin: 0 0 0 -2em;
-//                     border-radius: $small-border-radius 0 0 $small-border-radius;
-//                     background-color: $nautical-navy-dark;
-//                     text-align: center;
-//                     line-height: 30px;
-//                 }
-
-//                 select {
-//                     border-radius: 0 $small-border-radius $small-border-radius 0;
-//                 }
-//             }
-
-//             select,
-//             button {
-//                 border: none;
-//                 border-radius: $small-border-radius;
-//                 width: 12em;
-//                 height: 2.25em;
-//                 padding: .4em;
-//             } 
-//         }
-
-//         &.data {
-//             height: 100vh;
-//         }
-//     }
-
-//     .head-2-head{
-//         display: flex;
-//         justify-content: space-evenly;
-//         align-items: end;
-//         width: 100%;
-//         font-size: 1em;
-//         text-align: center;
-
-        
-//         &__player {
-//             width: 35%;
-//             position: relative;
-
-//             &--characters {
-//                 width: 100%;
-//                 display: flex;
-//                 justify-content: center;
-
-//                 img {
-//                     max-width: 100%;
-//                     height: auto;
-//                 }
-//             }
-
-//             &--details {
-//                 display: none;
-//                 position: absolute;
-//                 bottom: 2em;
-//                 left: 50%;
-//                 transform: translateX(-50%);
-//                 background-color: $nautical-navy-dark;
-//                 padding: 1.5em;
-//                 background: rgba($nautical-navy, $large-alpha-for-blur);
-//                 border-radius: $medium-border-radius;
-//                 box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-//                 backdrop-filter: blur(5px);
-//                 border: 1px solid rgba(255, 255, 255, 0.3);
-//                 text-transform: uppercase;
-//                 width: 24em;
-//                 min-height: 10em;
-
-//                 .player_name_wrapper {
-//                     display: flex;
-//                     align-items: center;
-//                     justify-self: center;
-//                 }
-//             }
-
-//             &--name {
-//                 font-size: 2em;
-//                 display: flex;
-//                 align-items: center;
-//                 justify-content: center;
-//                 white-space: nowrap;
-//             }
-    
-//             &--tag {
-
-//                 &:not(:empty) {
-//                     font-size: 1rem;
-//                     color: $piss-jugs;
-//                     padding: 0 1em 0 0;
-//                 }
-//             }
-
-//             &--rank {
-//                 display: flex;
-//                 justify-content: center;
-//                 align-items: center;
-//                 gap: 1em;
-//             }
-
-//             &--pr {
-//                 font-size: 2.5em;
-//             }
-
-//             &--points {
-//                 text-align: left;
-//                 display: flex;
-//                 flex-direction: column;
-//                 font-family: 'Montserrat';
-//             }
-//         }
-
-//         &__stats {
-//             width: 30%;
-//             height: 100%;
-//             display: flex;
-//             flex-direction: column-reverse;
-//             align-items: center;
-//             justify-content: space-evenly;
-//             align-self: center;
-//             font-size: 1.25em;
-//             gap: 1em;
-
-//             &--logo-wrapper {
-//                 min-height: 10em;
-//             }
-
-//             &--logo {
-//                 width: 50%;
-//                 display: none;
-//                 margin: 0 auto;
-//             }
-
-//             &--details {
-//                 display: flex;
-//                 flex-direction: column;
-//                 justify-content: center;
-//                 gap: 0.5em;
-//                 width: 100%;
-
-//                 div {
-//                     display: flex;
-//                     justify-content: space-between;
-//                 }
-
-//                 .detail-title {
-//                     align-self: center;
-//                     justify-self: center;
-//                     font-family: 'Malberg';
-//                     font-size: 1.25em;
-//                     height: 2em;
-//                     line-height: 2em;
-//                 }
-
-//                 .detail-player-one-stat,
-//                 .detail-player-two-stat {
-//                     width: 5em;
-//                     height: 2em;
-//                     line-height: 2em;
-//                     font-size: 1.25em;
-//                 }
-
-//                 .detail-player-one-stat {
-//                     justify-self: start;
-//                 }
-
-//                 .detail-player-two-stat {
-//                     justify-self: end;
-//                 }
-
-//                 .sets,
-//                 .games {
-//                     font-size: 1em;
-//                     font-family: 'Malberg';
-//                     align-self: center;
-//                 }
-//             }
-//         }
-//     }
-// }
-
 #index2 {
 
     main {
         width: 100%;
-        height: 100vh;
         overflow: hidden;
         background: $nautical-navy;
         color: #ffffff;
         font-family: 'Lemonmilk', sans-serif;
         position: relative;
         display: flex;
+        flex-direction: column;
         justify-content: center;
-
-        &::before,
-        &::after {
-            content: "";
-            position: absolute;
-            z-index: 20;
-            bottom: 0;
-            pointer-events: none;
-            height: 100%;
-        }
-
-        &::before {
-            left: 0;
-            width: 30%;
-            background-image: linear-gradient(to left, transparent, $nautical-navy 100%);
-        }
-
-        &::after {
-            right: 0;
-            width: 30%;
-            background-image: linear-gradient(to right, transparent, $nautical-navy 100%);
-        }
     }
 
     section {
+        display: flex;
+        justify-content: center;
+
+        &.player-selection {
+            width: 100%;
+            position: relative;
+            z-index: 70;
+            background: $nautical-navy;
+            flex-direction: row;
+            justify-content: center;
+            gap: 1em;
+            padding: 1em; 
+            
+                label {
+                    position: relative;
+            
+                    &:first-child {
+                        margin: 0 2em 0 0;
+                    }
+            
+                    &:nth-child(1)::before {
+                        content: 'P1';
+                    }
+            
+                    &:nth-child(2)::before {
+                        content: 'P2';
+                    }
+            
+                    &::before {
+                        display: block;
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        height: 100%;
+                        width: 2em;
+                        margin: 0 0 0 -2em;
+                        border-radius: $small-border-radius 0 0 $small-border-radius;
+                        background-color: $nautical-navy-dark;
+                        text-align: center;
+                        line-height: 30px;
+                    }
+            
+                    select {
+                        border-radius: 0 $small-border-radius $small-border-radius 0;
+                    }
+                }
+            
+                select,
+                button {
+                    border: none;
+                    border-radius: $small-border-radius;
+                    width: 12em;
+                    height: 2.25em;
+                    padding: .4em;
+                } 
+            }
+        }
+
+        .player-data {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+        }
+    }
+
+    article {
 
         padding: 0;
         margin: 0;
@@ -324,23 +139,24 @@ $large-alpha-for-blur: 0.40;
                 -webkit-text-stroke: 1px white;
                 opacity: 0.3;
                 z-index: 10;
-                max-width: 50%;
                 height: 200%;
                 overflow: hidden;
+                white-space: pre-line;
             }
 
             .tag_highlight {
-                color: $nautical-navy-dark;
+                color: $nautical-navy-extra-dark;
             }
 
             .p1_tag {
-                left: 0%;
-                transform: rotate(-10deg);
+                left: -10%;
+                transform: skew(-10deg, -3deg);
             }
 
             .p2_tag {
-                left: 50%;
-                transform: rotate(10deg);
+                right: -10%;
+                transform: skew(10deg, 3deg);
+                text-align: right;
             }
 
             .name {
@@ -348,6 +164,7 @@ $large-alpha-for-blur: 0.40;
                 bottom: -5%;
                 font-size: 4em;
                 z-index: 30;
+                filter: drop-shadow(0px 0px 5px $nautical-navy-dark);
             }
 
             .p1_name {
@@ -387,7 +204,7 @@ $large-alpha-for-blur: 0.40;
             align-items: center;
             width: 45%;
             padding: 1em;
-            gap: 1em;
+            gap: 2.5em;
 
             .head_2_head {
                 display: flex;
@@ -406,11 +223,34 @@ $large-alpha-for-blur: 0.40;
                 }
 
                 &__stats {
-                    z-index: 20;
+                    z-index: 30;
                 }
 
                 h3 {
                     font-size: 1.75em;
+                    margin-top: -35px;
+                    text-align: center;
+                    background: $nautical-navy;
+                    position: relative;
+
+                    &::before,
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        top: 0%;
+                        height: 100%;
+                        width: 30%;
+                    }
+
+                    &::before {
+                        left: -30%;
+                        background: linear-gradient(to left, $nautical-navy, transparent 100%);
+                    }
+
+                    &::after {
+                        right: -30%;
+                        background: linear-gradient(to right, $nautical-navy, transparent 100%);
+                    }
                 }
 
                 &_data_wrapper {
@@ -467,45 +307,64 @@ $large-alpha-for-blur: 0.40;
         opacity: 0.4;
     }
 
+    .top_fade,
+    .right_fade,
+    .bottom_fade,
+    .left_fade {
+        position: absolute;
+        display: block;
+        z-index: 20;
+    }
+
+    .top_fade {
+        width: 100%;
+        height: 4em;
+        top: 0%;
+        left: 0%;
+        background-image: linear-gradient(to top, transparent, $nautical-navy 100%);
+    }
+
+    .right_fade {
+        width: 4em;
+        height: 100%;
+        top: 0%;
+        right: 0%;
+        background-image: linear-gradient(to right, transparent, $nautical-navy 100%);
+    }
+
+    .bottom_fade {
+        width: 100%;
+        height: 4em;
+        bottom: 0%;
+        right: 0%;
+        background-image: linear-gradient(to bottom, transparent, $nautical-navy 100%);
+    }
+
+    .left_fade {
+        width: 4em;
+        height: 100%;
+        bottom: 0%;
+        left: 0%;
+        background-image: linear-gradient(to left, transparent, $nautical-navy 100%);
+    }
+    
     .split_fade {
         position: absolute;
         z-index: 20;
         bottom: 0;
         left: 50%;
         transform: translateX(-50%);
-        width: 10%;
+        width: 75%;
         height: 100%;
-        background: transparent;
-
-        &::before,
-        &::after {
-            content: '';
-            position: absolute;
-            bottom: 0%;
-            height: 100%;
-            width: 100%;
-            display: block;
-        }
-
-        &::before {
-            left: 0%;
-            background: linear-gradient(to left, $nautical-navy, transparent 100%);
-        }
-
-        &::after {
-            right: 0%;
-            background: linear-gradient(to right, $nautical-navy, transparent 100%);
-        }
+        background: linear-gradient(to right, transparent, $nautical-navy, transparent 100%);
     }
 
     .divider {
         width: 2px;
         height: 3em;
-        background: black;
+        background: $nautical-navy-extra-dark;
     }
 
     .main_logo {
         width: 10em;
     }
-
-}
