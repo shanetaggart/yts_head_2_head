@@ -284,6 +284,28 @@ $large-alpha-for-blur: 0.40;
         position: relative;
         display: flex;
         justify-content: center;
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            z-index: 20;
+            bottom: 0;
+            pointer-events: none;
+            height: 100%;
+        }
+
+        &::before {
+            left: 0;
+            width: 30%;
+            background-image: linear-gradient(to left, transparent, $nautical-navy 100%);
+        }
+
+        &::after {
+            right: 0;
+            width: 30%;
+            background-image: linear-gradient(to right, transparent, $nautical-navy 100%);
+        }
     }
 
     section {
@@ -295,26 +317,37 @@ $large-alpha-for-blur: 0.40;
 
             .tag {
                 position: absolute;
-                top: 5%;
+                top: -50%;
                 font-size: 5em;
                 font-family: "Lemonmilk bold";
-                color: transparent;
+                color: $nautical-navy-light;
                 -webkit-text-stroke: 1px white;
                 opacity: 0.3;
+                z-index: 10;
+                max-width: 50%;
+                height: 200%;
+                overflow: hidden;
+            }
+
+            .tag_highlight {
+                color: $nautical-navy-dark;
             }
 
             .p1_tag {
-                left: 10%;
+                left: 0%;
+                transform: rotate(-10deg);
             }
 
             .p2_tag {
-                right: 10%;
+                left: 50%;
+                transform: rotate(10deg);
             }
 
             .name {
                 position: absolute;
                 bottom: -5%;
                 font-size: 4em;
+                z-index: 30;
             }
 
             .p1_name {
@@ -331,16 +364,19 @@ $large-alpha-for-blur: 0.40;
 
             .character {
                 position: absolute;
-                bottom: 3%;
-                z-index: 20;
+                bottom: 0;
+                z-index: 40;
+                max-width: 38%;
             }
 
             .p1_character {
                 left: 3%;
+                filter: drop-shadow(-5px 5px 3px $nautical-navy-dark);
             }
 
             .p2_character {
                 right: 3%;
+                filter: drop-shadow(5px 5px 3px $nautical-navy-dark);
             }
         }
 
@@ -362,6 +398,16 @@ $large-alpha-for-blur: 0.40;
                 border: 2px solid $piss-jugs;
                 padding: 1em;
                 gap: 1em;
+                box-shadow: 0px 0px 20px 5px $nautical-navy-dark;
+                background-color: $nautical-navy;
+
+                &__pr {
+                    z-index: 50;
+                }
+
+                &__stats {
+                    z-index: 20;
+                }
 
                 h3 {
                     font-size: 1.75em;
@@ -406,6 +452,49 @@ $large-alpha-for-blur: 0.40;
                     }
                 }
             }
+        }
+    }
+
+    .spotlight {
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        box-shadow: 0 0 250px 250px #ffffff;
+        mix-blend-mode: overlay;
+        z-index: 60;
+        opacity: 0.4;
+    }
+
+    .split_fade {
+        position: absolute;
+        z-index: 20;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 10%;
+        height: 100%;
+        background: transparent;
+
+        &::before,
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: 0%;
+            height: 100%;
+            width: 100%;
+            display: block;
+        }
+
+        &::before {
+            left: 0%;
+            background: linear-gradient(to left, $nautical-navy, transparent 100%);
+        }
+
+        &::after {
+            right: 0%;
+            background: linear-gradient(to right, $nautical-navy, transparent 100%);
         }
     }
 

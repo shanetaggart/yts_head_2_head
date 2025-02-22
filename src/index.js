@@ -574,6 +574,8 @@ async function get_data() {
 
                 const character_images = [
                     'banjo-and-kazooie-00-full.png',
+                    'pyra-00-full.png',
+                    'mythra-00-full.png',
                     'bayonetta-00-full.png',
                     'bowser-00-full.png',
                     'bowser-jr-00-full.png',
@@ -632,7 +634,7 @@ async function get_data() {
                     'piranha-plant-00-full.png',
                     'pit-00-full.png',
                     'pokemon-trainer-00-full.png',
-                    '02/pyra-and-mythra-00-full.png',
+                    'pyra-and-mythra-00-full.png',
                     'richter-00-full.png',
                     'ridley-00-full.png',
                     'rob-00-full.png',
@@ -663,22 +665,15 @@ async function get_data() {
 
                 let p1_character = document.querySelector('.p1_character');
                 let p2_character = document.querySelector('.p2_character');
+                let character_counter = 0;
+                document.addEventListener('keydown', (e) => {
+                    if (e.code == 'Space') {
+                        p1_character.src = character_prefix + character_images[character_counter];
+                        p2_character.src = character_prefix + character_images[character_counter];
+                        character_counter++;
+                    }
+                });
 
-                // p1_character.src = character_prefix + character_images[i];
-                // p2_character.src = character_prefix + character_images[i];
-                
-                let i = 0;
-                do {
-                    task(i);
-                    i++;
-                } while (i < 20);
-                    function task(i) {
-                        setTimeout(function() {
-                            p1_character.src = character_prefix + character_images[i];
-                            p2_character.src = character_prefix + character_images[i];
-                            console.log(`looping images: ${i}`);
-                        }, 2000);
-                }
                         
             }
         }
