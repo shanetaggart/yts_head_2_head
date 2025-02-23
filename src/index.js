@@ -480,6 +480,7 @@ async function get_data() {
 
                     const set_title_elements = document.querySelectorAll('.sets');
                     const game_title_elements = document.querySelectorAll('.games');
+                    const points_title_elements = document.querySelectorAll('.points');
 
                     const lifetime_title = document.getElementById('lifetime_title');
                     const player_one_lifetime_sets_element = document.getElementById('player_one_lifetime_sets');
@@ -544,6 +545,10 @@ async function get_data() {
 
                     game_title_elements.forEach((element) => {
                         element.innerText = 'Games';
+                    });
+
+                    points_title_elements.forEach((element) => {
+                        element.innerText = 'Points';
                     });
 
                     seasonal_title.innerText = 'Seasonal';
