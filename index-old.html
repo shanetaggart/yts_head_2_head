@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>YTS Head 2 Head</title>
+        <link rel="stylesheet" type="text/css" href="public/css/main.css">
+        <script type="module" src="src/index.js"></script>
+    </head>
+    <body>
+        <main>
+            
+            <section class="player-selection">
+                <label for="player_one">
+                    <select id="player_one" name="player_one"></select>
+                </label>
+                <label for="player_two">
+                    <select id="player_two" name="player_two"></select>
+                </label>
+                <button id="player-selection__submit">Submit</button>
+            </section>
+            
+            <section id="data" class="data">    
+                <article class="head-2-head">
+            
+                    <div class="head-2-head__player head-2-head__player--one">
+                        
+                        <div class="head-2-head__player--characters">
+                            <img id="player_one_character" src="">
+                        </div>
+
+                        <div id="player_one_details" class="head-2-head__player--details">
+                            <div class="player_name_wrapper">
+                                <span id="player_one_tag" class="head-2-head__player--tag"></span>
+                                <span id="player_one_name" class="head-2-head__player--name"></span>
+                            </div>
+                            <div class="head-2-head__player--rank">
+                                <p id="player_one_pr" class="head-2-head__player--pr"></p>
+                                <div class="head-2-head__player--points">
+                                    <p id="player_one_points_seasonal"></p>
+                                    <p id="player_one_points_lifetime"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+            
+                    <div class="head-2-head__stats">
+                        
+                        <div class="head-2-head__stats--logo-wrapper">
+                            <img id="main_logo" class="head-2-head__stats--logo" src="public/images/Y-Town-Smash-Logo-v4.png">
+                        </div>
+
+                        <div class="head-2-head__stats--details">
+                            <p id="seasonal_title" class="detail-title"></p>
+                            <div>
+                                <p id="player_one_seasonal_sets" class="detail-player-one-stat"></p>
+                                <p class="sets"></p>
+                                <p id="player_two_seasonal_sets" class="detail-player-two-stat"></p>
+                            </div>
+                            <div>
+                                <p id="player_one_seasonal_games" class="detail-player-one-stat"></p>
+                                <p class="games"></p>
+                                <p id="player_two_seasonal_games" class="detail-player-two-stat"></p>
+                            </div>
+                        </div>
+                        <div class="head-2-head__stats--details">
+                            <p id="lifetime_title" class="detail-title"></p>
+                            <div>
+                                <p id="player_one_lifetime_sets" class="detail-player-one-stat"></p>
+                                <p class="sets"></p>
+                                <p id="player_two_lifetime_sets" class="detail-player-two-stat"></p>
+                            </div>
+                            <div>
+                                <p id="player_one_lifetime_games" class="detail-player-one-stat"></p>
+                                <p class="games"></p>
+                                <p id="player_two_lifetime_games" class="detail-player-two-stat"></p>
+                            </div>
+                        </div>
+
+                    </div>
+                        
+                    <div class="head-2-head__player head-2-head__player--two">
+
+                        <div class="head-2-head__player--characters">
+                            <img id="player_two_character" src="">
+                        </div>
+                        
+                        <div id="player_two_details" class="head-2-head__player--details">
+                            <div class="player_name_wrapper">
+                                <span id="player_two_tag" class="head-2-head__player--tag"></span>
+                                <span id="player_two_name" class="head-2-head__player--name"></span>
+                            </div>
+                            <div class="head-2-head__player--rank">
+                                <p id="player_two_pr" class="head-2-head__player--pr"></p>
+                                <div class="head-2-head__player--points">
+                                    <p id="player_two_points_seasonal"></p>
+                                    <p id="player_two_points_lifetime"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </article>
+            </section>
+
+        </main>
+    </body>
+    
+</html>

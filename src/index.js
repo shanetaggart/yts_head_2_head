@@ -11,17 +11,20 @@ const seasonal_games_url = base_url + 'seasonal_games.json';
 const player_selection_submit = document.getElementById('player-selection__submit');
 const player_one_select = document.getElementById('player_one');
 const player_two_select = document.getElementById('player_two');
-const data_output = document.getElementById('data');
+const data_output = document.getElementById('data_output');
 const progress_log = document.getElementById('progress-log');
+const error_messages_element = document.getElementById('error_messages');
 
 // Constants (other)
 const tag_separator = ' | ';
 const player_one_default = 'Player One';
 const player_two_default = 'Player Two';
+const default_tag = 'Y-Town Smash';
 const character_delimiter = ' - ';
 const character_prefix = './public/images/fighters/';
 const character_suffix = '-00-full.png';
 const score_delimiter = ' -- ';
+const debug_mode = false;
 
 async function get_data() {
 
@@ -358,12 +361,15 @@ async function get_data() {
         writeLog('Finishing up...');
 
         // Wait for the user to click Submit.
-        player_selection_submit.addEventListener("click", function() {
+        player_selection_submit.addEventListener('click', function() {
 
-            if (bothPlayersSelected(player_one_select, player_two_select)) {
+            if (bothPlayersSelected(player_one_select, player_two_select, error_messages_element)) {
 
                 // Scroll down to hide the player selection elements.
-                window.scrollTo(0, document.body.scrollHeight);
+                window.scrollTo({
+                    top: document.body.scrollHeight, left: 0, behavior: "smooth"
+                });
+
 
                 // Retrieve the Player Names from the select elements.
                 let player_one_name = player_one_select.options[player_one_select.selectedIndex].innerText;
@@ -385,14 +391,10 @@ async function get_data() {
 
                 // Player One Power Rankings.
                 let player_one_seasonal_rank = head_2_head[player_one_name].PowerRanking.Seasonal.Rank;
-
-                let player_one_lifetime_points = head_2_head[player_one_name].PowerRanking.Lifetime.Points;
                 let player_one_seasonal_points = head_2_head[player_one_name].PowerRanking.Seasonal.Points;
 
                 // Player Two Power Rankings.
                 let player_two_seasonal_rank = head_2_head[player_two_name].PowerRanking.Seasonal.Rank;
-
-                let player_two_lifetime_points = head_2_head[player_two_name].PowerRanking.Lifetime.Points;
                 let player_two_seasonal_points = head_2_head[player_two_name].PowerRanking.Seasonal.Points;
 
                 // Player One Set/Game Data.
@@ -467,43 +469,54 @@ async function get_data() {
                     const player_one_pr_element = document.getElementById('player_one_pr');
                     const player_two_pr_element = document.getElementById('player_two_pr');
 
-                    const player_one_points_seasonal_element = document.getElementById('player_one_points_seasonal');
-                    const player_two_points_seasonal_element = document.getElementById('player_two_points_seasonal');
+                    const player_one_seasonal_points_element = document.getElementById('player_one_seasonal_points');
+                    const player_two_seasonal_points_element = document.getElementById('player_two_seasonal_points');
 
-                    const player_one_points_lifetime_element = document.getElementById('player_one_points_lifetime');
-                    const player_two_points_lifetime_element = document.getElementById('player_two_points_lifetime');
+                    const head_to_head_title = document.getElementById('head_to_head_title');
+                    const stats_title = document.getElementById('stats_title');
 
-                    const lifetime_sets_title = document.getElementById('lifetime_sets_title');
+                    const win_percent_title = document.querySelectorAll('.win_percent_title');
+                    const pr_title = document.querySelectorAll('.pr_title');
+
+                    const set_title_elements = document.querySelectorAll('.sets');
+                    const game_title_elements = document.querySelectorAll('.games');
+
+                    const lifetime_title = document.getElementById('lifetime_title');
                     const player_one_lifetime_sets_element = document.getElementById('player_one_lifetime_sets');
                     const player_two_lifetime_sets_element = document.getElementById('player_two_lifetime_sets');
 
-                    const lifetime_games_title = document.getElementById('lifetime_games_title');
                     const player_one_lifetime_games_element = document.getElementById('player_one_lifetime_games');
                     const player_two_lifetime_games_element = document.getElementById('player_two_lifetime_games');
                     
-                    const seasonal_sets_title = document.getElementById('seasonal_sets_title');
-                    const player_one_seasonal_sets_element = document.getElementById('player_one_seasonal_sets');
-                    const player_two_seasonal_sets_element = document.getElementById('player_two_seasonal_sets');
+                    const seasonal_title = document.getElementById('seasonal_title');
+                    const player_one_seasonal_sets_ratio_element = document.getElementById('player_one_seasonal_sets_ratio');
+                    const player_two_seasonal_sets_ratio_element = document.getElementById('player_two_seasonal_sets_ratio');
 
-                    const seasonal_games_title = document.getElementById('seasonal_games_title');
+                    const player_one_seasonal_sets_count_element = document.getElementById('player_one_seasonal_sets_count');
+                    const player_two_seasonal_sets_count_element = document.getElementById('player_two_seasonal_sets_count');
+
                     const player_one_seasonal_games_element = document.getElementById('player_one_seasonal_games');
                     const player_two_seasonal_games_element = document.getElementById('player_two_seasonal_games');
 
                     const main_logo = document.getElementById('main_logo');
-                    const player_one_details = document.getElementById('player_one_details');
-                    const player_two_details = document.getElementById('player_two_details');
 
                     // Adding player stats to elements for view.
+                    data_output.style.display = 'flex';
                     main_logo.style.display = 'block';
 
                     player_one_character_element.src = player_one_main;
                     player_two_character_element.src = player_two_main;
 
-                    player_one_details.style.display = 'block';
-                    player_two_details.style.display = 'block';
+                    if (player_one_tag == '') {
+                        player_one_tag = default_tag;
+                    }
 
-                    player_one_tag_element.innerText = player_one_tag;
-                    player_two_tag_element.innerText = player_two_tag;
+                    if (player_two_tag == '') {
+                        player_two_tag = default_tag;
+                    }
+
+                    player_one_tag_element.innerHTML = generateTagBanner(player_one_tag);
+                    player_two_tag_element.innerHTML = generateTagBanner(player_two_tag);
 
                     player_one_name_element.innerText = player_one_name;
                     player_two_name_element.innerText = player_two_name;
@@ -511,31 +524,48 @@ async function get_data() {
                     player_one_pr_element.innerText = `#${player_one_seasonal_rank}`;
                     player_two_pr_element.innerText = `#${player_two_seasonal_rank}`;
                     
-                    player_one_points_seasonal_element.innerText = `Seasonal: ${player_one_seasonal_points} pts`;
-                    player_one_points_lifetime_element.innerText = `Lifetime: ${player_one_lifetime_points} pts`;
+                    player_one_seasonal_points_element.innerText = `${player_one_seasonal_points}`;
+                    player_two_seasonal_points_element.innerText = `${player_two_seasonal_points}`;
 
-                    player_two_points_seasonal_element.innerText = `Seasonal: ${player_two_seasonal_points} pts`;
-                    player_two_points_lifetime_element.innerText = `Lifetime: ${player_two_lifetime_points} pts`;
-
-                    player_one_seasonal_sets_element.innerText = `${player_one_seasonal_set_ratio}% (${player_one_seasonal_set_count})`;
-                    seasonal_sets_title.innerText = 'Seasonal Sets';
-                    player_two_seasonal_sets_element.innerText = `${player_two_seasonal_set_ratio}% (${player_two_seasonal_set_count})`;
-
-                    player_one_seasonal_games_element.innerText = `${player_one_seasonal_game_ratio}% (${player_one_seasonal_game_count})`;
-                    seasonal_games_title.innerText = 'Seasonal Games';
-                    player_two_seasonal_games_element.innerText = `${player_two_seasonal_game_ratio}% (${player_two_seasonal_game_count})`;
-
-                    player_one_lifetime_sets_element.innerText = `${player_one_lifetime_set_ratio}% (${player_one_lifetime_set_count})`;
-                    lifetime_sets_title.innerText = 'Lifetime Sets';
-                    player_two_lifetime_sets_element.innerText = `${player_two_lifetime_set_ratio}% (${player_two_lifetime_set_count})`;
+                    head_to_head_title.innerText = 'Head to Head';
+                    stats_title.innerText = 'Stats';
                     
-                    player_one_lifetime_games_element.innerText = `${player_one_lifetime_game_ratio}% (${player_one_lifetime_game_count})`;
-                    lifetime_games_title.innerText = 'Lifetime Games';
-                    player_two_lifetime_games_element.innerText = `${player_two_lifetime_game_ratio}% (${player_two_lifetime_game_count})`;
+                    win_percent_title.forEach((element) => {
+                        element.innerText = 'Win %';
+                    });
+
+                    pr_title.forEach((element) => {
+                        element.innerText = 'PR';
+                    });
+
+                    set_title_elements.forEach((element) => {
+                        element.innerText = 'Sets';
+                    });
+
+                    game_title_elements.forEach((element) => {
+                        element.innerText = 'Games';
+                    });
+
+                    seasonal_title.innerText = 'Seasonal';
+                    player_one_seasonal_sets_ratio_element.innerText = `${player_one_seasonal_set_ratio}%`;
+                    player_two_seasonal_sets_ratio_element.innerText = `${player_two_seasonal_set_ratio}%`;
+
+                    player_one_seasonal_sets_count_element.innerText = `${player_one_seasonal_set_count}`;
+                    player_two_seasonal_sets_count_element.innerText = `${player_two_seasonal_set_count}`;
+
+                    player_one_seasonal_games_element.innerText = `${player_one_seasonal_game_count}`;
+                    player_two_seasonal_games_element.innerText = `${player_two_seasonal_game_count}`;
+
+                    lifetime_title.innerText = 'Lifetime';
+                    player_one_lifetime_sets_element.innerText = `${player_one_lifetime_set_count}`;
+                    player_two_lifetime_sets_element.innerText = `${player_two_lifetime_set_count}`;
+                    
+                    player_one_lifetime_games_element.innerText = `${player_one_lifetime_game_count}`;
+                    player_two_lifetime_games_element.innerText = `${player_two_lifetime_game_count}`;
 
                 } else {
 
-                    seasonal_sets_title.innerText = 'These players have not played a set this season!';
+                    error_messages_element.innerHTML = `<p>These players have not played a set this season!</p>`;
                     console.log('These players have not played a set this season!');
 
                 }
@@ -549,6 +579,125 @@ async function get_data() {
         console.group('Head 2 Head');
         console.log(head_2_head);
         console.groupEnd();
+
+        // Debug mode to automatically select two players and trigger the click event.
+        if (debug_mode) {
+            player_one_select.options.selectedIndex = 1;
+            player_two_select.options.selectedIndex = 2;
+
+            let click_event = new Event('click');
+            player_selection_submit.dispatchEvent(click_event);
+
+            const character_images = [
+                'banjo-and-kazooie-00-full.png',
+                'bayonetta-00-full.png',
+                'bowser-00-full.png',
+                'bowser-jr-00-full.png',
+                'byleth-00-full.png',
+                'captain-falcon-00-full.png',
+                'chrom-00-full.png',
+                'cloud-00-full.png',
+                'corrin-00-full.png',
+                'daisy-00-full.png',
+                'dark-pit-00-full.png',
+                'dark-samus-00-full.png',
+                'diddy-kong-00-full.png',
+                'donkey-kong-00-full.png',
+                'dr-mario-00-full.png',
+                'duck-hunt-00-full.png',
+                'falco-00-full.png',
+                'fox-00-full.png',
+                'ganondorf-00-full.png',
+                'greninja-00-full.png',
+                'hero-00-full.png',
+                'ice-climbers-00-full.png',
+                'ike-00-full.png',
+                'incineroar-00-full.png',
+                'inkling-00-full.png',
+                'isabelle-00-full.png',
+                'jigglypuff-00-full.png',
+                'joker-00-full.png',
+                'kazuya-00-full.png',
+                'ken-00-full.png',
+                'king-dedede-00-full.png',
+                'king-k-rool-00-full.png',
+                'kirby-00-full.png',
+                'link-00-full.png',
+                'little-mac-00-full.png',
+                'lucario-00-full.png',
+                'lucas-00-full.png',
+                'lucina-00-full.png',
+                'luigi-00-full.png',
+                'mario-00-full.png',
+                'marth-00-full.png',
+                'mega-man-00-full.png',
+                'meta-knight-00-full.png',
+                'mewtwo-00-full.png',
+                'mii-brawler-00-full.png',
+                'mii-gunner-00-full.png',
+                'mii-swordfighter-00-full.png',
+                'min-min-00-full.png',
+                'mr-game-and-watch-00-full.png',
+                'ness-00-full.png',
+                'olimar-00-full.png',
+                'pac-man-00-full.png',
+                'palutena-00-full.png',
+                'peach-00-full.png',
+                'pichu-00-full.png',
+                'pikachu-00-full.png',
+                'piranha-plant-00-full.png',
+                'pit-00-full.png',
+                'pokemon-trainer-00-full.png',
+                'pyra-and-mythra-00-full.png',
+                'richter-00-full.png',
+                'ridley-00-full.png',
+                'rob-00-full.png',
+                'robin-00-full.png',
+                'rosalina-and-luma-00-full.png',
+                'roy-00-full.png',
+                'ryu-00-full.png',
+                'samus-00-full.png',
+                'sephiroth-00-full.png',
+                'sheik-00-full.png',
+                'shulk-00-full.png',
+                'simon-00-full.png',
+                'snake-00-full.png',
+                'sonic-00-full.png',
+                'sora-00-full.png',
+                'steve-00-full.png',
+                'terry-00-full.png',
+                'toon-link-00-full.png',
+                'villager-00-full.png',
+                'wario-00-full.png',
+                'wii-fit-trainer-00-full.png',
+                'wolf-00-full.png',
+                'yoshi-00-full.png',
+                'young-link-00-full.png',
+                'zelda-00-full.png',
+                'zero-suit-samus-00-full.png'
+            ];
+
+            let p1_character = document.querySelector('.p1_character');
+            let p2_character = document.querySelector('.p2_character');
+            let character_counter = 0;
+
+            document.addEventListener('keydown', (e) => {
+
+                if (e.code == 'Space') {
+
+                    p1_character.src = character_prefix + character_images[character_counter];
+                    p2_character.src = character_prefix + character_images[character_counter];
+                    
+                    if (character_counter == character_images.length -1) {
+                        character_counter = 0;
+                    } else {
+                        character_counter++;
+                    }
+
+                }
+
+            });
+        }
 
     // Pulling data failed.
     } catch (error) {
@@ -594,13 +743,36 @@ function deleteExtraFields(json, key) {
 }
 
 
-function bothPlayersSelected(player_one, player_two) {
+function bothPlayersSelected(player_one, player_two, error_messages_element) {
 
     if (player_one.value != player_one_default && player_two.value !== player_two_default) {
+        error_messages_element.innerHTML = '';
+        error_messages_element.style.display = 'none';
         return true;
     } else {
+        error_messages_element.innerHTML = `<p>Please select two players!</p>`;
+        error_messages_element.style.display = 'flex';
         return false;
     }
+
+}
+
+
+function generateTagBanner(tag) {
+
+    let tag_generation = 12;
+    let tag_output = '';
+    let highlighted_tag = `<span class="tag_highlight">${tag}</span>`;
+
+    for (let i = 0; i < tag_generation; i++) { 
+        if (i % 2 == 0) {
+            tag_output += (highlighted_tag + '&nbsp;' + tag + '&nbsp;').repeat(6) + tag + '&nbsp;';
+        } else {
+            tag_output += (tag + '&nbsp;' + highlighted_tag + '&nbsp;').repeat(6) + tag + '&nbsp;';
+        }
+    }
+    
+    return tag_output;
 
 }
 
