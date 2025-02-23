@@ -27,97 +27,73 @@
                 <span class="left_fade"></span>
                 <span class="spotlight"></span>
                 <span class="split_fade"></span>
+                <span id="error_messages" class="error_messages"></span>
 
                 <article class="players">
-                    <span id="player_one_tag" class="tag p1_tag">
-                        YTS<span class="tag_highlight">YTS</span>YTS<span class="tag_highlight">YTS</span>
-                        <span class="tag_highlight">YTS</span>YTS<span class="tag_highlight">YTS</span>YTS
-                        YTS<span class="tag_highlight">YTS</span>YTS<span class="tag_highlight">YTS</span>
-                        <span class="tag_highlight">YTS</span>YTS<span class="tag_highlight">YTS</span>YTS
-                        YTS<span class="tag_highlight">YTS</span>YTS<span class="tag_highlight">YTS</span>
-                        <span class="tag_highlight">YTS</span>YTS<span class="tag_highlight">YTS</span>YTS
-                        YTS<span class="tag_highlight">YTS</span>YTS<span class="tag_highlight">YTS</span>
-                        <span class="tag_highlight">YTS</span>YTS<span class="tag_highlight">YTS</span>YTS
-                        YTS<span class="tag_highlight">YTS</span>YTS<span class="tag_highlight">YTS</span>
-                        <span class="tag_highlight">YTS</span>YTS<span class="tag_highlight">YTS</span>YTS
-                        YTS<span class="tag_highlight">YTS</span>YTS<span class="tag_highlight">YTS</span>
-                        <span class="tag_highlight">YTS</span>YTS<span class="tag_highlight">YTS</span>YTS
-                    </span>
-                    <span id="player_one_name" class="name p1_name">Jonch</span>
-                    <img id="player_one_character" class="character p1_character" src="public/images/fighters/snake-00-full.png">
+                    <span id="player_one_tag" class="tag p1_tag"></span>
+                    <span id="player_one_name" class="name p1_name"></span>
+                    <img id="player_one_character" class="character p1_character" src="">
 
-                    <span id="player_two_tag" class="tag p2_tag">
-                        YTS<span class="tag_highlight">YTS</span>YTS<span class="tag_highlight">YTS</span>
-                        <span class="tag_highlight">YTS</span>YTS<span class="tag_highlight">YTS</span>YTS
-                        YTS<span class="tag_highlight">YTS</span>YTS<span class="tag_highlight">YTS</span>
-                        <span class="tag_highlight">YTS</span>YTS<span class="tag_highlight">YTS</span>YTS
-                        YTS<span class="tag_highlight">YTS</span>YTS<span class="tag_highlight">YTS</span>
-                        <span class="tag_highlight">YTS</span>YTS<span class="tag_highlight">YTS</span>YTS
-                        YTS<span class="tag_highlight">YTS</span>YTS<span class="tag_highlight">YTS</span>
-                        <span class="tag_highlight">YTS</span>YTS<span class="tag_highlight">YTS</span>YTS
-                        YTS<span class="tag_highlight">YTS</span>YTS<span class="tag_highlight">YTS</span>
-                        <span class="tag_highlight">YTS</span>YTS<span class="tag_highlight">YTS</span>YTS
-                        YTS<span class="tag_highlight">YTS</span>YTS<span class="tag_highlight">YTS</span>
-                        <span class="tag_highlight">YTS</span>YTS<span class="tag_highlight">YTS</span>YTS
-                    </span>
-                    <span id="player_two_name" class="name p2_name">Stag</span>
-                    <img id="player_two_character" class="character p2_character" src="public/images/fighters/young-link-00-full.png">
+                    <span id="player_two_tag" class="tag p2_tag"></span>
+                    <span id="player_two_name" class="name p2_name"></span>
+                    <img id="player_two_character" class="character p2_character" src="">
                 </article>
 
-                <article class="data">
+                <article id="data_output" class="data">
                     <div class="head_2_head head_2_head__pr">
-                        <h3>Head To head</h3>
+                        <h3 id="head_to_head_title"></h3>
                         <div class="head_2_head_data_wrapper">
                             <div class="head_2_head_wrapper">
-                                <p class="head_2_head_title">Win %</p>
-                                <p id="player_one_seasonal_sets" class="head_2_head_data">50%</p>
+                                <p class="head_2_head_title win_percent_title"></p>
+                                <p id="player_one_seasonal_sets_ratio" class="head_2_head_data"></p>
                             </div>
                             <div class="head_2_head_wrapper">
-                                <p class="head_2_head_title">PR</p>
-                                <p id="player_one_pr" class="head_2_head_data">#4</p>
+                                <p class="head_2_head_title pr_title"></p>
+                                <p id="player_one_pr" class="head_2_head_data"></p>
                             </div>
                             <span class="divider"></span>
                             <div class="head_2_head_wrapper">
-                                <p class="head_2_head_title">PR</p>
-                                <p id="player_two_pr" class="head_2_head_data">#8</p>
+                                <p class="head_2_head_title pr_title"></p>
+                                <p id="player_two_pr" class="head_2_head_data"></p>
                             </div>
                             <div class="head_2_head_wrapper">
-                                <p class="head_2_head_title">Win %</p>
-                                <p id="player_two_seasonal_sets" class="head_2_head_data">50%</p>
+                                <p class="head_2_head_title win_percent_title"></p>
+                                <p id="player_two_seasonal_sets_ratio" class="head_2_head_data"></p>
                             </div>
                         </div>
                     </div>
+
                     <div class="head_2_head head_2_head__stats">
-                        <h3>Stats</h3>
+                        <h3 id="stats_title"></h3>
                         <div class="head_2_head_wrapper">
-                            <p id="seasonal_title" class="head_2_head_section_title">Seasonal</p>
+                            <p id="seasonal_title" class="head_2_head_section_title"></p>
                             <div class="stat_wrapper">
-                                <p id="player_one_lifetime_sets" class="head_2_head_data">3</p>
-                                <p class="head_2_head_title sets">Sets</p>
-                                <p id="player_two_lifetime_sets" class="head_2_head_data">3</p>
+                                <p id="player_one_seasonal_sets_count" class="head_2_head_data"></p>
+                                <p class="head_2_head_title sets"></p>
+                                <p id="player_two_seasonal_sets_count" class="head_2_head_data"></p>
                             </div>
                             <div class="stat_wrapper">
-                                <p id="player_one_seasonal_games" class="head_2_head_data">7</p>
-                                <p class="head_2_head_title games">Games</p>
-                                <p id="player_two_seasonal_games" class="head_2_head_data">7</p>
+                                <p id="player_one_seasonal_games" class="head_2_head_data"></p>
+                                <p class="head_2_head_title games"></p>
+                                <p id="player_two_seasonal_games" class="head_2_head_data"></p>
                             </div>
                             <div class="stat_wrapper">
-                                <p id="player_one_seasonal_points" class="head_2_head_data">7</p>
-                                <p class="head_2_head_title">Points</p>
-                                <p id="player_two_seasonal_points" class="head_2_head_data">7</p>
+                                <p id="player_one_seasonal_points" class="head_2_head_data"></p>
+                                <p class="head_2_head_title"></p>
+                                <p id="player_two_seasonal_points" class="head_2_head_data"></p>
                             </div>
                         </div>
                         <div class="head_2_head_wrapper">
-                            <p id="lifetime_title" class="head_2_head_section_title">Lifetime</p>
+                            <p id="lifetime_title" class="head_2_head_section_title"></p>
                             <div class="stat_wrapper">
-                                <p id="player_one_lifetime_sets" class="head_2_head_data">10</p>
-                                <p class="head_2_head_title sets">Sets</p>
-                                <p id="player_two_lifetime_sets" class="head_2_head_data">10</p>
+                                <p id="player_one_lifetime_sets" class="head_2_head_data"></p>
+                                <p class="head_2_head_title sets"></p>
+                                <p id="player_two_lifetime_sets" class="head_2_head_data"></p>
                             </div>
                             <div class="stat_wrapper">
-                                <p id="player_one_lifetime_games" class="head_2_head_data">34</p>
-                                <p class="head_2_head_title games">Games</p>
-                                <p id="player_two_lifetime_games" class="head_2_head_data">29</p>
+                                <p id="player_one_lifetime_games" class="head_2_head_data"></p>
+                                <p class="head_2_head_title games"></p>
+                                <p id="player_two_lifetime_games" class="head_2_head_data"></p>
                             </div>
                         </div>
                         <img id="main_logo" class="main_logo" src="public/images/Y-Town-Smash-Logo-v4.png">

@@ -132,7 +132,7 @@ $large-alpha-for-blur: 0.40;
 
             .tag {
                 position: absolute;
-                top: -50%;
+                top: -3%;
                 font-size: 5em;
                 font-family: "Lemonmilk bold";
                 color: $nautical-navy-light;
@@ -140,8 +140,9 @@ $large-alpha-for-blur: 0.40;
                 opacity: 0.3;
                 z-index: 10;
                 height: 200%;
+                width: 100%;
                 overflow: hidden;
-                white-space: pre-line;
+                line-break: anywhere;
             }
 
             .tag_highlight {
@@ -149,14 +150,15 @@ $large-alpha-for-blur: 0.40;
             }
 
             .p1_tag {
-                left: -10%;
+                right: 50%;
                 transform: skew(-10deg, -3deg);
+                text-align: right;
             }
 
             .p2_tag {
-                right: -10%;
+                left: 50%;
                 transform: skew(10deg, 3deg);
-                text-align: right;
+                text-align: left;
             }
 
             .name {
@@ -198,7 +200,7 @@ $large-alpha-for-blur: 0.40;
         }
 
         &.data {
-            display: flex;
+            display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
@@ -356,7 +358,14 @@ $large-alpha-for-blur: 0.40;
         transform: translateX(-50%);
         width: 75%;
         height: 100%;
-        background: linear-gradient(to right, transparent, $nautical-navy, transparent 100%);
+        background: linear-gradient(
+            to right,
+            transparent,
+            $nautical-navy,
+            $nautical-navy,
+            transparent 
+            100%
+        );
     }
 
     .divider {
@@ -367,4 +376,17 @@ $large-alpha-for-blur: 0.40;
 
     .main_logo {
         width: 10em;
+    }
+
+    .error_messages {
+        width: 50%;
+        height: 50vh;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 90;
+        justify-content: center;
+        align-items: center;
+        display: none;
     }

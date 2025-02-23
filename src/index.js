@@ -11,18 +11,20 @@ const seasonal_games_url = base_url + 'seasonal_games.json';
 const player_selection_submit = document.getElementById('player-selection__submit');
 const player_one_select = document.getElementById('player_one');
 const player_two_select = document.getElementById('player_two');
-const data_output = document.getElementById('data');
+const data_output = document.getElementById('data_output');
 const progress_log = document.getElementById('progress-log');
+const error_messages_element = document.getElementById('error_messages');
 
 // Constants (other)
 const tag_separator = ' | ';
 const player_one_default = 'Player One';
 const player_two_default = 'Player Two';
+const default_tag = 'Y-Town Smash';
 const character_delimiter = ' - ';
 const character_prefix = './public/images/fighters/';
 const character_suffix = '-00-full.png';
 const score_delimiter = ' -- ';
-const debug_mode = true;
+const debug_mode = false;
 
 async function get_data() {
 
@@ -361,7 +363,7 @@ async function get_data() {
         // Wait for the user to click Submit.
         player_selection_submit.addEventListener('click', function() {
 
-            if (bothPlayersSelected(player_one_select, player_two_select)) {
+            if (bothPlayersSelected(player_one_select, player_two_select, error_messages_element)) {
 
                 // Scroll down to hide the player selection elements.
                 window.scrollTo({
@@ -470,6 +472,12 @@ async function get_data() {
                     const player_one_seasonal_points_element = document.getElementById('player_one_seasonal_points');
                     const player_two_seasonal_points_element = document.getElementById('player_two_seasonal_points');
 
+                    const head_to_head_title = document.getElementById('head_to_head_title');
+                    const stats_title = document.getElementById('stats_title');
+
+                    const win_percent_title = document.querySelectorAll('.win_percent_title');
+                    const pr_title = document.querySelectorAll('.pr_title');
+
                     const set_title_elements = document.querySelectorAll('.sets');
                     const game_title_elements = document.querySelectorAll('.games');
 
@@ -481,8 +489,11 @@ async function get_data() {
                     const player_two_lifetime_games_element = document.getElementById('player_two_lifetime_games');
                     
                     const seasonal_title = document.getElementById('seasonal_title');
-                    const player_one_seasonal_sets_element = document.getElementById('player_one_seasonal_sets');
-                    const player_two_seasonal_sets_element = document.getElementById('player_two_seasonal_sets');
+                    const player_one_seasonal_sets_ratio_element = document.getElementById('player_one_seasonal_sets_ratio');
+                    const player_two_seasonal_sets_ratio_element = document.getElementById('player_two_seasonal_sets_ratio');
+
+                    const player_one_seasonal_sets_count_element = document.getElementById('player_one_seasonal_sets_count');
+                    const player_two_seasonal_sets_count_element = document.getElementById('player_two_seasonal_sets_count');
 
                     const player_one_seasonal_games_element = document.getElementById('player_one_seasonal_games');
                     const player_two_seasonal_games_element = document.getElementById('player_two_seasonal_games');
@@ -490,10 +501,19 @@ async function get_data() {
                     const main_logo = document.getElementById('main_logo');
 
                     // Adding player stats to elements for view.
+                    data_output.style.display = 'flex';
                     main_logo.style.display = 'block';
 
                     player_one_character_element.src = player_one_main;
                     player_two_character_element.src = player_two_main;
+
+                    if (player_one_tag == '') {
+                        player_one_tag = default_tag;
+                    }
+
+                    if (player_two_tag == '') {
+                        player_two_tag = default_tag;
+                    }
 
                     player_one_tag_element.innerHTML = generateTagBanner(player_one_tag);
                     player_two_tag_element.innerHTML = generateTagBanner(player_two_tag);
@@ -507,6 +527,17 @@ async function get_data() {
                     player_one_seasonal_points_element.innerText = `${player_one_seasonal_points}`;
                     player_two_seasonal_points_element.innerText = `${player_two_seasonal_points}`;
 
+                    head_to_head_title.innerText = 'Head to Head';
+                    stats_title.innerText = 'Stats';
+                    
+                    win_percent_title.forEach((element) => {
+                        element.innerText = 'Win %';
+                    });
+
+                    pr_title.forEach((element) => {
+                        element.innerText = 'PR';
+                    });
+
                     set_title_elements.forEach((element) => {
                         element.innerText = 'Sets';
                     });
@@ -516,8 +547,11 @@ async function get_data() {
                     });
 
                     seasonal_title.innerText = 'Seasonal';
-                    player_one_seasonal_sets_element.innerText = `${player_one_seasonal_set_ratio}%`;
-                    player_two_seasonal_sets_element.innerText = `${player_two_seasonal_set_ratio}%`;
+                    player_one_seasonal_sets_ratio_element.innerText = `${player_one_seasonal_set_ratio}%`;
+                    player_two_seasonal_sets_ratio_element.innerText = `${player_two_seasonal_set_ratio}%`;
+
+                    player_one_seasonal_sets_count_element.innerText = `${player_one_seasonal_set_count}`;
+                    player_two_seasonal_sets_count_element.innerText = `${player_two_seasonal_set_count}`;
 
                     player_one_seasonal_games_element.innerText = `${player_one_seasonal_game_count}`;
                     player_two_seasonal_games_element.innerText = `${player_two_seasonal_game_count}`;
@@ -531,7 +565,7 @@ async function get_data() {
 
                 } else {
 
-                    seasonal_sets_title.innerText = 'These players have not played a set this season!';
+                    error_messages_element.innerHTML = `<p>These players have not played a set this season!</p>`;
                     console.log('These players have not played a set this season!');
 
                 }
@@ -556,8 +590,6 @@ async function get_data() {
 
             const character_images = [
                 'banjo-and-kazooie-00-full.png',
-                'pyra-00-full.png',
-                'mythra-00-full.png',
                 'bayonetta-00-full.png',
                 'bowser-00-full.png',
                 'bowser-jr-00-full.png',
@@ -711,11 +743,15 @@ function deleteExtraFields(json, key) {
 }
 
 
-function bothPlayersSelected(player_one, player_two) {
+function bothPlayersSelected(player_one, player_two, error_messages_element) {
 
     if (player_one.value != player_one_default && player_two.value !== player_two_default) {
+        error_messages_element.innerHTML = '';
+        error_messages_element.style.display = 'none';
         return true;
     } else {
+        error_messages_element.innerHTML = `<p>Please select two players!</p>`;
+        error_messages_element.style.display = 'flex';
         return false;
     }
 
@@ -723,26 +759,21 @@ function bothPlayersSelected(player_one, player_two) {
 
 
 function generateTagBanner(tag) {
-    let tag_counter = 1;
-    let tag_generation = 4 * 12;
+
+    let tag_generation = 12;
     let tag_output = '';
+    let highlighted_tag = `<span class="tag_highlight">${tag}</span>`;
 
-    console.group();
-    console.log(`counter: ${tag_counter}, generation: ${tag_generation}`);
-    
-    for (tag_counter; tag_counter < tag_generation; tag_counter++) {
-        if (tag_counter % 2 == 0) {
-            tag_output += `<span class="tag_highlight">${tag}</span>`;
+    for (let i = 0; i < tag_generation; i++) { 
+        if (i % 2 == 0) {
+            tag_output += (highlighted_tag + '&nbsp;' + tag + '&nbsp;').repeat(6) + tag + '&nbsp;';
         } else {
-            tag_output += `${tag}`;
+            tag_output += (tag + '&nbsp;' + highlighted_tag + '&nbsp;').repeat(6) + tag + '&nbsp;';
         }
-
-        console.log(`tag_output: ${tag_output}`);
     }
-
-    console.groupEnd();
-
+    
     return tag_output;
+
 }
 
 
