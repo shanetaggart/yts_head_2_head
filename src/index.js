@@ -20,11 +20,12 @@ const tag_separator = ' | ';
 const player_one_default = 'Player One';
 const player_two_default = 'Player Two';
 const default_tag = 'Y-Town Smash';
+const bracket_social = 'https://start.gg/yts';
 const character_delimiter = ' - ';
 const character_prefix = './public/images/fighters/';
 const character_suffix = '-00-full.png';
 const score_delimiter = ' -- ';
-const debug_mode = false;
+const debug_mode = true;
 
 async function get_data() {
 
@@ -482,6 +483,8 @@ async function get_data() {
                     const game_title_elements = document.querySelectorAll('.games');
                     const points_title_elements = document.querySelectorAll('.points');
 
+                    const bracket_social_element = document.getElementById('bracket');
+
                     const lifetime_title = document.getElementById('lifetime_title');
                     const player_one_lifetime_sets_element = document.getElementById('player_one_lifetime_sets');
                     const player_two_lifetime_sets_element = document.getElementById('player_two_lifetime_sets');
@@ -504,6 +507,7 @@ async function get_data() {
                     // Adding player stats to elements for view.
                     data_output.style.display = 'flex';
                     main_logo.style.display = 'block';
+                    bracket_social_element.style.display = 'block';
 
                     player_one_character_element.src = player_one_main;
                     player_two_character_element.src = player_two_main;
@@ -550,6 +554,8 @@ async function get_data() {
                     points_title_elements.forEach((element) => {
                         element.innerText = 'Points';
                     });
+
+                    bracket_social_element.innerText = `${bracket_social}`;
 
                     seasonal_title.innerText = 'Seasonal';
                     player_one_seasonal_sets_ratio_element.innerText = `${player_one_seasonal_set_ratio}%`;
@@ -765,7 +771,7 @@ function bothPlayersSelected(player_one, player_two, error_messages_element) {
 
 function generateTagBanner(tag) {
 
-    let tag_generation = 12;
+    let tag_generation = 100;
     let tag_output = '';
     let highlighted_tag = `<span class="tag_highlight">${tag}</span>`;
 
