@@ -292,6 +292,16 @@ $large-alpha-for-blur: 0.40;
                     flex-direction: column;
                     justify-content: center;
                     align-items: center;
+                    width: 20%;
+
+                }
+                
+                &_winner {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: center;
+                    width: 5em;
                 }
 
                 &_section_title {
@@ -396,8 +406,34 @@ $large-alpha-for-blur: 0.40;
 
     .divider {
         width: 2px;
-        height: 3em;
-        background: $nautical-navy-extra-dark;
+        height: 100%;
+        background: $nautical-navy-light;
+        position: relative;
+    }
+
+    .p1_win::before {
+        content: '';
+        border-style: solid;
+        border-width: 1em 1em 1em 0;
+        border-color: transparent transparent transparent transparent;
+        display: block;
+
+    }
+
+    .win::before {
+        border-color: transparent $gamer-green transparent transparent;
+    }
+        
+    .p2_win::after {
+        content: '';
+        border-style: solid;
+        border-width: 1em 0 1em 1em;
+        border-color: transparent transparent transparent transparent;
+        display: block;
+    }
+
+    .win::after {
+        border-color: transparent transparent transparent $gamer-green;
     }
 
     .main_logo {
