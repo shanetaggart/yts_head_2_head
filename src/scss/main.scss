@@ -172,14 +172,14 @@ $large-alpha-for-blur: 0.40;
                 right: 50%;
                 text-align: right;
                 animation-name: translate_tag_p1;
-                transform: skew(10deg, 3deg);
+                transform: translateY(-100vh) skew(10deg, 3deg);
             }
 
             .p2_tag {
                 left: 50%;
                 text-align: left;
                 animation-name: translate_tag_p2;
-                transform: skew(-10deg, -3deg);
+                transform: translateY(-100vh) skew(-10deg, -3deg);
             }
 
             .name {
@@ -207,19 +207,19 @@ $large-alpha-for-blur: 0.40;
                 transform-origin: bottom right;
             }
 
-            .character {
+            .fighter {
                 position: absolute;
                 bottom: 0;
                 z-index: 40;
                 max-width: 38%;
             }
 
-            .p1_character {
+            .p1_fighter {
                 left: 3%;
                 filter: drop-shadow(-5px 5px 3px $nautical-navy-dark);
             }
 
-            .p2_character {
+            .p2_fighter {
                 right: 3%;
                 filter: drop-shadow(5px 5px 3px $nautical-navy-dark);
             }
@@ -414,7 +414,7 @@ $large-alpha-for-blur: 0.40;
         z-index: 90;
         justify-content: center;
         align-items: center;
-        display: none;
+        display: flex;
     }
 
     .bracket {
