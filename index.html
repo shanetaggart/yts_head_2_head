@@ -10,11 +10,11 @@
         <main>
 
             <section class="player-selection">
-                <label for="player_one">
-                    <select id="player_one" name="player_one"></select>
+                <label for="p1">
+                    <select id="p1" name="p1"></select>
                 </label>
-                <label for="player_two">
-                    <select id="player_two" name="player_two"></select>
+                <label for="p2">
+                    <select id="p2" name="p2"></select>
                 </label>
                 <button id="player-selection__submit">Submit</button>
             </section>
@@ -30,75 +30,75 @@
                 <span id="error_messages" class="error_messages"></span>
 
                 <article class="players">
-                    <span id="player_one_tag" class="tag p1_tag"></span>
-                    <span id="player_one_name" class="name p1_name"></span>
-                    <img id="player_one_character" class="character p1_character" src="">
+                    <span id="p1_tag" class="tag p1_tag"></span>
+                    <span id="p1_name" class="name p1_name"></span>
+                    <img id="p1_fighter" class="fighter p1_fighter" src="">
 
-                    <span id="player_two_tag" class="tag p2_tag"></span>
-                    <span id="player_two_name" class="name p2_name"></span>
-                    <img id="player_two_character" class="character p2_character" src="">
+                    <span id="p2_tag" class="tag p2_tag"></span>
+                    <span id="p2_name" class="name p2_name"></span>
+                    <img id="p2_fighter" class="fighter p2_fighter src="">
                 </article>
 
                 <article id="data_output" class="data">
                     <div class="head_2_head head_2_head__pr">
-                        <h3 id="head_to_head_title"></h3>
+                        <h3 id="title_head_to_head"></h3>
                         <div class="head_2_head_data_wrapper">
                             <div class="head_2_head_wrapper">
-                                <p class="head_2_head_title win_percent_title"></p>
-                                <p id="player_one_seasonal_sets_ratio" class="head_2_head_data"></p>
+                                <p class="head_2_head_title title_win_percent"></p>
+                                <p id="p1_seasonal_sets_win_percent" class="head_2_head_data"></p>
                             </div>
                             <div class="head_2_head_wrapper">
-                                <p class="head_2_head_title pr_title"></p>
-                                <p id="player_one_pr" class="head_2_head_data"></p>
+                                <p class="head_2_head_title title_pr"></p>
+                                <p id="p1_pr" class="head_2_head_data"></p>
                             </div>
                             <span class="divider"></span>
                             <div class="head_2_head_wrapper">
-                                <p class="head_2_head_title pr_title"></p>
-                                <p id="player_two_pr" class="head_2_head_data"></p>
+                                <p class="head_2_head_title title_pr"></p>
+                                <p id="p2_pr" class="head_2_head_data"></p>
                             </div>
                             <div class="head_2_head_wrapper">
-                                <p class="head_2_head_title win_percent_title"></p>
-                                <p id="player_two_seasonal_sets_ratio" class="head_2_head_data"></p>
+                                <p class="head_2_head_title title_win_percent"></p>
+                                <p id="p2_seasonal_sets_win_percent" class="head_2_head_data"></p>
                             </div>
                         </div>
                     </div>
 
                     <div class="head_2_head head_2_head__stats">
-                        <h3 id="stats_title"></h3>
+                        <h3 id="title_stats"></h3>
                         <div class="head_2_head_wrapper">
-                            <p id="seasonal_title" class="head_2_head_section_title"></p>
+                            <p id="title_seasonal" class="head_2_head_section_title"></p>
                             <div class="stat_wrapper">
-                                <p id="player_one_seasonal_sets_count" class="head_2_head_data"></p>
+                                <p id="p1_seasonal_sets_win_count" class="head_2_head_data"></p>
                                 <p class="head_2_head_title sets"></p>
-                                <p id="player_two_seasonal_sets_count" class="head_2_head_data"></p>
+                                <p id="p2_seasonal_sets_win_count" class="head_2_head_data"></p>
                             </div>
                             <div class="stat_wrapper">
-                                <p id="player_one_seasonal_games" class="head_2_head_data"></p>
+                                <p id="p1_seasonal_games_win_count" class="head_2_head_data"></p>
                                 <p class="head_2_head_title games"></p>
-                                <p id="player_two_seasonal_games" class="head_2_head_data"></p>
+                                <p id="p2_seasonal_games_win_count" class="head_2_head_data"></p>
                             </div>
                             <div class="stat_wrapper">
-                                <p id="player_one_seasonal_points" class="head_2_head_data"></p>
+                                <p id="p1_seasonal_points" class="head_2_head_data"></p>
                                 <p class="head_2_head_title points"></p>
-                                <p id="player_two_seasonal_points" class="head_2_head_data"></p>
+                                <p id="p2_seasonal_points" class="head_2_head_data"></p>
                             </div>
                         </div>
                         <div class="head_2_head_wrapper">
-                            <p id="lifetime_title" class="head_2_head_section_title"></p>
+                            <p id="title_lifetime" class="head_2_head_section_title"></p>
                             <div class="stat_wrapper">
-                                <p id="player_one_lifetime_sets" class="head_2_head_data"></p>
+                                <p id="p1_lifetime_sets_win_count" class="head_2_head_data"></p>
                                 <p class="head_2_head_title sets"></p>
-                                <p id="player_two_lifetime_sets" class="head_2_head_data"></p>
+                                <p id="p2_lifetime_sets_win_count" class="head_2_head_data"></p>
                             </div>
                             <div class="stat_wrapper">
-                                <p id="player_one_lifetime_games" class="head_2_head_data"></p>
+                                <p id="p1_lifetime_games_win_count" class="head_2_head_data"></p>
                                 <p class="head_2_head_title games"></p>
-                                <p id="player_two_lifetime_games" class="head_2_head_data"></p>
+                                <p id="p2_lifetime_games_win_count" class="head_2_head_data"></p>
                             </div>
                         </div>
                         <img id="main_logo" class="main_logo" src="public/images/Y-Town-Smash-Logo-v4.png">
                     </div>
-                    <span id="bracket" class="bracket"></span>
+                    <span id="social_bracket" class="bracket"></span>
                 </article>
 
             </section>

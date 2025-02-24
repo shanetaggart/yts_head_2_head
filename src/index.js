@@ -1,96 +1,104 @@
 // Constants (URLs)
-const base_url = 'http://127.0.0.1:8082/src/data/';
-const lifetime_rankings_url = base_url + 'lifetime_rankings.json';
-const lifetime_sets_url = base_url + 'lifetime_sets.json';
-const lifetime_games_url = base_url + 'lifetime_games.json';
-const seasonal_rankings_url = base_url + 'seasonal_rankings.json';
-const seasonal_sets_url = base_url + 'seasonal_sets.json';
-const seasonal_games_url = base_url + 'seasonal_games.json';
+const URL_BASE = 'http://127.0.0.1:8082/src/data/';
+const URL_LIFETIME_RANKINGS = URL_BASE + 'lifetime_rankings.json';
+const URL_LIFETIME_SETS = URL_BASE + 'lifetime_sets.json';
+const URL_LIFETIME_GAMES = URL_BASE + 'lifetime_games.json';
+const URL_SEASONAL_RANKINGS = URL_BASE + 'seasonal_rankings.json';
+const URL_SEASONAL_SETS = URL_BASE + 'seasonal_sets.json';
+const URL_SEASONAL_GAMES = URL_BASE + 'seasonal_games.json';
+
 
 // Constants (elements)
-const player_selection_submit = document.getElementById('player-selection__submit');
-const player_one_select = document.getElementById('player_one');
-const player_two_select = document.getElementById('player_two');
-const data_output = document.getElementById('data_output');
-const progress_log = document.getElementById('progress-log');
-const error_messages_element = document.getElementById('error_messages');
+const E_PLAYER_SELECTION_SUBMIT = document.getElementById('player-selection__submit');
+const E_P1_SELECT = document.getElementById('p1');
+const E_P2_SELECT = document.getElementById('p2');
+const E_DATA_OUTPUT = document.getElementById('data_output');
+const E_ERROR_MESSAGES = document.getElementById('error_messages');
+
 
 // Constants (other)
-const tag_separator = ' | ';
-const player_one_default = 'Player One';
-const player_two_default = 'Player Two';
-const default_tag = 'Y-Town Smash';
-const bracket_social = 'https://start.gg/yts';
-const character_delimiter = ' - ';
-const character_prefix = './public/images/fighters/';
-const character_suffix = '-00-full.png';
-const score_delimiter = ' -- ';
-const debug_mode = true;
+const SEPARATOR_TAG = ' | ';
+const SEPARATOR_FIGHTER = ' - ';
+const SEPARATOR_SCORE = ' -- ';
+const DEFAULT_P1 = 'Player One';
+const DEFAULT_P2 = 'Player Two';
+const DEFAULT_TAG = 'Y-Town Smash';
+const SOCIAL_BRACKET = 'https://start.gg/yts';
+const FIGHTER_PREFIX = './public/images/fighters/';
+const FIGHTER_SUFFIX = '-00-full.png';
+const DEBUG_MODE = true;
 
-async function get_data() {
 
+async function get_head_to_head_data() {
+
+    
     try {
         
-        writeLog('Attempting to pull data...');
-        
+
         // Attempt to pull data.
-        const lifetime_rankings_response = await fetch(lifetime_rankings_url);
-        const lifetime_sets_response = await fetch(lifetime_sets_url);
-        const lifetime_games_response = await fetch(lifetime_games_url);
-        const seasonal_rankings_response = await fetch(seasonal_rankings_url);
-        const seasonal_sets_response = await fetch(seasonal_sets_url);
-        const seasonal_games_response = await fetch(seasonal_games_url);
+        writeLog('Attempting to pull data...');
+
+        const RESPONSE_LIFETIME_RANKINGS = await fetch(URL_LIFETIME_RANKINGS);
+        const RESPONSE_LIFETIME_SETS = await fetch(URL_LIFETIME_SETS);
+        const RESPONSE_LIFETIME_GAMES = await fetch(URL_LIFETIME_GAMES);
+        const RESPONSE_SEASONAL_RANKINGS = await fetch(URL_SEASONAL_RANKINGS);
+        const RESPONSE_SEASONAL_SETS = await fetch(URL_SEASONAL_SETS);
+        const RESPONSE_SEASONAL_GAMES = await fetch(URL_SEASONAL_GAMES);
+
 
         // Failure to get a response.
-        if (!lifetime_rankings_response.ok) {throw new Error(`She's broke bahd! Response status: ${lifetime_rankings_response.status}`); }
-        if (!lifetime_sets_response.ok) {throw new Error(`She's broke bahd! Response status: ${lifetime_sets_response.status}`); }
-        if (!lifetime_games_response.ok) {throw new Error(`She's broke bahd! Response status: ${lifetime_games_response.status}`); }
-        if (!seasonal_rankings_response.ok) {throw new Error(`She's broke bahd! Response status: ${seasonal_rankings_response.status}`); }
-        if (!seasonal_sets_response.ok) {throw new Error(`She's broke bahd! Response status: ${seasonal_sets_response.status}`); }
-        if (!seasonal_games_response.ok) {throw new Error(`She's broke bahd! Response status: ${seasonal_games_response.status}`); }
+        if (!RESPONSE_LIFETIME_RANKINGS.ok) {throw new Error(`She's broke bahd! Response status: ${RESPONSE_LIFETIME_RANKINGS.status}`); }
+        if (!RESPONSE_LIFETIME_SETS.ok) {throw new Error(`She's broke bahd! Response status: ${RESPONSE_LIFETIME_SETS.status}`); }
+        if (!RESPONSE_LIFETIME_GAMES.ok) {throw new Error(`She's broke bahd! Response status: ${RESPONSE_LIFETIME_GAMES.status}`); }
+        if (!RESPONSE_SEASONAL_RANKINGS.ok) {throw new Error(`She's broke bahd! Response status: ${RESPONSE_SEASONAL_RANKINGS.status}`); }
+        if (!RESPONSE_SEASONAL_SETS.ok) {throw new Error(`She's broke bahd! Response status: ${RESPONSE_SEASONAL_SETS.status}`); }
+        if (!RESPONSE_SEASONAL_GAMES.ok) {throw new Error(`She's broke bahd! Response status: ${RESPONSE_SEASONAL_GAMES.status}`); }
 
-        writeLog('Responses OK, pulling data...');
 
         // Response is good, wait for data to pull.
-        const lifetime_rankings_response_json = await lifetime_rankings_response.json();
-        const lifetime_sets_response_json = await lifetime_sets_response.json();
-        const lifetime_games_response_json = await lifetime_games_response.json();
-        const seasonal_rankings_response_json = await seasonal_rankings_response.json();
-        const seasonal_sets_response_json = await seasonal_sets_response.json();
-        const seasonal_games_response_json = await seasonal_games_response.json();
+        writeLog('Responses OK, pulling data...');
 
+        const RESPONSE_LIFETIME_RANKINGS_JSON = await RESPONSE_LIFETIME_RANKINGS.json();
+        const RESPONSE_LIFETIME_SETS_JSON = await RESPONSE_LIFETIME_SETS.json();
+        const RESPONSE_LIFETIME_GAMES_JSON = await RESPONSE_LIFETIME_GAMES.json();
+        const RESPONSE_SEASONAL_RANKINGS_JSON = await RESPONSE_SEASONAL_RANKINGS.json();
+        const RESPONSE_SEASONAL_SETS_JSON = await RESPONSE_SEASONAL_SETS.json();
+        const RESPONSE_SEASONAL_GAMES_JSON = await RESPONSE_SEASONAL_GAMES.json();
+
+
+        // Initialize an object to organize all of the data.
         writeLog('Creating Head 2 Head JSON: Building Player structure...');
         
-        // Initialize an object to organize all of the data.
         let head_2_head = {};
 
-        // Lifetime Rankings.
-        for (const player in lifetime_rankings_response_json) {
 
-            let current_player = lifetime_rankings_response_json[player].Player;
+        // Build object structure and add Lifetime Rankings data.
+        for (const KEY in RESPONSE_LIFETIME_RANKINGS_JSON) {
+
+            let current_player_name = RESPONSE_LIFETIME_RANKINGS_JSON[KEY].Player;
             let current_player_tag = '';
 
-            if (current_player.includes(tag_separator)) {
+            if (current_player_name.includes(SEPARATOR_TAG)) {
 
-                let current_player_data = current_player.split(tag_separator);
+                let current_player_data = current_player_name.split(SEPARATOR_TAG);
 
-                current_player = current_player_data[1];
+                current_player_name = current_player_data[1];
                 current_player_tag = current_player_data[0];
             }
 
-            head_2_head[current_player] = {
+            head_2_head[current_player_name] = {
 
-                'Characters': lifetime_rankings_response_json[player].Characters,
-                'Country': lifetime_rankings_response_json[player].Country,
+                'Fighters': RESPONSE_LIFETIME_RANKINGS_JSON[KEY].Characters,
+                'Country': RESPONSE_LIFETIME_RANKINGS_JSON[KEY].Country,
                 'GameData': {
                     'Lifetime': {},
                     'Seasonal': {}
                 },
-                'PlayerName': current_player,
+                'PlayerName': current_player_name,
                 'PowerRanking': {
                     'Lifetime': {
-                        'Points': lifetime_rankings_response_json[player].Points,
-                        'Rank': lifetime_rankings_response_json[player].Rank
+                        'Points': RESPONSE_LIFETIME_RANKINGS_JSON[KEY].Points,
+                        'Rank': RESPONSE_LIFETIME_RANKINGS_JSON[KEY].Rank
                     },
                     'Seasonal': {
                         'Points': '',
@@ -107,114 +115,119 @@ async function get_data() {
 
         }
 
+
+        // Add Seasonal Rankings data.
         writeLog('Creating Head 2 Head JSON: Seasonal Rankings...');
 
-        // Seasonal Rankings.
-        for (const player in seasonal_rankings_response_json) {
+        for (const KEY in RESPONSE_SEASONAL_RANKINGS_JSON) {
 
-            let current_player = seasonal_rankings_response_json[player].Player;
-            let current_player_points = seasonal_rankings_response_json[player].Points;
-            let current_player_rank = seasonal_rankings_response_json[player].Rank;
-            current_player = cleanPlayerName(current_player);
+            let current_player_name = RESPONSE_SEASONAL_RANKINGS_JSON[KEY].Player;
+            let current_player_points = RESPONSE_SEASONAL_RANKINGS_JSON[KEY].Points;
+            let current_player_rank = RESPONSE_SEASONAL_RANKINGS_JSON[KEY].Rank;
+            current_player_name = cleanPlayerName(current_player_name);
 
-            head_2_head[current_player].PowerRanking.Seasonal.Points = current_player_points;
-            head_2_head[current_player].PowerRanking.Seasonal.Rank = current_player_rank;
+            head_2_head[current_player_name].PowerRanking.Seasonal.Points = current_player_points;
+            head_2_head[current_player_name].PowerRanking.Seasonal.Rank = current_player_rank;
 
         }
 
+
+        // Store the headers from the Set and Game data.
         writeLog('Data cleaning: Deleteing header arrays...');
         
-        // Store the headers from the Set and Game data.
-        const lifetime_sets_headers = lifetime_sets_response_json[0];
-        const lifetime_games_headers = lifetime_games_response_json[0];
-        const seasonal_sets_headers = seasonal_sets_response_json[0];
-        const seasonal_games_headers = seasonal_games_response_json[0];
+        const LIFETIME_SETS_HEADERS = RESPONSE_LIFETIME_SETS_JSON[0];
+        const LIFETIME_GAMES_HEADERS = RESPONSE_LIFETIME_GAMES_JSON[0];
+        const SEASONAL_SETS_HEADERS = RESPONSE_SEASONAL_SETS_JSON[0];
+        const SEASONAL_GAMES_HEADERS = RESPONSE_SEASONAL_GAMES_JSON[0];
+
 
         // Delete the headers from the original objects.
-        delete lifetime_sets_response_json[0];
-        delete lifetime_games_response_json[0];
-        delete seasonal_sets_response_json[0];
-        delete seasonal_games_response_json[0];
+        delete RESPONSE_LIFETIME_SETS_JSON[0];
+        delete RESPONSE_LIFETIME_GAMES_JSON[0];
+        delete RESPONSE_SEASONAL_SETS_JSON[0];
+        delete RESPONSE_SEASONAL_GAMES_JSON[0];
 
-        writeLog('Data cleaning: Lifetime Sets...');
 
         // Replace the keys in the Set and Game data to be the Player Name.
-        for (const player in lifetime_sets_response_json) {
+        writeLog('Data cleaning: Lifetime Sets...');
 
-            let player_name = lifetime_sets_response_json[player]["field2"];
+        for (const KEY in RESPONSE_LIFETIME_SETS_JSON) {
 
-            if (player_name == undefined) {
+            let current_player_name = RESPONSE_LIFETIME_SETS_JSON[KEY]["field2"];
+
+            if (current_player_name == undefined) {
                 continue;
             }
 
-            player_name = cleanPlayerName(player_name);
-            lifetime_sets_response_json[player_name] = lifetime_sets_response_json[player];
-            delete lifetime_sets_response_json[player];
+            current_player_name = cleanPlayerName(current_player_name);
+            RESPONSE_LIFETIME_SETS_JSON[current_player_name] = RESPONSE_LIFETIME_SETS_JSON[KEY];
+            delete RESPONSE_LIFETIME_SETS_JSON[KEY];
 
         }
 
         writeLog('Data cleaning: Lifetime Games...');
 
-        for (const player in lifetime_games_response_json) {
+        for (const KEY in RESPONSE_LIFETIME_GAMES_JSON) {
 
-            let player_name = lifetime_games_response_json[player]["field2"];
+            let current_player_name = RESPONSE_LIFETIME_GAMES_JSON[KEY]["field2"];
             
-            if (player_name == undefined) {
+            if (current_player_name == undefined) {
                 continue;
             }
             
-            player_name = cleanPlayerName(player_name);
-            lifetime_games_response_json[player_name] = lifetime_games_response_json[player];
-            delete lifetime_games_response_json[player];
+            current_player_name = cleanPlayerName(current_player_name);
+            RESPONSE_LIFETIME_GAMES_JSON[current_player_name] = RESPONSE_LIFETIME_GAMES_JSON[KEY];
+            delete RESPONSE_LIFETIME_GAMES_JSON[KEY];
 
         }
 
         writeLog('Data cleaning: Seasonal Sets...');
 
-        for (const player in seasonal_sets_response_json) {
+        for (const KEY in RESPONSE_SEASONAL_SETS_JSON) {
 
-            let player_name = seasonal_sets_response_json[player]["field2"];
+            let current_player_name = RESPONSE_SEASONAL_SETS_JSON[KEY]["field2"];
             
-            if (player_name == undefined) {
+            if (current_player_name == undefined) {
                 continue;
             }
             
-            player_name = cleanPlayerName(player_name);
-            seasonal_sets_response_json[player_name] = seasonal_sets_response_json[player];
-            delete seasonal_sets_response_json[player];
+            current_player_name = cleanPlayerName(current_player_name);
+            RESPONSE_SEASONAL_SETS_JSON[current_player_name] = RESPONSE_SEASONAL_SETS_JSON[KEY];
+            delete RESPONSE_SEASONAL_SETS_JSON[KEY];
 
         }
 
         writeLog('Data cleaning: Seasonal Games...');
 
-        for (const player in seasonal_games_response_json) {
+        for (const KEY in RESPONSE_SEASONAL_GAMES_JSON) {
 
-            let player_name = seasonal_games_response_json[player]["field2"];
+            let current_player_name = RESPONSE_SEASONAL_GAMES_JSON[KEY]["field2"];
             
-            if (player_name == undefined) {
+            if (current_player_name == undefined) {
                 continue;
             }
             
-            player_name = cleanPlayerName(player_name);
-            seasonal_games_response_json[player_name] = seasonal_games_response_json[player];
-            delete seasonal_games_response_json[player];
+            current_player_name = cleanPlayerName(current_player_name);
+            RESPONSE_SEASONAL_GAMES_JSON[current_player_name] = RESPONSE_SEASONAL_GAMES_JSON[KEY];
+            delete RESPONSE_SEASONAL_GAMES_JSON[KEY];
 
         }
 
-        writeLog('Data cleaning: Key replacements for Lifetime Sets...');
 
         // Replace the keys for Set and Game results with the Player Name.
-        for (const player in lifetime_sets_response_json) {
+        writeLog('Data cleaning: Key replacements for Lifetime Sets...');
 
-            for (const result in lifetime_sets_response_json[player]) {
+        for (const KEY in RESPONSE_LIFETIME_SETS_JSON) {
 
-                let current_result = lifetime_sets_response_json[player][result];
-                let current_result_opponent = lifetime_sets_headers[result];
+            for (const VALUE in RESPONSE_LIFETIME_SETS_JSON[KEY]) {
 
-                current_result_opponent = cleanPlayerName(current_result_opponent);
+                let current_result = RESPONSE_LIFETIME_SETS_JSON[KEY][VALUE];
+                let current_opponent_name = LIFETIME_SETS_HEADERS[VALUE];
 
-                lifetime_sets_response_json[player][current_result_opponent] = current_result;
-                delete lifetime_sets_response_json[player][result];
+                current_opponent_name = cleanPlayerName(current_opponent_name);
+
+                RESPONSE_LIFETIME_SETS_JSON[KEY][current_opponent_name] = current_result;
+                delete RESPONSE_LIFETIME_SETS_JSON[KEY][VALUE];
 
             }
 
@@ -222,17 +235,17 @@ async function get_data() {
 
         writeLog('Data cleaning: Key replacements for Lifetime Games...');
 
-        for (const player in lifetime_games_response_json) {
+        for (const KEY in RESPONSE_LIFETIME_GAMES_JSON) {
 
-            for (const result in lifetime_games_response_json[player]) {
+            for (const VALUE in RESPONSE_LIFETIME_GAMES_JSON[KEY]) {
 
-                let current_result = lifetime_games_response_json[player][result];
-                let current_result_opponent = lifetime_games_headers[result];
+                let current_result = RESPONSE_LIFETIME_GAMES_JSON[KEY][VALUE];
+                let current_opponent_name = LIFETIME_GAMES_HEADERS[VALUE];
 
-                current_result_opponent = cleanPlayerName(current_result_opponent);
+                current_opponent_name = cleanPlayerName(current_opponent_name);
                 
-                lifetime_games_response_json[player][current_result_opponent] = current_result;
-                delete lifetime_games_response_json[player][result];
+                RESPONSE_LIFETIME_GAMES_JSON[KEY][current_opponent_name] = current_result;
+                delete RESPONSE_LIFETIME_GAMES_JSON[KEY][VALUE];
 
             }
 
@@ -240,17 +253,17 @@ async function get_data() {
 
         writeLog('Data cleaning: Key replacements for Seasonal Sets...');
 
-        for (const player in seasonal_sets_response_json) {
+        for (const KEY in RESPONSE_SEASONAL_SETS_JSON) {
             
-            for (const result in seasonal_sets_response_json[player]) {
+            for (const VALUE in RESPONSE_SEASONAL_SETS_JSON[KEY]) {
 
-                let current_result = seasonal_sets_response_json[player][result];
-                let current_result_opponent = seasonal_sets_headers[result];
+                let current_result = RESPONSE_SEASONAL_SETS_JSON[KEY][VALUE];
+                let current_opponent_name = SEASONAL_SETS_HEADERS[VALUE];
 
-                current_result_opponent = cleanPlayerName(current_result_opponent);
+                current_opponent_name = cleanPlayerName(current_opponent_name);
                 
-                seasonal_sets_response_json[player][current_result_opponent] = current_result;
-                delete seasonal_sets_response_json[player][result];
+                RESPONSE_SEASONAL_SETS_JSON[KEY][current_opponent_name] = current_result;
+                delete RESPONSE_SEASONAL_SETS_JSON[KEY][VALUE];
 
             }
 
@@ -258,113 +271,121 @@ async function get_data() {
 
         writeLog('Data cleaning: Key replacements for Seasonal Games...');
 
-        for (const player in seasonal_games_response_json) {
+        for (const KEY in RESPONSE_SEASONAL_GAMES_JSON) {
 
-            for (const result in seasonal_games_response_json[player]) {
+            for (const VALUE in RESPONSE_SEASONAL_GAMES_JSON[KEY]) {
 
-                let current_result = seasonal_games_response_json[player][result];
-                let current_result_opponent = seasonal_games_headers[result];
+                let current_result = RESPONSE_SEASONAL_GAMES_JSON[KEY][VALUE];
+                let current_opponent_name = SEASONAL_GAMES_HEADERS[VALUE];
 
-                current_result_opponent = cleanPlayerName(current_result_opponent);
+                current_opponent_name = cleanPlayerName(current_opponent_name);
              
-                seasonal_games_response_json[player][current_result_opponent] = current_result;
-                delete seasonal_games_response_json[player][result];
+                RESPONSE_SEASONAL_GAMES_JSON[KEY][current_opponent_name] = current_result;
+                delete RESPONSE_SEASONAL_GAMES_JSON[KEY][VALUE];
 
             }
 
         }
 
+
+        // Add Lifetime Sets data.
         writeLog('Creating Head 2 Head JSON: Adding Lifetime Sets data...');
 
-        // Lifetime Sets.
-        for (const player in lifetime_sets_response_json) {
+        for (const KEY in RESPONSE_LIFETIME_SETS_JSON) {
 
-            if (player == 0) {
-                delete lifetime_sets_response_json[player];
+            if (KEY == 0) {
+                delete RESPONSE_LIFETIME_SETS_JSON[KEY];
             } else {
 
-                deleteExtraFields(lifetime_sets_response_json, player);
+                deleteExtraFields(RESPONSE_LIFETIME_SETS_JSON, KEY);
 
-                head_2_head[player]['SetData']['Lifetime'] = lifetime_sets_response_json[player];
+                head_2_head[KEY]['SetData']['Lifetime'] = RESPONSE_LIFETIME_SETS_JSON[KEY];
 
             }
 
         }
 
+
+        // Add Seasonal Sets data.
         writeLog('Creating Head 2 Head JSON: Adding Seasonal Set data...');
 
-        // Seasonal Sets.
-        for (const player in seasonal_sets_response_json) {
+        for (const KEY in RESPONSE_SEASONAL_SETS_JSON) {
             
-            if (player == 0) {
-                delete seasonal_sets_response_json[player];
+            if (KEY == 0) {
+                delete RESPONSE_SEASONAL_SETS_JSON[KEY];
             } else {
 
-                deleteExtraFields(seasonal_sets_response_json, player);
+                deleteExtraFields(RESPONSE_SEASONAL_SETS_JSON, KEY);
 
-                head_2_head[player]['SetData']['Seasonal'] = seasonal_sets_response_json[player];
+                head_2_head[KEY]['SetData']['Seasonal'] = RESPONSE_SEASONAL_SETS_JSON[KEY];
 
             }
 
         }
 
+
+        // Add Lifetime Games data.
         writeLog('Creating Head 2 Head JSON: Adding Lifetime Game data...');
 
-        // Lifetime Games.
-        for (const player in lifetime_games_response_json) {
+        for (const KEY in RESPONSE_LIFETIME_GAMES_JSON) {
             
-            if (player == 0) {
-                delete lifetime_games_response_json[player];
+            if (KEY == 0) {
+                delete RESPONSE_LIFETIME_GAMES_JSON[KEY];
             } else {
 
-                deleteExtraFields(lifetime_games_response_json, player);
+                deleteExtraFields(RESPONSE_LIFETIME_GAMES_JSON, KEY);
 
-                head_2_head[player]['GameData']['Lifetime'] = lifetime_games_response_json[player];
+                head_2_head[KEY]['GameData']['Lifetime'] = RESPONSE_LIFETIME_GAMES_JSON[KEY];
 
             }
 
         }
 
+
+        // Add Seasonal Games data.
         writeLog('Creating Head 2 Head JSON: Adding Seasonal Game data...');
 
-        // Seasonal Games.
-        for (const player in seasonal_games_response_json) {
+        for (const KEY in RESPONSE_SEASONAL_GAMES_JSON) {
             
-            if (player == 0) {
-                delete seasonal_games_response_json[player];
+            if (KEY == 0) {
+                delete RESPONSE_SEASONAL_GAMES_JSON[KEY];
             } else {
 
-                deleteExtraFields(seasonal_games_response_json, player);
+                deleteExtraFields(RESPONSE_SEASONAL_GAMES_JSON, KEY);
 
-                head_2_head[player]['GameData']['Seasonal'] = seasonal_games_response_json[player];
+                head_2_head[KEY]['GameData']['Seasonal'] = RESPONSE_SEASONAL_GAMES_JSON[KEY];
 
             }
 
         }
 
+
+        // Insert placeholder option elements into the DOM.
         writeLog('Head 2 Head JSON compiled, creating list of Players...');
 
-        // Insert placeholder option elements.
-        player_one_select.innerHTML += `<option>${player_one_default}</option>`;
-        player_two_select.innerHTML += `<option>${player_two_default}</option>`;
+        E_P1_SELECT.innerHTML += `<option>${DEFAULT_P1}</option>`;
+        E_P2_SELECT.innerHTML += `<option>${DEFAULT_P2}</option>`;
 
-        // Create option elements for each player from the fact sheet.
-        for (const player in head_2_head) {
 
-            let current_player = head_2_head[player].PlayerName;
-            let current_player_rank = head_2_head[player].Rank;
+        // Create option elements for each player from the Head to Head object.
+        for (const KEY in head_2_head) {
 
-            player_one_select.innerHTML += `<option value="${current_player_rank}">${current_player}</option>`;
-            player_two_select.innerHTML += `<option value="${current_player_rank}">${current_player}</option>`;
+            let current_player = head_2_head[KEY].PlayerName;
+            let current_player_rank = head_2_head[KEY].Rank;
+
+            E_P1_SELECT.innerHTML += `<option value="${current_player_rank}">${current_player}</option>`;
+            E_P2_SELECT.innerHTML += `<option value="${current_player_rank}">${current_player}</option>`;
                 
         }
 
-        writeLog('Finishing up...');
 
         // Wait for the user to click Submit.
-        player_selection_submit.addEventListener('click', function() {
+        writeLog('Finishing up...');
 
-            if (bothPlayersSelected(player_one_select, player_two_select, error_messages_element)) {
+        E_PLAYER_SELECTION_SUBMIT.addEventListener('click', function() {
+
+            // The user needs to select two players.
+            if (bothPlayersSelected(E_P1_SELECT, E_P2_SELECT, E_ERROR_MESSAGES)) {
 
                 // Scroll down to hide the player selection elements.
                 window.scrollTo({
@@ -373,211 +394,204 @@ async function get_data() {
 
 
                 // Retrieve the Player Names from the select elements.
-                let player_one_name = player_one_select.options[player_one_select.selectedIndex].innerText;
-                let player_two_name = player_two_select.options[player_two_select.selectedIndex].innerText;
+                let p1_name = E_P1_SELECT.options[E_P1_SELECT.selectedIndex].innerText;
+                let p2_name = E_P2_SELECT.options[E_P2_SELECT.selectedIndex].innerText;
+
 
                 // Player One and Two Tags.
-                let player_one_tag = head_2_head[player_one_name].Tag;
-                let player_two_tag = head_2_head[player_two_name].Tag;
+                let p1_tag = head_2_head[p1_name].Tag;
+                let p2_tag = head_2_head[p2_name].Tag;
 
-                // Player One Characters.
-                let player_one_characters = head_2_head[player_one_name].Characters.split(character_delimiter);
-                let player_one_main = character_prefix + player_one_characters[0] + character_suffix;
-                let player_one_secondary = character_prefix + player_one_characters[1] + character_suffix;
 
-                // Player Two Characters
-                let player_two_characters = head_2_head[player_two_name].Characters.split(character_delimiter);
-                let player_two_main = character_prefix + player_two_characters[0] + character_suffix;
-                let player_two_secondary = character_prefix + player_two_characters[1] + character_suffix;
+                // Player One Fighters.
+                let p1_fighters = head_2_head[p1_name].Fighters.split(SEPARATOR_FIGHTER);
+                let p1_main = FIGHTER_PREFIX + p1_fighters[0] + FIGHTER_SUFFIX;
+                let p1_secondary = FIGHTER_PREFIX + p1_fighters[1] + FIGHTER_SUFFIX;
+
+
+                // Player Two Fighters
+                let p2_fighters = head_2_head[p2_name].Fighters.split(SEPARATOR_FIGHTER);
+                let p2_main = FIGHTER_PREFIX + p2_fighters[0] + FIGHTER_SUFFIX;
+                let p2_secondary = FIGHTER_PREFIX + p2_fighters[1] + FIGHTER_SUFFIX;
+
 
                 // Player One Power Rankings.
-                let player_one_seasonal_rank = head_2_head[player_one_name].PowerRanking.Seasonal.Rank;
-                let player_one_seasonal_points = head_2_head[player_one_name].PowerRanking.Seasonal.Points;
+                let p1_seasonal_rank = head_2_head[p1_name].PowerRanking.Seasonal.Rank;
+                let p1_seasonal_points = head_2_head[p1_name].PowerRanking.Seasonal.Points;
+
 
                 // Player Two Power Rankings.
-                let player_two_seasonal_rank = head_2_head[player_two_name].PowerRanking.Seasonal.Rank;
-                let player_two_seasonal_points = head_2_head[player_two_name].PowerRanking.Seasonal.Points;
+                let p2_seasonal_rank = head_2_head[p2_name].PowerRanking.Seasonal.Rank;
+                let p2_seasonal_points = head_2_head[p2_name].PowerRanking.Seasonal.Points;
+
 
                 // Player One Set/Game Data.
-                let player_one_seasonal_sets = head_2_head[player_one_name].SetData.Seasonal[player_two_name];
-                let player_one_seasonal_games = head_2_head[player_one_name].GameData.Seasonal[player_two_name];
+                let p1_seasonal_sets = head_2_head[p1_name].SetData.Seasonal[p2_name];
+                let p1_seasonal_games = head_2_head[p1_name].GameData.Seasonal[p2_name];
                 
-                let player_one_lifetime_sets = head_2_head[player_one_name].SetData.Lifetime[player_two_name];
-                let player_one_lifetime_games = head_2_head[player_one_name].GameData.Lifetime[player_two_name];
+                let p1_lifetime_sets = head_2_head[p1_name].SetData.Lifetime[p2_name];
+                let p1_lifetime_games = head_2_head[p1_name].GameData.Lifetime[p2_name];
 
                 if (
-                    player_one_seasonal_sets != undefined &&
-                    player_one_seasonal_sets != '0 -- 0'
+                    p1_seasonal_sets != undefined &&
+                    p1_seasonal_sets != '0 -- 0'
                 ) {
-
+ 
                     // Cleaning of Set/Game ratios/scores.
-                    let player_one_seasonal_sets_array = player_one_seasonal_sets.split(score_delimiter);
-                    let player_one_seasonal_games_array = player_one_seasonal_games.split(score_delimiter);
+                    let p1_seasonal_sets_array = p1_seasonal_sets.split(SEPARATOR_SCORE);
+                    let p1_seasonal_games_array = p1_seasonal_games.split(SEPARATOR_SCORE);
 
-                    let player_one_lifetime_sets_array = player_one_lifetime_sets.split(score_delimiter);
-                    let player_one_lifetime_games_array = player_one_lifetime_games.split(score_delimiter);
+                    let p1_lifetime_sets_array = p1_lifetime_sets.split(SEPARATOR_SCORE);
+                    let p1_lifetime_games_array = p1_lifetime_games.split(SEPARATOR_SCORE);
 
-                    let player_one_lifetime_set_count = player_one_lifetime_sets_array[0];
-                    let player_one_lifetime_game_count = player_one_lifetime_games_array[0];
-                    let player_one_seasonal_set_count = player_one_seasonal_sets_array[0];
-                    let player_one_seasonal_game_count = player_one_seasonal_games_array[0];
+                    let p1_lifetime_set_count = p1_lifetime_sets_array[0];
+                    let p1_lifetime_game_count = p1_lifetime_games_array[0];
+                    let p1_seasonal_set_count = p1_seasonal_sets_array[0];
+                    let p1_seasonal_game_count = p1_seasonal_games_array[0];
 
-                    let player_two_lifetime_set_count= player_one_lifetime_sets_array[1];
-                    let player_two_lifetime_game_count= player_one_lifetime_games_array[1];
-                    let player_two_seasonal_set_count= player_one_seasonal_sets_array[1];
-                    let player_two_seasonal_game_count= player_one_seasonal_games_array[1];
+                    let p2_lifetime_set_count= p1_lifetime_sets_array[1];
+                    let p2_lifetime_game_count= p1_lifetime_games_array[1];
+                    let p2_seasonal_set_count= p1_seasonal_sets_array[1];
+                    let p2_seasonal_game_count= p1_seasonal_games_array[1];
 
-                    let player_one_seasonal_set_score = parseInt(player_one_seasonal_sets_array[0]);
-                    let player_two_seasonal_set_score = parseInt(player_one_seasonal_sets_array[1]);
+                    let p1_seasonal_set_score = parseInt(p1_seasonal_sets_array[0]);
+                    let p2_seasonal_set_score = parseInt(p1_seasonal_sets_array[1]);
 
-                    let player_one_seasonal_game_score = parseInt(player_one_seasonal_games_array[0]);
-                    let player_two_seasonal_game_score = parseInt(player_one_seasonal_games_array[1]);
+                    let p1_seasonal_game_score = parseInt(p1_seasonal_games_array[0]);
+                    let p2_seasonal_game_score = parseInt(p1_seasonal_games_array[1]);
 
-                    let player_one_seasonal_set_ratio = Math.round(player_one_seasonal_set_score /(player_one_seasonal_set_score + player_two_seasonal_set_score) * 100);
-                    let player_one_seasonal_game_ratio = Math.round(player_one_seasonal_game_score /(player_one_seasonal_game_score + player_two_seasonal_game_score) * 100);
+                    let p1_seasonal_set_ratio = Math.round(p1_seasonal_set_score /(p1_seasonal_set_score + p2_seasonal_set_score) * 100);
+                    let p1_seasonal_game_ratio = Math.round(p1_seasonal_game_score /(p1_seasonal_game_score + p2_seasonal_game_score) * 100);
                     
-                    let player_one_lifetime_set_score = parseInt(player_one_lifetime_sets_array[0]);
-                    let player_two_lifetime_set_score = parseInt(player_one_lifetime_sets_array[1]);
+                    let p1_lifetime_set_score = parseInt(p1_lifetime_sets_array[0]);
+                    let p2_lifetime_set_score = parseInt(p1_lifetime_sets_array[1]);
 
-                    let player_one_lifetime_game_score = parseInt(player_one_lifetime_games_array[0]);
-                    let player_two_lifetime_game_score = parseInt(player_one_lifetime_games_array[1]);
+                    let p1_lifetime_game_score = parseInt(p1_lifetime_games_array[0]);
+                    let p2_lifetime_game_score = parseInt(p1_lifetime_games_array[1]);
 
-                    let player_one_lifetime_set_ratio = Math.round(player_one_lifetime_set_score /(player_one_lifetime_set_score + player_two_lifetime_set_score) * 100);
-                    let player_one_lifetime_game_ratio = Math.round(player_one_lifetime_game_score /(player_one_lifetime_game_score + player_two_lifetime_game_score) * 100);
+                    let p1_lifetime_set_ratio = Math.round(p1_lifetime_set_score /(p1_lifetime_set_score + p2_lifetime_set_score) * 100);
+                    let p1_lifetime_game_ratio = Math.round(p1_lifetime_game_score /(p1_lifetime_game_score + p2_lifetime_game_score) * 100);
+
 
                     // Inversion of Set/Game ratios for Player Two.
-                    let player_two_seasonal_set_ratio = 100 - player_one_seasonal_set_ratio;
-                    let player_two_seasonal_game_ratio = 100 - player_one_seasonal_game_ratio;
-                    let player_two_lifetime_set_ratio = 100 - player_one_lifetime_set_ratio;
-                    let player_two_lifetime_game_ratio = 100 - player_one_lifetime_game_ratio;
+                    let p2_seasonal_set_ratio = 100 - p1_seasonal_set_ratio;
+                    let p2_seasonal_game_ratio = 100 - p1_seasonal_game_ratio;
+                    let p2_lifetime_set_ratio = 100 - p1_lifetime_set_ratio;
+                    let p2_lifetime_game_ratio = 100 - p1_lifetime_game_ratio;
+
 
                     // Sanitize the image names.
-                    player_one_main = player_one_main.replace(' ', '-').toLowerCase();
-                    player_one_secondary = player_one_secondary.replace(' ', '-').toLowerCase();
-                    player_two_main = player_two_main.replace(' ', '-').toLowerCase();
-                    player_two_secondary = player_two_secondary.replace(' ', '-').toLowerCase();
+                    p1_main = p1_main.replace(' ', '-').toLowerCase();
+                    p1_secondary = p1_secondary.replace(' ', '-').toLowerCase();
+                    p2_main = p2_main.replace(' ', '-').toLowerCase();
+                    p2_secondary = p2_secondary.replace(' ', '-').toLowerCase();
+
 
                     // Storing relevant elements to assign data to.
-                    const player_one_character_element = document.getElementById('player_one_character');
-                    const player_two_character_element = document.getElementById('player_two_character');
+                    const E_P1_FIGHTER = document.getElementById('p1_fighter');
+                    const E_P2_FIGHTER = document.getElementById('p2_fighter');
 
-                    const player_one_name_element = document.getElementById('player_one_name');
-                    const player_two_name_element = document.getElementById('player_two_name');
+                    const E_P1_NAME = document.getElementById('p1_name');
+                    const E_P2_NAME = document.getElementById('p2_name');
 
-                    const player_one_tag_element = document.getElementById('player_one_tag');
-                    const player_two_tag_element = document.getElementById('player_two_tag');
+                    const E_P1_TAG = document.getElementById('p1_tag');
+                    const E_P2_TAG = document.getElementById('p2_tag');
 
-                    const player_one_pr_element = document.getElementById('player_one_pr');
-                    const player_two_pr_element = document.getElementById('player_two_pr');
+                    const E_P1_PR = document.getElementById('p1_pr');
+                    const E_P2_PR = document.getElementById('p2_pr');
 
-                    const player_one_seasonal_points_element = document.getElementById('player_one_seasonal_points');
-                    const player_two_seasonal_points_element = document.getElementById('player_two_seasonal_points');
+                    const E_P1_SEASONAL_POINTS = document.getElementById('p1_seasonal_points');
+                    const E_P2_SEASONAL_POINTS = document.getElementById('p2_seasonal_points');
 
-                    const head_to_head_title = document.getElementById('head_to_head_title');
-                    const stats_title = document.getElementById('stats_title');
+                    const E_TITLE_HEAD_TO_HEAD = document.getElementById('title_head_to_head');
+                    const E_TITLE_STATS = document.getElementById('title_stats');
 
-                    const win_percent_title = document.querySelectorAll('.win_percent_title');
-                    const pr_title = document.querySelectorAll('.pr_title');
+                    const E_TITLE_WIN_PERCENT = document.querySelectorAll('.title_win_percent');
+                    const E_TITLE_PR = document.querySelectorAll('.title_pr');
 
-                    const set_title_elements = document.querySelectorAll('.sets');
-                    const game_title_elements = document.querySelectorAll('.games');
-                    const points_title_elements = document.querySelectorAll('.points');
+                    const E_TITLE_SETS = document.querySelectorAll('.sets');
+                    const E_TITLE_GAMES = document.querySelectorAll('.games');
+                    const E_TITLE_POINTS = document.querySelectorAll('.points');
 
-                    const bracket_social_element = document.getElementById('bracket');
+                    const E_SOCIAL_BRACKET = document.getElementById('social_bracket');
 
-                    const lifetime_title = document.getElementById('lifetime_title');
-                    const player_one_lifetime_sets_element = document.getElementById('player_one_lifetime_sets');
-                    const player_two_lifetime_sets_element = document.getElementById('player_two_lifetime_sets');
+                    const E_TITLE_LIFETIME = document.getElementById('title_lifetime');
+                    const E_P1_LIFETIME_SETS = document.getElementById('p1_lifetime_sets_win_count');
+                    const E_P2_LIFETIME_SETS = document.getElementById('p2_lifetime_sets_win_count');
 
-                    const player_one_lifetime_games_element = document.getElementById('player_one_lifetime_games');
-                    const player_two_lifetime_games_element = document.getElementById('player_two_lifetime_games');
+                    const E_P1_LIFETIME_GAMES = document.getElementById('p1_lifetime_games_win_count');
+                    const E_P2_LIFETIME_GAMES = document.getElementById('p2_lifetime_games_win_count');
                     
-                    const seasonal_title = document.getElementById('seasonal_title');
-                    const player_one_seasonal_sets_ratio_element = document.getElementById('player_one_seasonal_sets_ratio');
-                    const player_two_seasonal_sets_ratio_element = document.getElementById('player_two_seasonal_sets_ratio');
+                    const E_TITLE_SEASONAL = document.getElementById('title_seasonal');
+                    const E_P1_SEASONAL_SETS_WIN_PERCENT = document.getElementById('p1_seasonal_sets_win_percent');
+                    const E_P2_SEASONAL_SETS_WIN_PERCENT = document.getElementById('p2_seasonal_sets_win_percent');
 
-                    const player_one_seasonal_sets_count_element = document.getElementById('player_one_seasonal_sets_count');
-                    const player_two_seasonal_sets_count_element = document.getElementById('player_two_seasonal_sets_count');
+                    const E_P1_SEASONAL_SETS_WIN_COUNT = document.getElementById('p1_seasonal_sets_win_count');
+                    const E_P2_SEASONAL_SETS_WIN_COUNT = document.getElementById('p2_seasonal_sets_win_count');
 
-                    const player_one_seasonal_games_element = document.getElementById('player_one_seasonal_games');
-                    const player_two_seasonal_games_element = document.getElementById('player_two_seasonal_games');
+                    const E_P1_SEASONAL_GAMES = document.getElementById('p1_seasonal_games_win_count');
+                    const E_P2_SEASONAL_GAMES = document.getElementById('p2_seasonal_games_win_count');
 
-                    const main_logo = document.getElementById('main_logo');
+                    const E_MAIN_LOGO = document.getElementById('main_logo');
+
 
                     // Adding player stats to elements for view.
-                    data_output.style.display = 'flex';
-                    main_logo.style.display = 'block';
-                    bracket_social_element.style.display = 'block';
+                    E_DATA_OUTPUT.style.display = 'flex';
+                    E_MAIN_LOGO.style.display = 'block';
+                    E_SOCIAL_BRACKET.style.display = 'block';
 
-                    player_one_character_element.src = player_one_main;
-                    player_two_character_element.src = player_two_main;
+                    E_TITLE_HEAD_TO_HEAD.innerText = 'Head to Head';
+                    E_TITLE_WIN_PERCENT.forEach((e) => e.innerText = 'Win %');
+                    E_TITLE_PR.forEach((e) => e.innerText = 'PR');
 
-                    if (player_one_tag == '') {
-                        player_one_tag = default_tag;
-                    }
+                    E_TITLE_STATS.innerText = 'Stats';
+                    E_TITLE_SEASONAL.innerText = 'Seasonal';
+                    E_TITLE_LIFETIME.innerText = 'Lifetime';
+                    E_TITLE_SETS.forEach((e) => e.innerText = 'Sets');
+                    E_TITLE_GAMES.forEach((e) => e.innerText = 'Games');
+                    E_TITLE_POINTS.forEach((e) => e.innerText = 'Points');
 
-                    if (player_two_tag == '') {
-                        player_two_tag = default_tag;
-                    }
-
-                    player_one_tag_element.innerHTML = generateTagBanner(player_one_tag);
-                    player_two_tag_element.innerHTML = generateTagBanner(player_two_tag);
-
-                    player_one_name_element.innerText = player_one_name;
-                    player_two_name_element.innerText = player_two_name;
-
-                    player_one_pr_element.innerText = `#${player_one_seasonal_rank}`;
-                    player_two_pr_element.innerText = `#${player_two_seasonal_rank}`;
+                    p1_tag == '' ? p1_tag = DEFAULT_TAG : p1_tag;
+                    p2_tag == '' ? p2_tag = DEFAULT_TAG : p2_tag;
                     
-                    player_one_seasonal_points_element.innerText = `${player_one_seasonal_points}`;
-                    player_two_seasonal_points_element.innerText = `${player_two_seasonal_points}`;
+                    E_P1_TAG.innerHTML = generateTagBanner(p1_tag);
+                    E_P2_TAG.innerHTML = generateTagBanner(p2_tag);
 
-                    head_to_head_title.innerText = 'Head to Head';
-                    stats_title.innerText = 'Stats';
+                    E_P1_FIGHTER.src = p1_main;
+                    E_P2_FIGHTER.src = p2_main;
+
+                    E_P1_NAME.innerText = p1_name;
+                    E_P2_NAME.innerText = p2_name;
+
+                    E_P1_PR.innerText = `#${p1_seasonal_rank}`;
+                    E_P2_PR.innerText = `#${p2_seasonal_rank}`;
+
+                    E_P1_SEASONAL_SETS_WIN_PERCENT.innerText = `${p1_seasonal_set_ratio}%`;
+                    E_P2_SEASONAL_SETS_WIN_PERCENT.innerText = `${p2_seasonal_set_ratio}%`;
                     
-                    win_percent_title.forEach((element) => {
-                        element.innerText = 'Win %';
-                    });
+                    E_P1_SEASONAL_SETS_WIN_COUNT.innerText = `${p1_seasonal_set_count}`;
+                    E_P2_SEASONAL_SETS_WIN_COUNT.innerText = `${p2_seasonal_set_count}`;
 
-                    pr_title.forEach((element) => {
-                        element.innerText = 'PR';
-                    });
+                    E_P1_SEASONAL_GAMES.innerText = `${p1_seasonal_game_count}`;
+                    E_P2_SEASONAL_GAMES.innerText = `${p2_seasonal_game_count}`;
 
-                    set_title_elements.forEach((element) => {
-                        element.innerText = 'Sets';
-                    });
+                    E_P1_SEASONAL_POINTS.innerText = `${p1_seasonal_points}`;
+                    E_P2_SEASONAL_POINTS.innerText = `${p2_seasonal_points}`;
 
-                    game_title_elements.forEach((element) => {
-                        element.innerText = 'Games';
-                    });
-
-                    points_title_elements.forEach((element) => {
-                        element.innerText = 'Points';
-                    });
-
-                    bracket_social_element.innerText = `${bracket_social}`;
-
-                    seasonal_title.innerText = 'Seasonal';
-                    player_one_seasonal_sets_ratio_element.innerText = `${player_one_seasonal_set_ratio}%`;
-                    player_two_seasonal_sets_ratio_element.innerText = `${player_two_seasonal_set_ratio}%`;
-
-                    player_one_seasonal_sets_count_element.innerText = `${player_one_seasonal_set_count}`;
-                    player_two_seasonal_sets_count_element.innerText = `${player_two_seasonal_set_count}`;
-
-                    player_one_seasonal_games_element.innerText = `${player_one_seasonal_game_count}`;
-                    player_two_seasonal_games_element.innerText = `${player_two_seasonal_game_count}`;
-
-                    lifetime_title.innerText = 'Lifetime';
-                    player_one_lifetime_sets_element.innerText = `${player_one_lifetime_set_count}`;
-                    player_two_lifetime_sets_element.innerText = `${player_two_lifetime_set_count}`;
+                    E_P1_LIFETIME_SETS.innerText = `${p1_lifetime_set_count}`;
+                    E_P2_LIFETIME_SETS.innerText = `${p2_lifetime_set_count}`;
                     
-                    player_one_lifetime_games_element.innerText = `${player_one_lifetime_game_count}`;
-                    player_two_lifetime_games_element.innerText = `${player_two_lifetime_game_count}`;
+                    E_P1_LIFETIME_GAMES.innerText = `${p1_lifetime_game_count}`;
+                    E_P2_LIFETIME_GAMES.innerText = `${p2_lifetime_game_count}`;
+
+                    E_SOCIAL_BRACKET.innerText = `${SOCIAL_BRACKET}`;
 
                 } else {
-
-                    error_messages_element.innerHTML = `<p>These players have not played a set this season!</p>`;
+                    
+                    E_ERROR_MESSAGES.innerHTML = `<p>These players have not played a set this season!</p>`;
                     console.log('These players have not played a set this season!');
+
+                    // Challenger Approaching.
 
                 }
 
@@ -587,19 +601,35 @@ async function get_data() {
 
         writeLog('Ready! Awaiting player selection.');
 
-        console.group('Head 2 Head');
-        console.log(head_2_head);
-        console.groupEnd();
-
         // Debug mode to automatically select two players and trigger the click event.
-        if (debug_mode) {
-            player_one_select.options.selectedIndex = 1;
-            player_two_select.options.selectedIndex = 2;
+        if (DEBUG_MODE) {
+            
+            console.group('JSON Responses');
+            console.log('RESPONSE_LIFETIME_RANKINGS_JSON: ');
+            console.log(RESPONSE_LIFETIME_RANKINGS_JSON);
+            console.log('RESPONSE_LIFETIME_SETS_JSON: ');
+            console.log(RESPONSE_LIFETIME_SETS_JSON);
+            console.log('RESPONSE_LIFETIME_GAMES_JSON: ');
+            console.log(RESPONSE_LIFETIME_GAMES_JSON);
+            console.log('RESPONSE_SEASONAL_RANKINGS_JSON: ');
+            console.log(RESPONSE_SEASONAL_RANKINGS_JSON);
+            console.log('RESPONSE_SEASONAL_SETS_JSON: ');
+            console.log(RESPONSE_SEASONAL_SETS_JSON);
+            console.log('RESPONSE_SEASONAL_GAMES_JSON: ');
+            console.log(RESPONSE_SEASONAL_GAMES_JSON);
+            console.groupEnd();
+    
+            console.group('Head 2 Head');
+            console.log(head_2_head);
+            console.groupEnd();
+
+            E_P1_SELECT.options.selectedIndex = 1;
+            E_P2_SELECT.options.selectedIndex = 2;
 
             let click_event = new Event('click');
-            player_selection_submit.dispatchEvent(click_event);
+            E_PLAYER_SELECTION_SUBMIT.dispatchEvent(click_event);
 
-            const character_images = [
+            const FIGHTER_IMAGES = [
                 'banjo-and-kazooie-00-full.png',
                 'bayonetta-00-full.png',
                 'bowser-00-full.png',
@@ -619,6 +649,7 @@ async function get_data() {
                 'falco-00-full.png',
                 'fox-00-full.png',
                 'ganondorf-00-full.png',
+                'ganondorf-04-full.png',
                 'greninja-00-full.png',
                 'hero-00-full.png',
                 'ice-climbers-00-full.png',
@@ -688,21 +719,21 @@ async function get_data() {
                 'zero-suit-samus-00-full.png'
             ];
 
-            let p1_character = document.querySelector('.p1_character');
-            let p2_character = document.querySelector('.p2_character');
-            let character_counter = 0;
+            let p1_fighter = document.querySelector('.p1_fighter');
+            let p2_fighter = document.querySelector('.p2_fighter');
+            let fighter_counter = 0;
 
             document.addEventListener('keydown', (e) => {
 
                 if (e.code == 'Space') {
 
-                    p1_character.src = character_prefix + character_images[character_counter];
-                    p2_character.src = character_prefix + character_images[character_counter];
+                    p1_fighter.src = FIGHTER_PREFIX + FIGHTER_IMAGES[fighter_counter];
+                    p2_fighter.src = FIGHTER_PREFIX + FIGHTER_IMAGES[fighter_counter];
                     
-                    if (character_counter == character_images.length -1) {
-                        character_counter = 0;
+                    if (fighter_counter == FIGHTER_IMAGES.length -1) {
+                        fighter_counter = 0;
                     } else {
-                        character_counter++;
+                        fighter_counter++;
                     }
 
                 }
@@ -710,12 +741,16 @@ async function get_data() {
             });
         }
 
+
     // Pulling data failed.
     } catch (error) {
 
+
         console.error(error.message);
 
+
     }
+
 
 }
 
@@ -737,8 +772,7 @@ function cleanPlayerName(player_name) {
 
 function writeLog(message) {
 
-    // progress_log.innerHTML = message;
-
+    E_ERROR_MESSAGES.innerHTML = message;
     console.log(message);
 
 };
@@ -754,16 +788,20 @@ function deleteExtraFields(json, key) {
 }
 
 
-function bothPlayersSelected(player_one, player_two, error_messages_element) {
+function bothPlayersSelected(p1, p2, E_ERROR_MESSAGES) {
 
-    if (player_one.value != player_one_default && player_two.value !== player_two_default) {
-        error_messages_element.innerHTML = '';
-        error_messages_element.style.display = 'none';
+    if (p1.value != DEFAULT_P1 && p2.value !== DEFAULT_P2) {
+
+        E_ERROR_MESSAGES.innerHTML = '';
+        E_ERROR_MESSAGES.style.display = 'none';
         return true;
+    
     } else {
-        error_messages_element.innerHTML = `<p>Please select two players!</p>`;
-        error_messages_element.style.display = 'flex';
+
+        E_ERROR_MESSAGES.innerHTML = `<p>Please select two players!</p>`;
+        E_ERROR_MESSAGES.style.display = 'flex';
         return false;
+    
     }
 
 }
@@ -771,16 +809,22 @@ function bothPlayersSelected(player_one, player_two, error_messages_element) {
 
 function generateTagBanner(tag) {
 
-    let tag_generation = 100;
+    let tag_generation = 102;
     let tag_output = '';
     let highlighted_tag = `<span class="tag_highlight">${tag}</span>`;
 
     for (let i = 0; i < tag_generation; i++) { 
+
         if (i % 2 == 0) {
+
             tag_output += (highlighted_tag + '&nbsp;' + tag + '&nbsp;').repeat(6) + tag + '&nbsp;';
+
         } else {
+
             tag_output += (tag + '&nbsp;' + highlighted_tag + '&nbsp;').repeat(6) + tag + '&nbsp;';
+
         }
+
     }
     
     return tag_output;
@@ -788,4 +832,4 @@ function generateTagBanner(tag) {
 }
 
 
-get_data();
+get_head_to_head_data();
