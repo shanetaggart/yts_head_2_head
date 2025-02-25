@@ -13,6 +13,9 @@ const E_PLAYER_SELECTION_SUBMIT = document.getElementById('player-selection__sub
 const E_P1_SELECT = document.getElementById('p1');
 const E_P2_SELECT = document.getElementById('p2');
 const E_DATA_OUTPUT = document.getElementById('data_output');
+const E_DATA_OUTPUT_CHALLENGER = document.getElementById('data_output_challenger');
+const E_DATA_OUTPUT_PR = document.getElementById('data_output_pr');
+const E_DATA_OUTPUT_STATS = document.getElementById('data_output_stats');
 const E_ERROR_MESSAGES = document.getElementById('error_messages');
 
 
@@ -403,6 +406,9 @@ async function get_head_to_head_data() {
                 let p1_tag = head_2_head[p1_name].Tag;
                 let p2_tag = head_2_head[p2_name].Tag;
 
+                p1_tag == '' ? p1_tag = DEFAULT_TAG : p1_tag;
+                p2_tag == '' ? p2_tag = DEFAULT_TAG : p2_tag;
+
 
                 // Player One Fighters.
                 let p1_fighters = head_2_head[p1_name].Fighters.split(SEPARATOR_FIGHTER);
@@ -416,6 +422,13 @@ async function get_head_to_head_data() {
                 let p2_secondary = FIGHTER_PREFIX + p2_fighters[1] + FIGHTER_SUFFIX;
 
 
+                // Sanitize the image names.
+                p1_main = p1_main.replace(' ', '-').toLowerCase();
+                p1_secondary = p1_secondary.replace(' ', '-').toLowerCase();
+                p2_main = p2_main.replace(' ', '-').toLowerCase();
+                p2_secondary = p2_secondary.replace(' ', '-').toLowerCase();
+
+
                 // Player One Power Rankings.
                 let p1_seasonal_rank = head_2_head[p1_name].PowerRanking.Seasonal.Rank;
                 let p1_seasonal_points = head_2_head[p1_name].PowerRanking.Seasonal.Points;
@@ -426,12 +439,86 @@ async function get_head_to_head_data() {
                 let p2_seasonal_points = head_2_head[p2_name].PowerRanking.Seasonal.Points;
 
 
+                // Sanitize the Power Rankings.
+                p1_seasonal_rank == '' ? p1_seasonal_rank = '?' : p1_seasonal_rank;
+                p2_seasonal_rank == '' ? p2_seasonal_rank = '?' : p2_seasonal_rank;
+
+
                 // Player One Set/Game Data.
                 let p1_seasonal_sets = head_2_head[p1_name].SetData.Seasonal[p2_name];
                 let p1_seasonal_games = head_2_head[p1_name].GameData.Seasonal[p2_name];
                 
                 let p1_lifetime_sets = head_2_head[p1_name].SetData.Lifetime[p2_name];
                 let p1_lifetime_games = head_2_head[p1_name].GameData.Lifetime[p2_name];
+
+
+                // Storing relevant elements to assign data to.
+                const E_P1_TAG = document.getElementById('p1_tag');
+                const E_P2_TAG = document.getElementById('p2_tag');
+                
+                const E_P1_NAME = document.getElementById('p1_name');
+                const E_P2_NAME = document.getElementById('p2_name');
+                
+                const E_P1_FIGHTER = document.getElementById('p1_fighter');
+                const E_P2_FIGHTER = document.getElementById('p2_fighter');
+
+                const E_TITLE_CHALLENGER = document.getElementById('title_challenger');
+                const E_CHALLENGER_ICON = document.getElementById('challenger_icon');
+                const E_TITLE_HEAD_TO_HEAD = document.getElementById('title_head_to_head');
+                const E_TITLE_WIN_PERCENT = document.querySelectorAll('.title_win_percent');
+                const E_TITLE_PR = document.querySelectorAll('.title_pr');
+                
+                const E_P1_PR = document.getElementById('p1_pr');
+                const E_P2_PR = document.getElementById('p2_pr');
+
+                const E_P1_SEASONAL_SETS_WIN_PERCENT = document.getElementById('p1_seasonal_sets_win_percent');
+                const E_P2_SEASONAL_SETS_WIN_PERCENT = document.getElementById('p2_seasonal_sets_win_percent');
+
+                const E_TITLE_STATS = document.getElementById('title_stats');
+
+                const E_TITLE_SEASONAL = document.getElementById('title_seasonal');
+                const E_TITLE_LIFETIME = document.getElementById('title_lifetime');
+
+                const E_TITLE_SETS = document.querySelectorAll('.sets');
+                const E_TITLE_GAMES = document.querySelectorAll('.games');
+                const E_TITLE_POINTS = document.querySelectorAll('.points');
+
+                const E_P1_SEASONAL_SETS_WIN_COUNT = document.getElementById('p1_seasonal_sets_win_count');
+                const E_P2_SEASONAL_SETS_WIN_COUNT = document.getElementById('p2_seasonal_sets_win_count');
+
+                const E_P1_SEASONAL_GAMES = document.getElementById('p1_seasonal_games_win_count');
+                const E_P2_SEASONAL_GAMES = document.getElementById('p2_seasonal_games_win_count');
+
+                const E_P1_SEASONAL_POINTS = document.getElementById('p1_seasonal_points');
+                const E_P2_SEASONAL_POINTS = document.getElementById('p2_seasonal_points');
+
+                const E_P1_LIFETIME_SETS = document.getElementById('p1_lifetime_sets_win_count');
+                const E_P2_LIFETIME_SETS = document.getElementById('p2_lifetime_sets_win_count');
+
+                const E_P1_LIFETIME_GAMES = document.getElementById('p1_lifetime_games_win_count');
+                const E_P2_LIFETIME_GAMES = document.getElementById('p2_lifetime_games_win_count');
+                
+                const E_MAIN_LOGO = document.getElementById('main_logo');
+
+                const E_SOCIAL_BRACKET = document.getElementById('social_bracket');
+
+                
+                E_P1_TAG.innerHTML = generateTagBanner(p1_tag);
+                E_P2_TAG.innerHTML = generateTagBanner(p2_tag);
+                
+                E_P1_NAME.innerText = p1_name;
+                E_P2_NAME.innerText = p2_name;
+
+                E_P1_FIGHTER.src = p1_main;
+                E_P2_FIGHTER.src = p2_main;
+
+                E_TITLE_HEAD_TO_HEAD.innerText = 'Head to Head';
+                E_TITLE_WIN_PERCENT.forEach((e) => e.innerText = 'Win %');
+                E_TITLE_PR.forEach((e) => e.innerText = 'PR');
+
+                E_P1_PR.innerText = `#${p1_seasonal_rank}`;
+                E_P2_PR.innerText = `#${p2_seasonal_rank}`;
+
 
                 if (
                     p1_seasonal_sets != undefined &&
@@ -458,92 +545,20 @@ async function get_head_to_head_data() {
                     let p1_seasonal_set_score = parseInt(p1_seasonal_sets_array[0]);
                     let p2_seasonal_set_score = parseInt(p1_seasonal_sets_array[1]);
 
-                    let p1_seasonal_game_score = parseInt(p1_seasonal_games_array[0]);
-                    let p2_seasonal_game_score = parseInt(p1_seasonal_games_array[1]);
 
                     let p1_seasonal_set_ratio = Math.round(p1_seasonal_set_score /(p1_seasonal_set_score + p2_seasonal_set_score) * 100);
-                    let p1_seasonal_game_ratio = Math.round(p1_seasonal_game_score /(p1_seasonal_game_score + p2_seasonal_game_score) * 100);
-                    
-                    let p1_lifetime_set_score = parseInt(p1_lifetime_sets_array[0]);
-                    let p2_lifetime_set_score = parseInt(p1_lifetime_sets_array[1]);
-
-                    let p1_lifetime_game_score = parseInt(p1_lifetime_games_array[0]);
-                    let p2_lifetime_game_score = parseInt(p1_lifetime_games_array[1]);
-
-                    let p1_lifetime_set_ratio = Math.round(p1_lifetime_set_score /(p1_lifetime_set_score + p2_lifetime_set_score) * 100);
-                    let p1_lifetime_game_ratio = Math.round(p1_lifetime_game_score /(p1_lifetime_game_score + p2_lifetime_game_score) * 100);
 
 
                     // Inversion of Set/Game ratios for Player Two.
                     let p2_seasonal_set_ratio = 100 - p1_seasonal_set_ratio;
-                    let p2_seasonal_game_ratio = 100 - p1_seasonal_game_ratio;
-                    let p2_lifetime_set_ratio = 100 - p1_lifetime_set_ratio;
-                    let p2_lifetime_game_ratio = 100 - p1_lifetime_game_ratio;
-
-
-                    // Sanitize the image names.
-                    p1_main = p1_main.replace(' ', '-').toLowerCase();
-                    p1_secondary = p1_secondary.replace(' ', '-').toLowerCase();
-                    p2_main = p2_main.replace(' ', '-').toLowerCase();
-                    p2_secondary = p2_secondary.replace(' ', '-').toLowerCase();
-
-
-                    // Storing relevant elements to assign data to.
-                    const E_P1_FIGHTER = document.getElementById('p1_fighter');
-                    const E_P2_FIGHTER = document.getElementById('p2_fighter');
-
-                    const E_P1_NAME = document.getElementById('p1_name');
-                    const E_P2_NAME = document.getElementById('p2_name');
-
-                    const E_P1_TAG = document.getElementById('p1_tag');
-                    const E_P2_TAG = document.getElementById('p2_tag');
-
-                    const E_P1_PR = document.getElementById('p1_pr');
-                    const E_P2_PR = document.getElementById('p2_pr');
-
-                    const E_P1_SEASONAL_POINTS = document.getElementById('p1_seasonal_points');
-                    const E_P2_SEASONAL_POINTS = document.getElementById('p2_seasonal_points');
-
-                    const E_TITLE_HEAD_TO_HEAD = document.getElementById('title_head_to_head');
-                    const E_TITLE_STATS = document.getElementById('title_stats');
-
-                    const E_TITLE_WIN_PERCENT = document.querySelectorAll('.title_win_percent');
-                    const E_TITLE_PR = document.querySelectorAll('.title_pr');
-
-                    const E_TITLE_SETS = document.querySelectorAll('.sets');
-                    const E_TITLE_GAMES = document.querySelectorAll('.games');
-                    const E_TITLE_POINTS = document.querySelectorAll('.points');
-
-                    const E_SOCIAL_BRACKET = document.getElementById('social_bracket');
-
-                    const E_TITLE_LIFETIME = document.getElementById('title_lifetime');
-                    const E_P1_LIFETIME_SETS = document.getElementById('p1_lifetime_sets_win_count');
-                    const E_P2_LIFETIME_SETS = document.getElementById('p2_lifetime_sets_win_count');
-
-                    const E_P1_LIFETIME_GAMES = document.getElementById('p1_lifetime_games_win_count');
-                    const E_P2_LIFETIME_GAMES = document.getElementById('p2_lifetime_games_win_count');
-                    
-                    const E_TITLE_SEASONAL = document.getElementById('title_seasonal');
-                    const E_P1_SEASONAL_SETS_WIN_PERCENT = document.getElementById('p1_seasonal_sets_win_percent');
-                    const E_P2_SEASONAL_SETS_WIN_PERCENT = document.getElementById('p2_seasonal_sets_win_percent');
-
-                    const E_P1_SEASONAL_SETS_WIN_COUNT = document.getElementById('p1_seasonal_sets_win_count');
-                    const E_P2_SEASONAL_SETS_WIN_COUNT = document.getElementById('p2_seasonal_sets_win_count');
-
-                    const E_P1_SEASONAL_GAMES = document.getElementById('p1_seasonal_games_win_count');
-                    const E_P2_SEASONAL_GAMES = document.getElementById('p2_seasonal_games_win_count');
-
-                    const E_MAIN_LOGO = document.getElementById('main_logo');
 
 
                     // Adding player stats to elements for view.
-                    E_DATA_OUTPUT.style.display = 'flex';
+                    E_DATA_OUTPUT_CHALLENGER.style.display = 'none';
+                    E_DATA_OUTPUT_PR.style.display = 'flex';
+                    E_DATA_OUTPUT_STATS.style.display = 'flex';
                     E_MAIN_LOGO.style.display = 'block';
                     E_SOCIAL_BRACKET.style.display = 'block';
-
-                    E_TITLE_HEAD_TO_HEAD.innerText = 'Head to Head';
-                    E_TITLE_WIN_PERCENT.forEach((e) => e.innerText = 'Win %');
-                    E_TITLE_PR.forEach((e) => e.innerText = 'PR');
 
                     E_TITLE_STATS.innerText = 'Stats';
                     E_TITLE_SEASONAL.innerText = 'Seasonal';
@@ -551,24 +566,6 @@ async function get_head_to_head_data() {
                     E_TITLE_SETS.forEach((e) => e.innerText = 'Sets');
                     E_TITLE_GAMES.forEach((e) => e.innerText = 'Games');
                     E_TITLE_POINTS.forEach((e) => e.innerText = 'Points');
-
-                    p1_tag == '' ? p1_tag = DEFAULT_TAG : p1_tag;
-                    p2_tag == '' ? p2_tag = DEFAULT_TAG : p2_tag;
-                    
-                    E_P1_TAG.innerHTML = generateTagBanner(p1_tag);
-                    E_P2_TAG.innerHTML = generateTagBanner(p2_tag);
-
-                    E_P1_FIGHTER.src = p1_main;
-                    E_P2_FIGHTER.src = p2_main;
-
-                    E_P1_NAME.innerText = p1_name;
-                    E_P2_NAME.innerText = p2_name;
-
-                    E_P1_PR.innerText = `#${p1_seasonal_rank}`;
-                    E_P2_PR.innerText = `#${p2_seasonal_rank}`;
-
-                    E_P1_SEASONAL_SETS_WIN_PERCENT.innerText = `${p1_seasonal_set_ratio}%`;
-                    E_P2_SEASONAL_SETS_WIN_PERCENT.innerText = `${p2_seasonal_set_ratio}%`;
 
                     const E_P1_WIN = document.querySelector('.p1_win');
                     const E_P2_WIN = document.querySelector('.p2_win');
@@ -592,6 +589,9 @@ async function get_head_to_head_data() {
                         }
 
                     }
+
+                    E_P1_SEASONAL_SETS_WIN_PERCENT.innerText = `${p1_seasonal_set_ratio}%`;
+                    E_P2_SEASONAL_SETS_WIN_PERCENT.innerText = `${p2_seasonal_set_ratio}%`;
                     
                     E_P1_SEASONAL_SETS_WIN_COUNT.innerText = `${p1_seasonal_set_count}`;
                     E_P2_SEASONAL_SETS_WIN_COUNT.innerText = `${p2_seasonal_set_count}`;
@@ -612,10 +612,15 @@ async function get_head_to_head_data() {
 
                 } else {
                     
-                    E_ERROR_MESSAGES.innerHTML = `<p>These players have not played a set this season!</p>`;
-                    console.log('These players have not played a set this season!');
-
-                    // Challenger Approaching.
+                    E_ERROR_MESSAGES.style.display = 'none';
+                    E_DATA_OUTPUT_PR.style.display = 'none';
+                    E_DATA_OUTPUT_STATS.style.display = 'none';
+                    E_MAIN_LOGO.style.display = 'none';
+                    E_SOCIAL_BRACKET.style.display = 'none';
+                    E_DATA_OUTPUT_CHALLENGER.style.display = 'flex';
+                    
+                    E_TITLE_CHALLENGER.innerText = 'A new challenger approaches!';
+                    E_CHALLENGER_ICON.innerText = '!';
 
                 }
 
