@@ -250,7 +250,7 @@ $large-alpha-for-blur: 0.40;
                 filter: drop-shadow(0px 0px 5px $nautical-navy-dark);
                 animation-name: show_name;
                 animation-duration: 1s;
-                animation-delay: 6s;
+                animation-delay: 3s;
                 animation-timing-function: ease;
                 opacity: 1;
             }
@@ -273,7 +273,7 @@ $large-alpha-for-blur: 0.40;
                 z-index: 40;
                 max-width: 38%;
                 animation-duration: 1s;
-                animation-delay: 6.5s;
+                animation-delay: 4s;
                 animation-timing-function: ease;
                 opacity: 1;
             }
@@ -313,7 +313,7 @@ $large-alpha-for-blur: 0.40;
                 background-color: $nautical-navy;
                 animation-name: show_data;
                 animation-duration: 1s;
-                animation-delay: 3s;
+                animation-delay: 1s;
                 animation-timing-function: ease;
 
                 &__challenger,
@@ -321,13 +321,6 @@ $large-alpha-for-blur: 0.40;
                 &__stats {
                     display: none;
                     position: relative;
-
-                    > * {
-                        animation-name: slide_in_down;
-                        animation-delay: 4.5s;
-                        animation-duration: 1s;
-                        animation-timing-function: ease;
-                    }
                 }
 
                 &__pr,
@@ -570,14 +563,52 @@ $large-alpha-for-blur: 0.40;
 
     // Animation testing
 
-    #p1_seasonal_sets_win_count { animation-delay: 4600ms !important; }
-    #p2_seasonal_sets_win_count { animation-delay: 4600ms !important; }
-    #p1_seasonal_games_win_count { animation-delay: 5000ms !important; }
-    #p2_seasonal_games_win_count { animation-delay: 5000ms !important; }
-    #p1_seasonal_points { animation-delay: 5400ms !important; }
-    #p2_seasonal_points { animation-delay: 5400ms !important; }
-    #p1_lifetime_sets_win_count { animation-delay: 5800ms !important; }
-    #p2_lifetime_sets_win_count { animation-delay: 5800ms !important; }
-    #p1_lifetime_games_win_count { animation-delay: 6200ms !important; }
-    #p2_lifetime_games_win_count { animation-delay: 6200ms !important; }
-    #main_logo { animation-delay: 6600ms !important; }
+    #p1_seasonal_sets_win_count,
+    #p2_seasonal_sets_win_count {
+        animation-name: slide_in_down;
+        animation-duration: 250ms;
+        animation-timing-function: ease;
+        animation-delay: 2000ms;
+    }
+
+    #p1_seasonal_games_win_count,
+    #p2_seasonal_games_win_count {
+        animation-name: slide_in_down;
+        animation-duration: 250ms;
+        animation-timing-function: ease;
+        animation-delay: 2200ms;
+    }
+
+    #p1_seasonal_points,
+    #p2_seasonal_points {
+        animation-name: slide_in_down;
+        animation-duration: 250ms;
+        animation-timing-function: ease;
+        animation-delay: 2400ms;
+    }
+
+    #p1_lifetime_sets_win_count,
+    #p2_lifetime_sets_win_count {
+        animation-name: slide_in_down;
+        animation-duration: 250ms;
+        animation-timing-function: ease;
+        animation-delay: 2600ms;
+    }
+
+    #p1_lifetime_games_win_count,
+    #p2_lifetime_games_win_count {
+        animation-name: slide_in_down;
+        animation-duration: 250ms;
+        animation-timing-function: ease;
+        animation-delay: 2800ms;
+    }
+
+    #main_logo {
+        animation-name: slide_in_down;
+        animation-duration: 250ms;
+        animation-timing-function: ease;
+        animation-delay: 3000ms;
+    }
+
+
+    
