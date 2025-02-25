@@ -33,6 +33,13 @@
     // 100% { text-shadow: 0px 0px 0px white; }
 }
 
+@keyframes challenger_approaching {
+    0% { opacity: 1; }
+    25% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 1; }
+}
+
 // Variables.
 $nautical-navy: #0e243c;
 $nautical-navy-dark: color.adjust($nautical-navy, $lightness: -3%);
@@ -160,7 +167,7 @@ $large-alpha-for-blur: 0.40;
                 width: 100%;
                 overflow: hidden;
                 line-break: anywhere;
-                animation-duration: 120s;
+                animation-duration: 60s;
                 animation-timing-function: linear;
             }
 
@@ -226,7 +233,7 @@ $large-alpha-for-blur: 0.40;
         }
 
         &.data {
-            display: none;
+            display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
@@ -246,8 +253,38 @@ $large-alpha-for-blur: 0.40;
                 box-shadow: 0px 0px 20px 5px $nautical-navy-dark;
                 background-color: $nautical-navy;
 
-                &__pr {
+                &__challenger,
+                &__pr,
+                &__stats {
+                    display: none;
+                    position: relative;
+                }
+
+                &__pr,
+                &__challenger {
                     z-index: 50;
+                }
+
+                &__challenger {
+                    flex-direction: row;
+                    font-size: 1.75em;
+
+                    &--icon {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width: 5rem;
+                        max-height: 5rem;
+                        border-radius: .5rem;
+                        background: $nautical-navy-extra-dark;
+                        font-size: 2em;
+                        opacity: 1;
+                        animation-name: challenger_approaching;
+                        animation-iteration-count: infinite;
+                        animation-duration: 3s;
+                        animation-timing-function: linear;
+                        
+                    }
                 }
 
                 &__stats {
@@ -441,8 +478,8 @@ $large-alpha-for-blur: 0.40;
     }
 
     .error_messages {
-        width: 50%;
-        height: 50vh;
+        width: 30%;
+        height: 25vh;
         position: absolute;
         top: 50%;
         left: 50%;
@@ -451,6 +488,7 @@ $large-alpha-for-blur: 0.40;
         justify-content: center;
         align-items: center;
         display: flex;
+        border: 1px solid $really-red;
     }
 
     .bracket {
