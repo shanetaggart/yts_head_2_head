@@ -33,65 +33,65 @@
     100% { opacity: 1; }
 }
 
-@keyframes show_name {
-    0% {
-        opacity: 0;
-        top: -100%;
-    }
+// @keyframes show_name {
+//     0% {
+//         opacity: 0;
+//         top: -100%;
+//     }
     
-    100% {
-        opacity: 1;
-        top: -5%;
-    }
-}
+//     100% {
+//         opacity: 1;
+//         top: -5%;
+//     }
+// }
 
-@keyframes show_p1_fighter {
-    0% {
-        left: -50%;
-        opacity: 0;
-    }
+// @keyframes show_p1_fighter {
+//     0% {
+//         left: -50%;
+//         opacity: 0;
+//     }
 
-    100% {
-        left: 3%;
-        opacity: 1;
-    }
-}
+//     100% {
+//         left: 3%;
+//         opacity: 1;
+//     }
+// }
 
-@keyframes show_p2_fighter {
-    0% {
-        right: -50%;
-        opacity: 0;
-    }
+// @keyframes show_p2_fighter {
+//     0% {
+//         right: -50%;
+//         opacity: 0;
+//     }
 
-    100% {
-        right: 3%;
-        opacity: 1;
-    }
-}
+//     100% {
+//         right: 3%;
+//         opacity: 1;
+//     }
+// }
 
-@keyframes show_data {
-    0% {
-        width: 0%;
-        opacity: 0;
-    }
+// @keyframes show_data {
+//     0% {
+//         width: 0%;
+//         opacity: 0;
+//     }
 
-    100% {
-        width: 100%;
-        opacity: 1;
-    }
-}
+//     100% {
+//         width: 100%;
+//         opacity: 1;
+//     }
+// }
 
-@keyframes slide_in_down {
-    0% {
-        transform: translateY(-20%);
-        opacity: 0;
-    }
+// @keyframes slide_in_down {
+//     0% {
+//         transform: translateY(-20%);
+//         opacity: 0;
+//     }
 
-    100% {
-        transform: translateY(0%);
-        opacity: 1;
-    }
-}
+//     100% {
+//         transform: translateY(0%);
+//         opacity: 1;
+//     }
+// }
 
 // Variables.
 $nautical-navy: #0e243c;
@@ -231,15 +231,21 @@ $large-alpha-for-blur: 0.40;
             .p1_tag {
                 right: 50%;
                 text-align: right;
-                animation-name: translate_tag_p1;
                 transform: translateY(-100vh) skew(10deg, 3deg);
+
+                &.animate_tag {
+                    animation-name: translate_tag_p1;
+                }
             }
 
             .p2_tag {
                 left: 50%;
                 text-align: left;
-                animation-name: translate_tag_p2;
                 transform: translateY(-100vh) skew(-10deg, -3deg);
+
+                &.animate_tag {
+                    animation-name: translate_tag_p2;
+                }
             }
 
             .name {
@@ -551,7 +557,7 @@ $large-alpha-for-blur: 0.40;
         justify-content: center;
         align-items: center;
         display: flex;
-        border: 1px solid $really-red;
+        // border: 1px solid $really-red;
     }
 
     .bracket {

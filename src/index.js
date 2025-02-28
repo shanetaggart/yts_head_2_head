@@ -29,7 +29,7 @@ const DEFAULT_TAG = 'Y-Town Smash';
 const SOCIAL_BRACKET = 'start.gg/yts';
 const FIGHTER_PREFIX = './public/images/fighters/';
 const FIGHTER_SUFFIX = '-00-full.png';
-const DEBUG_MODE = true;
+const DEBUG_MODE = false;
 const DEBUG_FIGHTER_ALTS = false;
 
 
@@ -570,23 +570,18 @@ async function get_head_to_head_data() {
                     const E_P1_WIN = document.querySelector('.p1_win');
                     const E_P2_WIN = document.querySelector('.p2_win');
 
-                    if (p1_seasonal_set_ratio !== p2_seasonal_set_ratio) {
+                    E_P1_WIN.classList.remove('win');
+                    E_P2_WIN.classList.remove('win');
 
-                        E_P1_WIN.classList.remove
-                        ('win');
-                        E_P2_WIN.classList.remove('win');
+                    if (p1_seasonal_set_ratio > p2_seasonal_set_ratio) {
 
-                        if (p1_seasonal_set_ratio > p2_seasonal_set_ratio) {
+                        E_P1_WIN.classList.add('win');
 
-                            E_P1_WIN.classList.add('win');
+                    }
 
-                        }
+                    if (p2_seasonal_set_ratio > p1_seasonal_set_ratio) {
 
-                        if (p2_seasonal_set_ratio > p1_seasonal_set_ratio) {
-
-                            E_P2_WIN.classList.add('win');
-
-                        }
+                        E_P2_WIN.classList.add('win');
 
                     }
 
@@ -609,6 +604,10 @@ async function get_head_to_head_data() {
                     E_P2_LIFETIME_GAMES.innerText = `${p2_lifetime_game_count}`;
 
                     E_SOCIAL_BRACKET.innerText = `${SOCIAL_BRACKET}`;
+
+                    // Assign animation classes.
+                    E_P1_TAG.classList.add('animate_tag');
+                    E_P2_TAG.classList.add('animate_tag');
 
                 } else {
                     
