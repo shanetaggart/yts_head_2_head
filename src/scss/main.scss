@@ -26,19 +26,72 @@
     to { transform: translateY(-100vh) skew(-10deg, -3deg); }
 }
 
-@keyframes name_glow {
-    // 0% { text-shadow: 0px 0px 0px white; }
-    // 25% { text-shadow: 0px 0px 5px white; }
-    // 75% { text-shadow: 0px 0px 0px white; }
-    // 100% { text-shadow: 0px 0px 0px white; }
-}
-
 @keyframes challenger_approaching {
     0% { opacity: 1; }
     25% { opacity: 0; }
     50% { opacity: 1; }
     100% { opacity: 1; }
 }
+
+// @keyframes show_name {
+//     0% {
+//         opacity: 0;
+//         top: -100%;
+//     }
+    
+//     100% {
+//         opacity: 1;
+//         top: -5%;
+//     }
+// }
+
+// @keyframes show_p1_fighter {
+//     0% {
+//         left: -50%;
+//         opacity: 0;
+//     }
+
+//     100% {
+//         left: 3%;
+//         opacity: 1;
+//     }
+// }
+
+// @keyframes show_p2_fighter {
+//     0% {
+//         right: -50%;
+//         opacity: 0;
+//     }
+
+//     100% {
+//         right: 3%;
+//         opacity: 1;
+//     }
+// }
+
+// @keyframes show_data {
+//     0% {
+//         width: 0%;
+//         opacity: 0;
+//     }
+
+//     100% {
+//         width: 100%;
+//         opacity: 1;
+//     }
+// }
+
+// @keyframes slide_in_down {
+//     0% {
+//         transform: translateY(-20%);
+//         opacity: 0;
+//     }
+
+//     100% {
+//         transform: translateY(0%);
+//         opacity: 1;
+//     }
+// }
 
 // Variables.
 $nautical-navy: #0e243c;
@@ -178,15 +231,21 @@ $large-alpha-for-blur: 0.40;
             .p1_tag {
                 right: 50%;
                 text-align: right;
-                animation-name: translate_tag_p1;
                 transform: translateY(-100vh) skew(10deg, 3deg);
+
+                &.animate_tag {
+                    animation-name: translate_tag_p1;
+                }
             }
 
             .p2_tag {
                 left: 50%;
                 text-align: left;
-                animation-name: translate_tag_p2;
                 transform: translateY(-100vh) skew(-10deg, -3deg);
+
+                &.animate_tag {
+                    animation-name: translate_tag_p2;
+                }
             }
 
             .name {
@@ -195,11 +254,11 @@ $large-alpha-for-blur: 0.40;
                 font-size: 4em;
                 z-index: 30;
                 filter: drop-shadow(0px 0px 5px $nautical-navy-dark);
-                animation-name: name_glow;
-                animation-delay: 5s;
-                animation-duration: 5s;
+                animation-name: show_name;
+                animation-duration: 1s;
+                animation-delay: 3s;
                 animation-timing-function: ease;
-                animation-iteration-count: infinite;
+                opacity: 1;
             }
 
             .p1_name {
@@ -219,16 +278,22 @@ $large-alpha-for-blur: 0.40;
                 bottom: 0;
                 z-index: 40;
                 max-width: 38%;
+                animation-duration: 1s;
+                animation-delay: 4s;
+                animation-timing-function: ease;
+                opacity: 1;
             }
 
             .p1_fighter {
                 left: 3%;
                 filter: drop-shadow(-5px 5px 3px $nautical-navy-dark);
+                animation-name: show_p1_fighter;
             }
 
             .p2_fighter {
                 right: 3%;
                 filter: drop-shadow(5px 5px 3px $nautical-navy-dark);
+                animation-name: show_p2_fighter;
             }
         }
 
@@ -252,6 +317,10 @@ $large-alpha-for-blur: 0.40;
                 gap: 1em;
                 box-shadow: 0px 0px 20px 5px $nautical-navy-dark;
                 background-color: $nautical-navy;
+                animation-name: show_data;
+                animation-duration: 1s;
+                animation-delay: 1s;
+                animation-timing-function: ease;
 
                 &__challenger,
                 &__pr,
@@ -488,7 +557,7 @@ $large-alpha-for-blur: 0.40;
         justify-content: center;
         align-items: center;
         display: flex;
-        border: 1px solid $really-red;
+        // border: 1px solid $really-red;
     }
 
     .bracket {
@@ -497,3 +566,55 @@ $large-alpha-for-blur: 0.40;
         font-size: 2em;
         font-style: italic;
     }
+
+    // Animation testing
+
+    #p1_seasonal_sets_win_count,
+    #p2_seasonal_sets_win_count {
+        animation-name: slide_in_down;
+        animation-duration: 250ms;
+        animation-timing-function: ease;
+        animation-delay: 2000ms;
+    }
+
+    #p1_seasonal_games_win_count,
+    #p2_seasonal_games_win_count {
+        animation-name: slide_in_down;
+        animation-duration: 250ms;
+        animation-timing-function: ease;
+        animation-delay: 2200ms;
+    }
+
+    #p1_seasonal_points,
+    #p2_seasonal_points {
+        animation-name: slide_in_down;
+        animation-duration: 250ms;
+        animation-timing-function: ease;
+        animation-delay: 2400ms;
+    }
+
+    #p1_lifetime_sets_win_count,
+    #p2_lifetime_sets_win_count {
+        animation-name: slide_in_down;
+        animation-duration: 250ms;
+        animation-timing-function: ease;
+        animation-delay: 2600ms;
+    }
+
+    #p1_lifetime_games_win_count,
+    #p2_lifetime_games_win_count {
+        animation-name: slide_in_down;
+        animation-duration: 250ms;
+        animation-timing-function: ease;
+        animation-delay: 2800ms;
+    }
+
+    #main_logo {
+        animation-name: slide_in_down;
+        animation-duration: 250ms;
+        animation-timing-function: ease;
+        animation-delay: 3000ms;
+    }
+
+
+    
