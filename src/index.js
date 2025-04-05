@@ -423,12 +423,17 @@ async function get_head_to_head_data() {
 
 
                 // Sanitize the image names.
-                p1_main = p1_main.replace(' ', '-').toLowerCase();
-                p1_secondary = p1_secondary.replace(' ', '-').toLowerCase();
-                p2_main = p2_main.replace(' ', '-').toLowerCase();
-                p2_secondary = p2_secondary.replace(' ', '-').toLowerCase();
+                p1_main = p1_main.replace(' / ', ' and ');
+                p1_main = p1_main.replaceAll(' ', '-').toLowerCase();
+                p1_secondary = p1_secondary.replace(' / ', ' and '); 
+                p1_secondary = p1_secondary.replaceAll(' ', '-').toLowerCase();
+                
+                p2_main = p2_main.replace(' / ', ' and ');
+                p2_main = p2_main.replaceAll(' ', '-').toLowerCase();
+                p2_secondary = p2_secondary.replace(' / ', ' and ');
+                p2_secondary = p2_secondary.replaceAll(' ', '-').toLowerCase();
 
-
+                
                 // Player One Power Rankings.
                 let p1_seasonal_rank = head_2_head[p1_name].PowerRanking.Seasonal.Rank;
                 let p1_seasonal_points = head_2_head[p1_name].PowerRanking.Seasonal.Points;

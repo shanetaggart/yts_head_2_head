@@ -1,40 +1,22 @@
 [
-{"Rank":"1","Player":"Randomname","Points":"6286","Country":"CA","Characters":"Sephiroth - Terry"}
-,
-{"Rank":"2","Player":"Lamb","Points":"5516","Country":"CA","Characters":"Fox - Ice Climbers"}
-,
-{"Rank":"3","Player":"Silent Bob","Points":"5513","Country":"CA","Characters":"Incineroar - Wolf"}
-,
-{"Rank":"4","Player":"YTS | Jonch","Points":"5127","Country":"CA","Characters":"Snake"}
-,
-{"Rank":"5","Player":"LDog","Points":"4876","Country":"CA","Characters":"Dark Pit"}
-,
-{"Rank":"6","Player":"Slidbrush","Points":"4751","Country":"CA","Characters":"Falco"}
-,
-{"Rank":"7","Player":"BowserAttack","Points":"4490","Country":"CA","Characters":"Cloud"}
-,
-{"Rank":"8","Player":"YTS | Stag","Points":"4442","Country":"CA","Characters":"Young Link - Ice Climbers"}
-,
-{"Rank":"9","Player":"Villain","Points":"4431","Country":"CA","Characters":"Bowser Jr - Ridley"}
-,
-{"Rank":"10","Player":"Silver","Points":"3475","Country":"CA","Characters":"Inkling - Robin"}
-,
-{"Rank":"11","Player":"Purplespice","Points":"3426","Country":"CA","Characters":"Falco - Pyra / Mythra"}
-,
-{"Rank":"12","Player":"Nep","Points":"3341","Country":"CA","Characters":"Corrin - Zero Suit Samus - Wii Fit Trainer"}
-,
-{"Rank":"13","Player":"YTS | MJS","Points":"3131","Country":"CA","Characters":"Piranha Plant"}
-,
-{"Rank":"14","Player":"MrtheTaste","Points":"3129","Country":"CA","Characters":"Joker - Mii Brawler"}
-,
-{"Rank":"15","Player":"majormoistme","Points":"2308","Country":"CA","Characters":"Kirby"}
-,
-{"Rank":"16","Player":"Absolutelynothing","Points":"2012","Country":"CA","Characters":"Donkey Kong"}
-,
-{"Rank":"17","Player":"RetroLad64","Points":"1172","Country":"CA","Characters":"Yoshi"}
-,
-{"Rank":"18","Player":"YTS | AX","Points":"1039","Country":"CA","Characters":"Sora"}
-,
-{"Rank":"19","Player":"YTS | MobMarMini","Points":"412","Country":"CA","Characters":"Bowser Jr - Corrin"}
-
+{"Rank":"1","Player":"Randomname","Points":"6187","Country":"","Characters":"Sephiroth - Terry - Fox"},
+{"Rank":"2","Player":"Silent Bob","Points":"5726","Country":"","Characters":"Incineroar - Wolf"},
+{"Rank":"3","Player":"Lamb","Points":"5360","Country":"","Characters":"Fox - Ice Climbers - Min Min"},
+{"Rank":"4","Player":"YTS | Jonch","Points":"5011","Country":"","Characters":"Snake"},
+{"Rank":"5","Player":"LDog","Points":"4769","Country":"","Characters":"Dark Pit"},
+{"Rank":"6","Player":"BowserAttack","Points":"4580","Country":"","Characters":"Cloud"},
+{"Rank":"7","Player":"Slidbrush","Points":"4557","Country":"","Characters":"Falco"},
+{"Rank":"8","Player":"YTS | Stag","Points":"4349","Country":"","Characters":"Young Link - Ice Climbers"},
+{"Rank":"9","Player":"Villain","Points":"4229","Country":"","Characters":"Bowser Jr - Meta Knight"},
+{"Rank":"10","Player":"MrtheTaste","Points":"3496","Country":"","Characters":"Joker - Mii Brawler"},
+{"Rank":"11","Player":"Silver","Points":"3391","Country":"","Characters":"Inkling - Robin"},
+{"Rank":"12","Player":"Nep","Points":"3265","Country":"","Characters":"Corrin - Zero Suit Samus - Wii Fit Trainer"},
+{"Rank":"13","Player":"Purplespice","Points":"3263","Country":"","Characters":"Falco - Pyra / Mythra"},
+{"Rank":"14","Player":"Absolutelynothing","Points":"3113","Country":"","Characters":"Donkey Kong"},
+{"Rank":"15","Player":"YTS | MJS","Points":"2917","Country":"","Characters":"Piranha Plant"},
+{"Rank":"16","Player":"majormoistme","Points":"2514","Country":"","Characters":"Kirby"},
+{"Rank":"17","Player":"Averyjm3457","Points":"2372","Country":"","Characters":"Roy - Ness - Rob"},
+{"Rank":"18","Player":"RetroLad64","Points":"1114","Country":"","Characters":"Yoshi"},
+{"Rank":"19","Player":"YTS | AX","Points":"1081","Country":"","Characters":"Sora"},
+{"Rank":"20","Player":"YTS | MobMarMini","Points":"407","Country":"","Characters":"Bowser Jr - Corrin"}
 ]
